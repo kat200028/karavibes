@@ -187,6 +187,8 @@
     .modal-price span:first-child { font-size:0.75rem; color:var(--gris); }
     .modal-price span:last-child { font-family:'Cinzel',serif; color:var(--or); font-size:1.2rem; }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase-config.js"></script>
 </head>
 <body>
 
@@ -627,17 +629,16 @@
   // ===== RÉSERVATIONS =====
   let reservations = [];
 
-  function loadReservations() {
-    reservations = JSON.parse(localStorage.getItem('kv_reservations') || '[]');
+  async function loadReservations() {
+    const { data, error } = await supabase.from('reservations').select('*').order('date', { ascending: false });
+    if (error) { console.error(error); reservations = []; } else { reservations = data; }
     renderResa();
   }
-
-  function saveReservations() { localStorage.setItem('kv_reservations', JSON.stringify(reservations)); }
 
   function renderResa() {
     const tbody = document.getElementById('resa-tbody');
     if (!reservations.length) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📭</div>Aucune réservation.</div></td></tr>'; updateStats(); return; }
-    tbody.innerHTML = [...reservations].sort((a,b) => new Date(b.date)-new Date(a.date)).map((r,i) => `
+    tbody.innerHTML = [...reservations].sort((a,b) => new Date(b.date)-new Date(a.date)).map(r => `
       <tr>
         <td><strong>${r.nom}</strong><br><span style="font-size:0.72rem;color:var(--gris)">${r.tel||'—'}</span></td>
         <td><span class="badge ${r.salle==='lagon'?'badge-cyan':'badge-rose'}">${r.salle==='lagon'?'🌊 Lagon Bleu':'🌸 Neo Tokyo'}</span></td>
@@ -647,8 +648,8 @@
         <td style="color:var(--or);font-family:'Cinzel',serif">${r.montant}€</td>
         <td><span class="badge ${r.statut==='confirmé'?'badge-vert':r.statut==='annulé'?'badge-rouge':'badge-orange'}">${r.statut}</span></td>
         <td>
-          <button class="action-btn" onclick="changeStatut(${i})">Statut</button>
-          <button class="action-btn danger" onclick="deleteResa(${i})">✕</button>
+          <button class="action-btn" onclick="changeStatut(${r.id})">Statut</button>
+          <button class="action-btn danger" onclick="deleteResa(${r.id})">✕</button>
         </td>
       </tr>`).join('');
     updateStats();
@@ -663,14 +664,21 @@
     document.getElementById('stat-tokyo').textContent = reservations.filter(r=>r.salle==='tokyo').length;
   }
 
-  function changeStatut(i) {
+  async function changeStatut(id) {
+    const r = reservations.find(r => r.id === id);
     const s = ['confirmé','en attente','annulé'];
-    reservations[i].statut = s[(s.indexOf(reservations[i].statut)+1)%3];
-    saveReservations(); renderResa();
+    const newStatut = s[(s.indexOf(r.statut)+1)%3];
+    const { error } = await supabase.from('reservations').update({ statut: newStatut }).eq('id', id);
+    if (error) { console.error(error); alert('Erreur lors de la mise à jour.'); return; }
+    r.statut = newStatut; renderResa();
   }
 
-  function deleteResa(i) {
-    if (confirm('Supprimer cette réservation ?')) { reservations.splice(i,1); saveReservations(); renderResa(); }
+  async function deleteResa(id) {
+    if (!confirm('Supprimer cette réservation ?')) return;
+    const { error } = await supabase.from('reservations').delete().eq('id', id);
+    if (error) { console.error(error); alert('Erreur lors de la suppression.'); return; }
+    reservations = reservations.filter(r => r.id !== id);
+    renderResa();
   }
 
   function openModal() { document.getElementById('modal-resa').classList.add('open'); calcModalPrice(); }
@@ -682,13 +690,19 @@
     document.getElementById('modal-price').textContent = (Math.max(nb,4)*20 + (prolo?Math.max(nb,4)*15:0)) + '€';
   }
 
-  function addResa() {
+  async function addResa() {
     const nom = document.getElementById('m-nom').value.trim();
     if (!nom) { alert('Veuillez saisir un nom'); return; }
     const nb = parseInt(document.getElementById('m-nb').value)||4;
     const prolo = document.getElementById('m-prolo').value==='1';
-    reservations.push({ nom, tel:document.getElementById('m-tel').value, salle:document.getElementById('m-salle').value, date:document.getElementById('m-date').value, heure:document.getElementById('m-heure').value, nb, montant:Math.max(nb,4)*20+(prolo?Math.max(nb,4)*15:0), paiement:document.getElementById('m-paiement').value, statut:'en attente', id:Date.now() });
-    saveReservations(); renderResa(); closeModal();
+    const { data, error } = await supabase.from('reservations').insert({
+      nom, tel:document.getElementById('m-tel').value, salle:document.getElementById('m-salle').value,
+      date:document.getElementById('m-date').value, heure:document.getElementById('m-heure').value, nb,
+      montant:Math.max(nb,4)*20+(prolo?Math.max(nb,4)*15:0), paiement:document.getElementById('m-paiement').value, statut:'en attente'
+    }).select();
+    if (error) { console.error(error); alert('Erreur lors de l\'ajout.'); return; }
+    reservations.unshift(data[0]);
+    renderResa(); closeModal();
     document.getElementById('m-nom').value=''; document.getElementById('m-tel').value='';
   }
 
@@ -762,58 +776,55 @@
   }
 
   // ===== AVIS =====
-  function loadAvis() {
-    const pending = JSON.parse(localStorage.getItem('kv_avis_pending')||'[]');
-    const valides = JSON.parse(localStorage.getItem('kv_avis_valides')||'[]');
+  async function loadAvis() {
+    const { data: pending, error: errPending } = await supabase.from('avis').select('*').eq('statut','en_attente').order('created_at', { ascending: true });
+    const { data: valides, error: errValides } = await supabase.from('avis').select('*').eq('statut','valide').order('created_at', { ascending: false });
+    if (errPending || errValides) { console.error(errPending || errValides); return; }
+
     const container = document.getElementById('avis-pending-container');
     if (!pending.length) { container.innerHTML='<div class="empty-state"><div class="empty-icon">📭</div>Aucun avis en attente.</div>'; }
     else {
-      container.innerHTML = pending.map((a,i) => `
+      container.innerHTML = pending.map(a => `
         <div class="avis-pending">
           <div class="avis-pending-header">
             <div><div class="avis-stars">${'⭐'.repeat(a.note)}</div><div class="avis-author">${a.prenom}</div></div>
-            <span style="font-size:0.72rem;color:var(--gris)">${new Date(a.date).toLocaleDateString('fr-FR')}</span>
+            <span style="font-size:0.72rem;color:var(--gris)">${new Date(a.created_at).toLocaleDateString('fr-FR')}</span>
           </div>
           <p class="avis-comment">"${a.comment}"</p>
           <div class="avis-actions">
-            <button class="btn-valider" onclick="validerAvis(${i})">✅ Publier</button>
-            <button class="btn-refuser" onclick="refuserAvis(${i})">❌ Refuser</button>
+            <button class="btn-valider" onclick="validerAvis(${a.id})">✅ Publier</button>
+            <button class="btn-refuser" onclick="refuserAvis(${a.id})">❌ Refuser</button>
           </div>
         </div>`).join('');
     }
     const tbody = document.getElementById('avis-valides-tbody');
     if (!valides.length) { tbody.innerHTML='<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">⭐</div>Aucun avis publié.</div></td></tr>'; return; }
-    tbody.innerHTML = valides.map((a,i) => `
+    tbody.innerHTML = valides.map(a => `
       <tr>
         <td>${a.prenom}</td>
         <td>${'⭐'.repeat(a.note)}</td>
         <td style="font-size:0.8rem;color:var(--gris);font-style:italic">"${a.comment}"</td>
-        <td style="font-size:0.78rem;color:var(--gris)">${new Date(a.date).toLocaleDateString('fr-FR')}</td>
-        <td><button class="action-btn danger" onclick="supprimerAvis(${i})">✕</button></td>
+        <td style="font-size:0.78rem;color:var(--gris)">${new Date(a.created_at).toLocaleDateString('fr-FR')}</td>
+        <td><button class="action-btn danger" onclick="supprimerAvis(${a.id})">✕</button></td>
       </tr>`).join('');
   }
 
-  function validerAvis(i) {
-    const pending = JSON.parse(localStorage.getItem('kv_avis_pending')||'[]');
-    const valides = JSON.parse(localStorage.getItem('kv_avis_valides')||'[]');
-    valides.push(pending.splice(i,1)[0]);
-    localStorage.setItem('kv_avis_pending', JSON.stringify(pending));
-    localStorage.setItem('kv_avis_valides', JSON.stringify(valides));
+  async function validerAvis(id) {
+    const { error } = await supabase.from('avis').update({ statut: 'valide' }).eq('id', id);
+    if (error) { console.error(error); alert('Erreur.'); return; }
     loadAvis();
   }
 
-  function refuserAvis(i) {
-    const pending = JSON.parse(localStorage.getItem('kv_avis_pending')||'[]');
-    pending.splice(i,1);
-    localStorage.setItem('kv_avis_pending', JSON.stringify(pending));
+  async function refuserAvis(id) {
+    const { error } = await supabase.from('avis').delete().eq('id', id);
+    if (error) { console.error(error); alert('Erreur.'); return; }
     loadAvis();
   }
 
-  function supprimerAvis(i) {
+  async function supprimerAvis(id) {
     if (!confirm('Supprimer cet avis ?')) return;
-    const valides = JSON.parse(localStorage.getItem('kv_avis_valides')||'[]');
-    valides.splice(i,1);
-    localStorage.setItem('kv_avis_valides', JSON.stringify(valides));
+    const { error } = await supabase.from('avis').delete().eq('id', id);
+    if (error) { console.error(error); alert('Erreur.'); return; }
     loadAvis();
   }
 

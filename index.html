@@ -253,6 +253,8 @@
       .avis-grid { grid-template-columns: 1fr; }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase-config.js"></script>
 </head>
 <body>
 
@@ -621,15 +623,20 @@
     return heure.toString().padStart(2,'0') + 'h00';
   }
 
-  function getReservations() {
-    return JSON.parse(localStorage.getItem('kv_reservations') || '[]');
+  async function getReservations() {
+    const { data, error } = await supabase.from('reservations').select('*');
+    if (error) { console.error(error); return []; }
+    return data;
   }
 
-  function updateCreneaux() {
+  let selectedHeureNum = null;
+
+  async function updateCreneaux() {
     const salle = document.getElementById('f-salle').value;
     const date = document.getElementById('f-date').value;
     const container = document.getElementById('creneaux-container');
     document.getElementById('f-heure').value = '';
+    selectedHeureNum = null;
 
     if (!salle || !date) {
       container.innerHTML = '<span style="font-size:0.8rem; color:var(--gris);">Sélectionnez d\'abord une salle et une date.</span>';
@@ -645,10 +652,10 @@
       return;
     }
 
-    const reservations = getReservations();
+    const reservations = await getReservations();
     const prises = reservations
       .filter(r => r.salle === salle && r.date === date)
-      .map(r => r.heureNum);
+      .map(r => r.heure_num);
 
     container.innerHTML = creneaux.map(h => {
       const pris = prises.includes(h);
@@ -662,6 +669,7 @@
     document.querySelectorAll('.creneau-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     document.getElementById('f-heure').value = formatH(h);
+    selectedHeureNum = h;
     calcPrice();
   }
 
@@ -676,15 +684,39 @@
   }
 
   // ===== SOUMETTRE RÉSERVATION =====
-  function submitResa() {
+  async function submitResa() {
     const prenom = document.getElementById('f-prenom').value.trim();
     const nom = document.getElementById('f-nom').value.trim();
+    const tel = document.getElementById('f-tel').value.trim();
     const heure = document.getElementById('f-heure').value;
     const salle = document.getElementById('f-salle').value;
     const date = document.getElementById('f-date').value;
+    const nb = parseInt(document.getElementById('f-nb').value) || 4;
+    const prolo = document.getElementById('f-prolo').checked;
 
     if (!prenom || !nom || !salle || !date || !heure) {
       alert('Veuillez remplir tous les champs et choisir un créneau.');
+      return;
+    }
+
+    const montant = Math.max(nb, 4) * 20 + (prolo ? Math.max(nb, 4) * 15 : 0);
+
+    const { error } = await supabase.from('reservations').insert({
+      nom: prenom + ' ' + nom,
+      tel,
+      salle,
+      date,
+      heure,
+      heure_num: selectedHeureNum,
+      nb,
+      montant,
+      paiement: 'especes',
+      statut: 'en attente'
+    });
+
+    if (error) {
+      console.error(error);
+      alert('Une erreur est survenue, merci de réessayer ou de nous appeler directement.');
       return;
     }
 
@@ -702,7 +734,7 @@
     });
   }
 
-  function submitAvis() {
+  async function submitAvis() {
     const prenom = document.getElementById('avis-prenom').value.trim();
     const comment = document.getElementById('avis-commentaire').value.trim();
     const note = selectedStar;
@@ -710,19 +742,23 @@
       alert('Veuillez remplir tous les champs et choisir une note.');
       return;
     }
-    const avis = JSON.parse(localStorage.getItem('kv_avis_pending') || '[]');
-    avis.push({ prenom, comment, note, date: new Date().toISOString(), statut: 'en_attente' });
-    localStorage.setItem('kv_avis_pending', JSON.stringify(avis));
+    const { error } = await supabase.from('avis').insert({ prenom, comment, note, statut: 'en_attente' });
+    if (error) {
+      console.error(error);
+      alert('Une erreur est survenue, merci de réessayer.');
+      return;
+    }
     document.getElementById('avis-prenom').value = '';
     document.getElementById('avis-commentaire').value = '';
     setStar(0);
     alert('Merci pour votre avis ! Il sera publié après validation. 🙏');
   }
 
-  function loadAvis() {
-    const avis = JSON.parse(localStorage.getItem('kv_avis_valides') || '[]');
+  async function loadAvis() {
+    const { data: avis, error } = await supabase.from('avis').select('*').eq('statut', 'valide').order('created_at', { ascending: false });
+    if (error) { console.error(error); return; }
     const grid = document.getElementById('avis-grid');
-    if (avis.length === 0) return;
+    if (!avis || avis.length === 0) return;
     grid.innerHTML = avis.map(a => `
       <div class="avis-card">
         <div class="avis-stars">${'⭐'.repeat(a.note)}</div>
