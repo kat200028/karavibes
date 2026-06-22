@@ -531,6 +531,26 @@
   </div>
 </div>
 
+<!-- MODAL RÉCEPTION LIVRAISON -->
+<div class="modal-overlay" id="modal-livraison">
+  <div class="modal">
+    <h3>🚚 RÉCEPTION DE LIVRAISON</h3>
+    <div class="form-group">
+      <label>Produit</label>
+      <select id="liv-produit" onchange="calcLivraisonTotal()"></select>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+      <div class="form-group"><label>Nombre de packs</label><input type="number" id="liv-packs" min="1" value="1" onchange="calcLivraisonTotal()" /></div>
+      <div class="form-group"><label>Unités par pack</label><input type="number" id="liv-unites" min="1" value="1" onchange="calcLivraisonTotal()" /></div>
+    </div>
+    <div class="modal-price" style="margin-bottom:1rem;"><span>Quantité totale à ajouter</span><span id="liv-total">1</span></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeLivraisonModal()">Annuler</button>
+      <button class="btn-confirm" onclick="confirmerLivraison()">Ajouter au stock</button>
+    </div>
+  </div>
+</div>
+
 <script>
   // ===== MOTS DE PASSE =====
   let OWNER_PASS = localStorage.getItem('kv_owner_pwd') || 'karavibes2025';
@@ -917,9 +937,9 @@
   function getStockHistorique() { return JSON.parse(localStorage.getItem('kv_stock_historique') || '[]'); }
   function saveStockHistorique(h) { localStorage.setItem('kv_stock_historique', JSON.stringify(h)); }
 
-  function logMouvementStock(nom, type, qty) {
+  function logMouvementStock(nom, type, qty, detail) {
     const h = getStockHistorique();
-    h.unshift({ nom, type, qty, date: new Date().toISOString() });
+    h.unshift({ nom, type, qty, detail: detail || '', date: new Date().toISOString() });
     saveStockHistorique(h);
   }
 
@@ -958,21 +978,45 @@
   }
 
   function ajouterStock(i) {
-    const item = menuItems[i];
-    const qty = parseInt(prompt(`Quantité reçue pour ${item.nom} :`, '1'));
-    if (!qty || qty <= 0) return;
-    item.stock += qty;
-    localStorage.setItem('kv_menu', JSON.stringify(menuItems));
-    logMouvementStock(item.nom, 'livraison', qty);
-    renderStock();
+    document.getElementById('liv-produit').innerHTML = `<option value="${i}">${menuItems[i].nom}</option>`;
+    document.getElementById('liv-packs').value = 1;
+    document.getElementById('liv-unites').value = 1;
+    calcLivraisonTotal();
+    document.getElementById('modal-livraison').classList.add('open');
   }
 
   function ouvrirAjoutStock() {
     if (!menuItems.length) { alert('Aucun produit dans le menu.'); return; }
-    const noms = menuItems.map((m, i) => `${i + 1}. ${m.nom}`).join('\n');
-    const choix = parseInt(prompt(`Choisissez le n° du produit reçu :\n${noms}`));
-    if (!choix || choix < 1 || choix > menuItems.length) return;
-    ajouterStock(choix - 1);
+    document.getElementById('liv-produit').innerHTML = menuItems.map((m, i) => `<option value="${i}">${m.nom}</option>`).join('');
+    document.getElementById('liv-packs').value = 1;
+    document.getElementById('liv-unites').value = 1;
+    calcLivraisonTotal();
+    document.getElementById('modal-livraison').classList.add('open');
+  }
+
+  function calcLivraisonTotal() {
+    const packs = parseInt(document.getElementById('liv-packs').value) || 0;
+    const unites = parseInt(document.getElementById('liv-unites').value) || 0;
+    document.getElementById('liv-total').textContent = packs * unites;
+  }
+
+  function closeLivraisonModal() {
+    document.getElementById('modal-livraison').classList.remove('open');
+  }
+
+  function confirmerLivraison() {
+    const i = parseInt(document.getElementById('liv-produit').value);
+    const packs = parseInt(document.getElementById('liv-packs').value) || 0;
+    const unites = parseInt(document.getElementById('liv-unites').value) || 0;
+    const total = packs * unites;
+    if (!total) { alert('Veuillez indiquer un nombre de packs et d\'unités par pack.'); return; }
+    const item = menuItems[i];
+    item.stock += total;
+    localStorage.setItem('kv_menu', JSON.stringify(menuItems));
+    logMouvementStock(item.nom, 'livraison', total, `${packs} pack(s) × ${unites} unité(s)`);
+    closeLivraisonModal();
+    renderStock();
+    alert(`✅ ${total} unité(s) de ${item.nom} ajoutée(s) au stock.`);
   }
 
   function renderStockHistorique() {
@@ -981,7 +1025,7 @@
     if (!h.length) { tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">📭</div>Aucun mouvement enregistré.</div></td></tr>'; return; }
     tbody.innerHTML = h.slice(0, 100).map(m => `
       <tr>
-        <td>${m.nom}</td>
+        <td>${m.nom}${m.detail ? `<br><span style="font-size:0.72rem; color:var(--gris);">${m.detail}</span>` : ''}</td>
         <td><span class="badge ${m.type === 'vente' ? 'badge-rouge' : 'badge-vert'}">${m.type === 'vente' ? 'Vente' : 'Livraison'}</span></td>
         <td style="text-align:center">${m.type === 'vente' ? '−' : '+'}${m.qty}</td>
         <td style="font-size:0.78rem; color:var(--gris)">${new Date(m.date).toLocaleString('fr-FR')}</td>
@@ -1073,6 +1117,7 @@
   // Close modals
   document.getElementById('modal-resa').addEventListener('click',function(e){if(e.target===this)closeModal();});
   document.getElementById('modal-menu').addEventListener('click',function(e){if(e.target===this)closeMenuModal();});
+  document.getElementById('modal-livraison').addEventListener('click',function(e){if(e.target===this)closeLivraisonModal();});
 </script>
 </body>
 </html>
