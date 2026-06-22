@@ -155,6 +155,21 @@
     .param-label { font-size:0.68rem; color:var(--gris); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:0.3rem; }
     .param-save { background:linear-gradient(135deg,var(--or),var(--or-clair)); border:none; border-radius:6px; padding:0.6rem 1.5rem; color:var(--noir); font-family:'Inter',sans-serif; font-weight:600; font-size:0.78rem; cursor:pointer; width:100%; }
 
+    /* CAISSE */
+    .caisse-cats { display: flex; flex-direction: column; gap: 2rem; }
+    .caisse-cat-title { font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1rem; }
+    .caisse-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:1rem; }
+    .caisse-card { background:rgba(250,248,245,0.03); border:1px solid rgba(201,168,76,0.15); border-radius:8px; padding:1.2rem; text-align:center; transition:border-color 0.2s; }
+    .caisse-card.epuise { opacity:0.4; }
+    .caisse-card h4 { font-family:'Playfair Display',serif; font-size:0.95rem; color:var(--blanc); margin-bottom:0.4rem; }
+    .caisse-card .caisse-prix { font-family:'Cinzel',serif; color:var(--or); font-size:1.1rem; margin-bottom:0.4rem; }
+    .caisse-card .caisse-stock { font-size:0.7rem; color:var(--gris); margin-bottom:0.8rem; }
+    .btn-vendre { width:100%; background:linear-gradient(135deg,var(--or),var(--or-clair)); border:none; border-radius:6px; padding:0.6rem; color:var(--noir); font-family:'Inter',sans-serif; font-weight:600; font-size:0.78rem; cursor:pointer; letter-spacing:0.05em; }
+    .btn-vendre:disabled { background:rgba(250,248,245,0.08); color:var(--gris); cursor:not-allowed; }
+    .caisse-ticket { background:rgba(250,248,245,0.02); border:1px solid rgba(201,168,76,0.12); border-radius:8px; padding:1rem 1.5rem; margin-top:2rem; display:flex; justify-content:space-between; align-items:center; }
+    .caisse-ticket span:first-child { font-size:0.78rem; color:var(--gris); }
+    .caisse-ticket span:last-child { font-family:'Cinzel',serif; color:var(--or); font-size:1.3rem; }
+
     /* MODAL */
     .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:500; align-items:center; justify-content:center; }
     .modal-overlay.open { display:flex; }
@@ -199,6 +214,7 @@
     </div>
     <div class="nav-item active" onclick="showPage('reservations', this)"><span class="nav-icon">📋</span> Réservations</div>
     <div class="nav-item" onclick="showPage('salles', this)"><span class="nav-icon">🚪</span> Salles & Fermetures</div>
+    <div class="nav-item" onclick="showPage('caisse', this)"><span class="nav-icon">🛒</span> Caisse</div>
     <div class="nav-item owner-only" onclick="showPage('avis', this)"><span class="nav-icon">⭐</span> Avis clients</div>
     <div class="nav-item owner-only" onclick="showPage('tarifs', this)"><span class="nav-icon">💰</span> Tarifs</div>
     <div class="nav-item owner-only" onclick="showPage('menu', this)"><span class="nav-icon">🍹</span> Menu & Carte</div>
@@ -353,6 +369,15 @@
           <thead><tr><th>Salle</th><th>Date</th><th>Horaire</th><th>Raison</th><th>Action</th></tr></thead>
           <tbody id="fermetures-tbody"><tr><td colspan="5"><div class="empty-state"><div class="empty-icon">✅</div>Aucune fermeture planifiée.</div></td></tr></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- CAISSE -->
+    <div class="page" id="page-caisse">
+      <div class="caisse-cats" id="caisse-container"></div>
+      <div class="caisse-ticket">
+        <span>Total de la vente en cours</span>
+        <span id="caisse-total">0€</span>
       </div>
     </div>
 
@@ -553,7 +578,7 @@
   }
 
   // ===== NAVIGATION =====
-  const pageTitles = { reservations:'Réservations', salles:'Salles & Fermetures', avis:'Avis clients', tarifs:'Tarifs', menu:'Menu & Carte', stock:'Stock', parametres:'Paramètres' };
+  const pageTitles = { reservations:'Réservations', salles:'Salles & Fermetures', caisse:'Caisse', avis:'Avis clients', tarifs:'Tarifs', menu:'Menu & Carte', stock:'Stock', parametres:'Paramètres' };
 
   function showPage(id, el) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -563,6 +588,7 @@
     document.getElementById('pageTitle').textContent = pageTitles[id];
     if (id === 'avis') loadAvis();
     if (id === 'stock') renderStock();
+    if (id === 'caisse') renderCaisse();
   }
 
   // ===== INIT =====
@@ -843,6 +869,48 @@
     menuItems.push({cat:document.getElementById('mm-cat').value,nom,desc:document.getElementById('mm-desc').value,prix:prix?parseFloat(prix):null,actif:true});
     localStorage.setItem('kv_menu',JSON.stringify(menuItems)); renderMenu(); closeMenuModal();
     document.getElementById('mm-nom').value=''; document.getElementById('mm-desc').value=''; document.getElementById('mm-prix').value='';
+  }
+
+  // ===== CAISSE (Staff) =====
+  let ticketTotal = 0;
+
+  function renderCaisse() {
+    ticketTotal = 0;
+    updateCaisseTotal();
+    renderCaisseGrid();
+  }
+
+  function renderCaisseGrid() {
+    const cats = [...new Set(menuItems.map(m => m.cat))];
+    const container = document.getElementById('caisse-container');
+    container.innerHTML = cats.map(cat => `
+      <div>
+        <div class="caisse-cat-title">${cat}</div>
+        <div class="caisse-grid">
+          ${menuItems.map((item, i) => item.cat === cat && item.actif ? `
+            <div class="caisse-card ${item.stock <= 0 ? 'epuise' : ''}">
+              <h4>${item.nom}</h4>
+              <div class="caisse-prix">${item.prix ? item.prix + '€' : '—'}</div>
+              <div class="caisse-stock">Stock : ${item.stock}</div>
+              <button class="btn-vendre" ${item.stock <= 0 ? 'disabled' : ''} onclick="vendreCaisse(${i})">🛒 Vendre</button>
+            </div>` : '').join('')}
+        </div>
+      </div>`).join('');
+  }
+
+  function updateCaisseTotal() {
+    document.getElementById('caisse-total').textContent = ticketTotal.toFixed(2).replace(/\.00$/, '') + '€';
+  }
+
+  function vendreCaisse(i) {
+    const item = menuItems[i];
+    if (item.stock <= 0) { alert(`Stock épuisé pour ${item.nom}.`); return; }
+    item.stock -= 1;
+    localStorage.setItem('kv_menu', JSON.stringify(menuItems));
+    logMouvementStock(item.nom, 'vente', 1);
+    ticketTotal += item.prix || 0;
+    updateCaisseTotal();
+    renderCaisseGrid();
   }
 
   // ===== STOCK =====
