@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KaraVibes — Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --noir: #0a0a0a; --noir-doux: #111118; --or: #C9A84C; --or-clair: #E8C97A;
+      --cyan: #00E5FF; --rose: #FF2D78; --blanc: #FAF8F5; --gris: #8A8A9A;
+      --vert: #2ECC71; --rouge: #E74C3C; --orange: #F39C12;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:#0d0d14; color:var(--blanc); min-height:100vh; }
+
+    /* LOGIN */
+    .login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--noir); background-image:radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,168,76,0.08) 0%, transparent 70%); }
+    .login-box { background:rgba(250,248,245,0.03); border:1px solid rgba(201,168,76,0.2); border-radius:12px; padding:3rem; width:100%; max-width:420px; text-align:center; }
+    .login-logo { font-family:'Cinzel',serif; font-size:1.8rem; color:var(--or); letter-spacing:0.1em; margin-bottom:0.3rem; }
+    .login-sub { font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gris); margin-bottom:2.5rem; display:block; }
+    .login-roles { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:1.5rem; }
+    .role-btn { padding:1.2rem 1rem; border:2px solid rgba(201,168,76,0.2); border-radius:12px; background:none; color:var(--gris); font-family:'Inter',sans-serif; font-size:0.95rem; font-weight:500; cursor:pointer; transition:all 0.2s; display:flex; flex-direction:column; align-items:center; gap:0.4rem; } .role-btn .role-icon { font-size:2rem; } .role-btn .role-name { font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; font-weight:600; } .role-btn .role-desc { font-size:0.65rem; color:rgba(138,138,154,0.5); }
+    .role-btn.active { border-color:var(--or); color:var(--or); background:rgba(201,168,76,0.08); box-shadow:0 0 20px rgba(201,168,76,0.15); }
+    .role-btn.staff-active { border-color:var(--cyan); color:var(--cyan); background:rgba(0,229,255,0.05); box-shadow:0 0 20px rgba(0,229,255,0.1); }
+    .login-box input { width:100%; background:rgba(250,248,245,0.05); border:1px solid rgba(201,168,76,0.2); border-radius:6px; padding:0.9rem 1.2rem; color:var(--blanc); font-family:'Inter',sans-serif; font-size:1rem; text-align:center; letter-spacing:0.2em; outline:none; margin-bottom:1rem; transition:border-color 0.2s; }
+    .login-box input:focus { border-color:var(--or); }
+    .login-btn { width:100%; background:linear-gradient(135deg,var(--or),var(--or-clair)); border:none; border-radius:6px; padding:0.9rem; color:var(--noir); font-family:'Inter',sans-serif; font-weight:600; font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; }
+    .login-error { font-size:0.8rem; color:var(--rouge); margin-top:0.8rem; display:none; }
+
+    /* DASHBOARD */
+    .dashboard { display:none; }
+    .sidebar { position:fixed; left:0; top:0; bottom:0; width:240px; background:rgba(0,0,0,0.5); border-right:1px solid rgba(201,168,76,0.1); padding:2rem 0; z-index:100; backdrop-filter:blur(10px); }
+    .sidebar-logo { font-family:'Cinzel',serif; font-size:1.1rem; color:var(--or); letter-spacing:0.1em; padding:0 1.5rem 1.5rem; border-bottom:1px solid rgba(201,168,76,0.1); margin-bottom:1.5rem; }
+    .sidebar-logo span { color:var(--blanc); }
+    .sidebar-role { font-size:0.6rem; color:var(--gris); letter-spacing:0.15em; text-transform:uppercase; display:block; margin-top:0.3rem; }
+    .sidebar-role.owner { color:var(--or); }
+    .sidebar-role.staff { color:var(--cyan); }
+    .nav-item { display:flex; align-items:center; gap:0.8rem; padding:0.8rem 1.5rem; font-size:0.83rem; color:var(--gris); cursor:pointer; transition:all 0.2s; border-left:2px solid transparent; }
+    .nav-item:hover, .nav-item.active { color:var(--or); background:rgba(201,168,76,0.05); border-left-color:var(--or); }
+    .nav-icon { font-size:1rem; width:20px; text-align:center; }
+    .sidebar-footer { position:absolute; bottom:1.5rem; left:0; right:0; padding:0 1.5rem; }
+    .logout-btn { width:100%; background:none; border:1px solid rgba(231,76,60,0.3); border-radius:6px; padding:0.6rem; color:var(--rouge); font-family:'Inter',sans-serif; font-size:0.75rem; cursor:pointer; transition:all 0.2s; letter-spacing:0.08em; }
+    .logout-btn:hover { background:rgba(231,76,60,0.1); }
+
+    .main { margin-left:240px; padding:2rem; min-height:100vh; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; }
+    .page-title { font-family:'Cinzel',serif; font-size:1.2rem; color:var(--or); letter-spacing:0.08em; }
+    .date-badge { font-size:0.75rem; color:var(--gris); background:rgba(250,248,245,0.05); padding:0.4rem 1rem; border-radius:20px; border:1px solid rgba(201,168,76,0.1); }
+
+    .page { display:none; }
+    .page.active { display:block; }
+
+    /* STATS */
+    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem; }
+    .stat-card { background:rgba(250,248,245,0.03); border:1px solid rgba(201,168,76,0.12); border-radius:8px; padding:1.2rem 1.5rem; }
+    .stat-label { font-size:0.65rem; color:var(--gris); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:0.5rem; }
+    .stat-value { font-family:'Cinzel',serif; font-size:1.8rem; color:var(--or); }
+    .stat-sub { font-size:0.72rem; color:var(--gris); margin-top:0.3rem; }
+
+    /* TABLE */
+    .table-card { background:rgba(250,248,245,0.02); border:1px solid rgba(201,168,76,0.1); border-radius:8px; overflow:hidden; margin-bottom:1.5rem; }
+    .table-header { display:flex; justify-content:space-between; align-items:center; padding:1.2rem 1.5rem; border-bottom:1px solid rgba(201,168,76,0.1); }
+    .table-header h3 { font-family:'Cinzel',serif; font-size:0.8rem; color:var(--or); letter-spacing:0.1em; }
+    .btn-add { background:linear-gradient(135deg,var(--or),var(--or-clair)); border:none; border-radius:6px; padding:0.5rem 1.2rem; color:var(--noir); font-family:'Inter',sans-serif; font-weight:600; font-size:0.75rem; cursor:pointer; letter-spacing:0.08em; }
+    table { width:100%; border-collapse:collapse; }
+    th { padding:0.8rem 1.5rem; font-size:0.65rem; color:var(--gris); text-transform:uppercase; letter-spacing:0.12em; text-align:left; background:rgba(0,0,0,0.2); }
+    td { padding:1rem 1.5rem; font-size:0.83rem; color:rgba(250,248,245,0.8); border-bottom:1px solid rgba(201,168,76,0.05); }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:rgba(201,168,76,0.02); }
+    .badge { display:inline-block; padding:0.25rem 0.7rem; border-radius:20px; font-size:0.7rem; font-weight:500; }
+    .badge-vert { background:rgba(46,204,113,0.15); color:var(--vert); }
+    .badge-rouge { background:rgba(231,76,60,0.15); color:var(--rouge); }
+    .badge-orange { background:rgba(243,156,18,0.15); color:var(--orange); }
+    .badge-cyan { background:rgba(0,229,255,0.1); color:var(--cyan); }
+    .badge-rose { background:rgba(255,45,120,0.1); color:var(--rose); }
+    .action-btn { background:none; border:1px solid rgba(201,168,76,0.2); border-radius:4px; padding:0.3rem 0.7rem; color:var(--gris); font-size:0.72rem; cursor:pointer; transition:all 0.2s; margin-right:0.3rem; }
+    .action-btn:hover { border-color:var(--or); color:var(--or); }
+    .action-btn.danger:hover { border-color:var(--rouge); color:var(--rouge); }
+    .action-btn.success:hover { border-color:var(--vert); color:var(--vert); }
+    .empty-state { text-align:center; padding:3rem; color:var(--gris); font-size:0.85rem; }
+    .empty-icon { font-size:2.5rem; margin-bottom:1rem; opacity:0.4; }
+
+    /* SALLES / FERMETURE */
+    .salles-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:2rem; }
+    .salle-card { background:rgba(250,248,245,0.02); border:1px solid rgba(201,168,76,0.1); border-radius:8px; overflow:hidden; }
+    .salle-header { padding:1.2rem 1.5rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(201,168,76,0.08); }
+    .salle-header h3 { font-family:'Cinzel',serif; font-size:0.9rem; letter-spacing:0.1em; }
+    .salle-header h3.lagon { color:var(--cyan); }
+    .salle-header h3.tokyo { color:var(--rose); }
+    .salle-status { font-size:0.72rem; padding:0.3rem 0.8rem; border-radius:20px; font-weight:500; }
+    .salle-body { padding:1.5rem; }
+
+    /* TOGGLE */
+    .toggle-row { display:flex; justify-content:space-between; align-items:center; padding:0.8rem 0; border-bottom:1px solid rgba(201,168,76,0.06); }
+    .toggle-row:last-child { border-bottom:none; }
+    .toggle-label { font-size:0.83rem; color:rgba(250,248,245,0.75); }
+    .toggle-sub { font-size:0.72rem; color:var(--gris); margin-top:2px; }
+    .toggle { position:relative; width:44px; height:24px; flex-shrink:0; }
+    .toggle input { display:none; }
+    .toggle-slider { position:absolute; inset:0; background:rgba(250,248,245,0.1); border-radius:24px; cursor:pointer; transition:0.3s; }
+    .toggle-slider::before { content:''; position:absolute; width:18px; height:18px; top:3px; left:3px; background:var(--gris); border-radius:50%; transition:0.3s; }
+    .toggle input:checked + .toggle-slider { background:rgba(46,204,113,0.3); }
+    .toggle input:checked + .toggle-slider::before { transform:translateX(20px); background:var(--vert); }
+
+    /* FERMETURE EXCEPTIONNELLE */
+    .fermeture-form { background:rgba(231,76,60,0.04); border:1px solid rgba(231,76,60,0.15); border-radius:8px; padding:1.5rem; margin-top:1rem; }
+    .fermeture-form h4 { font-family:'Cinzel',serif; font-size:0.72rem; color:var(--rouge); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1rem; }
+    .fermeture-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.8rem; margin-bottom:1rem; }
+    .f-input { background:rgba(250,248,245,0.05); border:1px solid rgba(201,168,76,0.15); border-radius:4px; padding:0.6rem 0.8rem; color:var(--blanc); font-family:'Inter',sans-serif; font-size:0.83rem; outline:none; width:100%; }
+    .f-input:focus { border-color:var(--rouge); }
+    .f-input select option { background:#0d0d14; }
+    .btn-fermer { background:rgba(231,76,60,0.15); border:1px solid rgba(231,76,60,0.3); border-radius:6px; padding:0.6rem 1.2rem; color:var(--rouge); font-family:'Inter',sans-serif; font-size:0.78rem; cursor:pointer; transition:all 0.2s; }
+    .btn-fermer:hover { background:rgba(231,76,60,0.25); }
+
+    /* MESSAGE SITE */
+    .message-card { background:rgba(250,248,245,0.02); border:1px solid rgba(201,168,76,0.12); border-radius:8px; padding:1.5rem; margin-bottom:1.5rem; }
+    .message-card h3 { font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1rem; }
+    .message-input { width:100%; background:rgba(250,248,245,0.05); border:1px solid rgba(201,168,76,0.15); border-radius:4px; padding:0.8rem 1rem; color:var(--blanc); font-family:'Inter',sans-serif; font-size:0.85rem; outline:none; margin-bottom:0.8rem; resize:vertical; min-height:80px; }
+    .message-input:focus { border-color:var(--or); }
+    .message-actions { display:flex; gap:0.8rem; }
+    .btn-publish { background:linear-gradient(135deg,var(--or),var(--or-clair)); border:none; border-radius:6px; padding:0.6rem 1.5rem; color:var(--noir); font-family:'Inter',sans-serif; font-weight:600; font-size:0.78rem; cursor:pointer; }
+    .btn-clear { background:none; border:1px solid rgba(250,248,245,0.15); border-radius:6px; padding:0.6rem 1.5rem; color:var(--gris); font-family:'Inter',sans-serif; font-size:0.78rem; cursor:pointer; }
+
+    /* TARIFS */
+    .tarif-editor { background:rgba(250,248,245,0.02); border:1px solid rgba(201,168,76,0.1); border-radius:8px; padding:2rem; }
+    .tarif-row { display:flex; justify-content:space-between; align-items:center; padding:1rem 0; border-bottom:1px solid rgba(201,168,76,0.07); gap:1rem; }
+    .tarif-row:last-child { border-bottom:none; }
+    .tarif-row-label { font-size:0.88rem; color:rgba(250,248,245,0.8); }
+    .tarif-row-sub { font-size:0.73rem; color:var(--gris); margin-top:0.2rem; }
+    .tarif-input { display:flex; align-items:center; gap:0.5rem; }
+    .tarif-input input { width:80px; background:rgba(250,248,245,0.05); border:1px solid rgba(201,168,76,0.2); border-radius:4px; padding:0.5rem 0.8rem; color:var(--or); font-family:'Cinzel',serif; font-size:1rem; text-align:center; outline:none; }
+    .tarif-input input:focus { border-color:var(--or); }
+    .tarif-input span { font-size:0.8rem; color:var(--gris); }
+    .section-sep { font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--or); margin:2rem 0 1rem; padding-bottom:0.5rem; border-bottom:1px solid rgba(201,168,76,0.15); }
+    .save-btn { background:linear-gradient(135deg,var(--or),var(--or-clair)); border:none; border-radius:6px; padding:0.8rem 2rem; color:var(--noir); font-family:'Inter',sans-serif; font-weight:600; font-size:0.8rem; cursor:pointer; margin-top:1.5rem; letter-spacing:0.1em; }
+    .saved-msg { display:none; margin-top:0.8rem; font-size:0.8rem; color:var(--vert); }
+
+    /* AVIS */
+    .avis-pending { background:rgba(243,156,18,0.05); border:1px solid rgba(243,156,18,0.2); border-radius:8px; padding:1.5rem; margin-bottom:1rem; }
+    .avis-pending-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.8rem; }
+    .avis-stars { color:var(--or); font-size:0.85rem; }
+    .avis-author { font-size:0.75rem; color:var(--gris); margin-top:0.2rem; }
+    .avis-comment { font-size:0.85rem; color:rgba(250,248,245,0.7); line-height:1.6; font-style:italic; margin-bottom:1rem; }
+    .avis-actions { display:flex; gap:0.8rem; }
+    .btn-valider { background:rgba(46,204,113,0.15); border:1px solid rgba(46,204,113,0.3); border-radius:6px; padding:0.5rem 1.2rem; color:var(--vert); font-family:'Inter',sans-serif; font-size:0.75rem; cursor:pointer; }
+    .btn-refuser { background:rgba(231,76,60,0.1); border:1px solid rgba(231,76,60,0.25); border-radius:6px; padding:0.5rem 1.2rem; color:var(--rouge); font-family:'Inter',sans-serif; font-size:0.75rem; cursor:pointer; }
+
+    /* PARAMÈTRES */
+    .params-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+    .param-card { background:rgba(250,248,245,0.02); border:1px solid rgba(201,168,76,0.1); border-radius:8px; padding:1.5rem; }
+    .param-card h3 { font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1.2rem; }
+    .param-input { width:100%; background:rgba(250,248,245,0.05); border:1px solid rgba(201,168,76,0.15); border-radius:4px; padding:0.7rem 1rem; color:var(--blanc); font-family:'Inter',sans-serif; font-size:0.88rem; outline:none; margin-bottom:0.8rem; }
+    .param-input:focus { border-color:var(--or); }
+    .param-label { font-size:0.68rem; color:var(--gris); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:0.3rem; }
+    .param-save { background:linear-gradient(135deg,var(--or),var(--or-clair)); border:none; border-radius:6px; padding:0.6rem 1.5rem; color:var(--noir); font-family:'Inter',sans-serif; font-weight:600; font-size:0.78rem; cursor:pointer; width:100%; }
+
+    /* MODAL */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:500; align-items:center; justify-content:center; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:#13131e; border:1px solid rgba(201,168,76,0.2); border-radius:12px; padding:2rem; width:90%; max-width:500px; }
+    .modal h3 { font-family:'Cinzel',serif; font-size:0.85rem; color:var(--or); letter-spacing:0.1em; margin-bottom:1.5rem; }
+    .modal .form-group { margin-bottom:1rem; }
+    .modal label { font-size:0.7rem; color:var(--gris); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:0.4rem; }
+    .modal input, .modal select { width:100%; background:rgba(250,248,245,0.05); border:1px solid rgba(201,168,76,0.2); border-radius:4px; padding:0.7rem 1rem; color:var(--blanc); font-family:'Inter',sans-serif; font-size:0.88rem; outline:none; }
+    .modal input:focus, .modal select:focus { border-color:var(--or); }
+    .modal select option { background:#13131e; }
+    .modal-actions { display:flex; gap:0.8rem; margin-top:1.5rem; }
+    .btn-cancel { background:none; border:1px solid rgba(250,248,245,0.15); border-radius:6px; padding:0.7rem 1.5rem; color:var(--gris); font-family:'Inter',sans-serif; cursor:pointer; flex:1; }
+    .btn-confirm { background:linear-gradient(135deg,var(--or),var(--or-clair)); border:none; border-radius:6px; padding:0.7rem 1.5rem; color:var(--noir); font-family:'Inter',sans-serif; font-weight:600; cursor:pointer; flex:2; }
+    .modal-price { padding:0.8rem 1rem; background:rgba(201,168,76,0.08); border-radius:6px; display:flex; justify-content:space-between; align-items:center; }
+    .modal-price span:first-child { font-size:0.75rem; color:var(--gris); }
+    .modal-price span:last-child { font-family:'Cinzel',serif; color:var(--or); font-size:1.2rem; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">KARAVIBES</div>
+    <span class="login-sub">Espace Administration</span>
+    <div class="login-roles">
+      <button class="role-btn active" id="roleOwner" onclick="selectRole('owner')"><span class="role-icon">👑</span><span class="role-name">Propriétaire</span><span class="role-desc">Accès complet</span></button>
+      <button class="role-btn" id="roleStaff" onclick="selectRole('staff')"><span class="role-icon">👤</span><span class="role-name">Staff / Collaborateur</span><span class="role-desc">Réservations et salles</span></button>
+    </div>
+    <input type="password" id="pwdInput" placeholder="••••••••••" onkeydown="if(event.key==='Enter') login()" />
+    <button class="login-btn" onclick="login()">Accéder</button>
+    <p class="login-error" id="loginError">Mot de passe incorrect</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      KARAVIBES
+      <span class="sidebar-role" id="sidebarRole">Propriétaire</span>
+    </div>
+    <div class="nav-item active" onclick="showPage('reservations', this)"><span class="nav-icon">📋</span> Réservations</div>
+    <div class="nav-item" onclick="showPage('salles', this)"><span class="nav-icon">🚪</span> Salles & Fermetures</div>
+    <div class="nav-item owner-only" onclick="showPage('avis', this)"><span class="nav-icon">⭐</span> Avis clients</div>
+    <div class="nav-item owner-only" onclick="showPage('tarifs', this)"><span class="nav-icon">💰</span> Tarifs</div>
+    <div class="nav-item owner-only" onclick="showPage('menu', this)"><span class="nav-icon">🍹</span> Menu & Carte</div>
+    <div class="nav-item owner-only" onclick="showPage('parametres', this)"><span class="nav-icon">⚙️</span> Paramètres</div>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="logout()">⬅ Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="page-title" id="pageTitle">Réservations</span>
+      <span class="date-badge" id="dateBadge"></span>
+    </div>
+
+    <!-- RÉSERVATIONS -->
+    <div class="page active" id="page-reservations">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-label">Aujourd'hui</div><div class="stat-value" id="stat-today">0</div><div class="stat-sub">réservations</div></div>
+        <div class="stat-card"><div class="stat-label">Cette semaine</div><div class="stat-value" id="stat-week">0</div><div class="stat-sub">réservations</div></div>
+        <div class="stat-card"><div class="stat-label">Lagon Bleu</div><div class="stat-value" id="stat-lagon" style="color:var(--cyan)">0</div><div class="stat-sub">total</div></div>
+        <div class="stat-card"><div class="stat-label">Neo Tokyo</div><div class="stat-value" id="stat-tokyo" style="color:var(--rose)">0</div><div class="stat-sub">total</div></div>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <h3>📋 LISTE DES RÉSERVATIONS</h3>
+          <button class="btn-add owner-only" onclick="openModal()">+ Ajouter manuellement</button>
+        </div>
+        <table>
+          <thead><tr><th>Client</th><th>Salle</th><th>Date</th><th>Heure</th><th>Personnes</th><th>Montant</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="resa-tbody"><tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📭</div>Aucune réservation pour l'instant.</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SALLES & FERMETURES -->
+    <div class="page" id="page-salles">
+
+      <!-- MESSAGE SUR LE SITE -->
+      <div class="message-card">
+        <h3>📢 Message d'information sur le site</h3>
+        <textarea class="message-input" id="site-message" placeholder="Ex: Lagon Bleu indisponible ce soir. Nous nous en excusons."></textarea>
+        <div class="message-actions">
+          <button class="btn-publish" onclick="saveMessage()">Publier le message</button>
+          <button class="btn-clear" onclick="clearMessage()">Effacer</button>
+        </div>
+      </div>
+
+      <div class="salles-grid">
+        <!-- LAGON BLEU -->
+        <div class="salle-card">
+          <div class="salle-header">
+            <h3 class="lagon">🌊 Lagon Bleu</h3>
+            <span class="salle-status badge badge-vert" id="status-lagon">Ouverte</span>
+          </div>
+          <div class="salle-body">
+            <div class="toggle-row">
+              <div><div class="toggle-label">Salle disponible</div><div class="toggle-sub">Désactiver pour fermer complètement</div></div>
+              <label class="toggle"><input type="checkbox" id="toggle-lagon" checked onchange="toggleSalle('lagon', this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Mardi</div><div class="toggle-sub">17h00 – 00h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('lagon','mar',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Mercredi</div><div class="toggle-sub">17h00 – 00h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('lagon','mer',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Jeudi</div><div class="toggle-sub">17h00 – 00h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('lagon','jeu',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Vendredi</div><div class="toggle-sub">15h00 – 03h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('lagon','ven',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Samedi</div><div class="toggle-sub">15h00 – 03h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('lagon','sam',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Dimanche</div><div class="toggle-sub">11h00 – 18h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('lagon','dim',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="fermeture-form">
+              <h4>⚠️ Fermeture exceptionnelle</h4>
+              <div class="fermeture-grid">
+                <input type="date" class="f-input" id="ferm-lagon-date" />
+                <input type="time" class="f-input" id="ferm-lagon-debut" placeholder="De" />
+                <input type="time" class="f-input" id="ferm-lagon-fin" placeholder="À" />
+              </div>
+              <input type="text" class="f-input" id="ferm-lagon-raison" placeholder="Raison (ex: technicien, nettoyage...)" style="margin-bottom:0.8rem;" />
+              <button class="btn-fermer" onclick="ajouterFermeture('lagon')">Bloquer ce créneau</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEO TOKYO -->
+        <div class="salle-card">
+          <div class="salle-header">
+            <h3 class="tokyo">🌸 Neo Tokyo</h3>
+            <span class="salle-status badge badge-vert" id="status-tokyo">Ouverte</span>
+          </div>
+          <div class="salle-body">
+            <div class="toggle-row">
+              <div><div class="toggle-label">Salle disponible</div><div class="toggle-sub">Désactiver pour fermer complètement</div></div>
+              <label class="toggle"><input type="checkbox" id="toggle-tokyo" checked onchange="toggleSalle('tokyo', this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Mardi</div><div class="toggle-sub">17h00 – 00h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('tokyo','mar',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Mercredi</div><div class="toggle-sub">17h00 – 00h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('tokyo','mer',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Jeudi</div><div class="toggle-sub">17h00 – 00h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('tokyo','jeu',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Vendredi</div><div class="toggle-sub">15h00 – 03h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('tokyo','ven',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Samedi</div><div class="toggle-sub">15h00 – 03h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('tokyo','sam',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Dimanche</div><div class="toggle-sub">11h00 – 18h00</div></div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('tokyo','dim',this.checked)" /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="fermeture-form">
+              <h4>⚠️ Fermeture exceptionnelle</h4>
+              <div class="fermeture-grid">
+                <input type="date" class="f-input" id="ferm-tokyo-date" />
+                <input type="time" class="f-input" id="ferm-tokyo-debut" placeholder="De" />
+                <input type="time" class="f-input" id="ferm-tokyo-fin" placeholder="À" />
+              </div>
+              <input type="text" class="f-input" id="ferm-tokyo-raison" placeholder="Raison (ex: technicien, nettoyage...)" style="margin-bottom:0.8rem;" />
+              <button class="btn-fermer" onclick="ajouterFermeture('tokyo')">Bloquer ce créneau</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FERMETURES PLANIFIÉES -->
+      <div class="table-card">
+        <div class="table-header"><h3>🔒 FERMETURES PLANIFIÉES</h3></div>
+        <table>
+          <thead><tr><th>Salle</th><th>Date</th><th>Horaire</th><th>Raison</th><th>Action</th></tr></thead>
+          <tbody id="fermetures-tbody"><tr><td colspan="5"><div class="empty-state"><div class="empty-icon">✅</div>Aucune fermeture planifiée.</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- AVIS -->
+    <div class="page" id="page-avis">
+      <div class="table-card" style="margin-bottom:1.5rem;">
+        <div class="table-header"><h3>⏳ AVIS EN ATTENTE DE VALIDATION</h3></div>
+        <div style="padding:1rem 1.5rem;" id="avis-pending-container">
+          <div class="empty-state"><div class="empty-icon">📭</div>Aucun avis en attente.</div>
+        </div>
+      </div>
+      <div class="table-card">
+        <div class="table-header"><h3>✅ AVIS PUBLIÉS</h3></div>
+        <table>
+          <thead><tr><th>Prénom</th><th>Note</th><th>Commentaire</th><th>Date</th><th>Action</th></tr></thead>
+          <tbody id="avis-valides-tbody"><tr><td colspan="5"><div class="empty-state"><div class="empty-icon">⭐</div>Aucun avis publié.</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TARIFS -->
+    <div class="page" id="page-tarifs">
+      <div class="tarif-editor">
+        <p class="section-sep">Séance de base</p>
+        <div class="tarif-row"><div><div class="tarif-row-label">Prix par personne</div><div class="tarif-row-sub">Minimum 4 personnes facturées</div></div><div class="tarif-input"><input type="number" id="prix-personne" value="20" /><span>€/pers</span></div></div>
+        <div class="tarif-row"><div><div class="tarif-row-label">Minimum de personnes</div></div><div class="tarif-input"><input type="number" id="min-personnes" value="4" /><span>pers</span></div></div>
+        <div class="tarif-row"><div><div class="tarif-row-label">Maximum de personnes</div></div><div class="tarif-input"><input type="number" id="max-personnes" value="10" /><span>pers</span></div></div>
+        <p class="section-sep">Prolongation</p>
+        <div class="tarif-row"><div><div class="tarif-row-label">Prix de la prolongation</div><div class="tarif-row-sub">2h dont 30 min offertes</div></div><div class="tarif-input"><input type="number" id="prix-prolo" value="15" /><span>€/pers</span></div></div>
+        <button class="save-btn" onclick="saveTarifs()">💾 Enregistrer</button>
+        <div class="saved-msg" id="tarif-saved">✅ Tarifs enregistrés !</div>
+      </div>
+    </div>
+
+    <!-- MENU -->
+    <div class="page" id="page-menu">
+      <div class="table-card">
+        <div class="table-header"><h3>🍹 BOISSONS & CARTE</h3><button class="btn-add" onclick="openMenuModal()">+ Ajouter</button></div>
+        <table>
+          <thead><tr><th>Catégorie</th><th>Article</th><th>Description</th><th>Prix</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="menu-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PARAMÈTRES -->
+    <div class="page" id="page-parametres">
+      <div class="params-grid">
+        <div class="param-card">
+          <h3>🔐 Mot de passe Propriétaire</h3>
+          <span class="param-label">Nouveau mot de passe</span>
+          <input type="password" class="param-input" id="new-owner-pwd" placeholder="Nouveau mot de passe" />
+          <span class="param-label">Confirmer</span>
+          <input type="password" class="param-input" id="confirm-owner-pwd" placeholder="Confirmer" />
+          <button class="param-save" onclick="changeOwnerPwd()">Enregistrer</button>
+          <div style="display:none; margin-top:0.8rem; font-size:0.78rem; color:var(--vert);" id="owner-pwd-msg">✅ Mot de passe mis à jour !</div>
+        </div>
+        <div class="param-card" style="grid-column:1/-1;">
+          <h3>👥 Gestion des collaborateurs (max 5)</h3>
+          <p style="font-size:0.8rem; color:var(--gris); margin-bottom:1.5rem; line-height:1.6;">Ajoutez jusqu'à 5 collaborateurs. Chacun aura son prénom et son propre mot de passe pour se connecter.</p>
+          <div id="collab-list" style="display:flex; flex-direction:column; gap:0.8rem; margin-bottom:1.5rem;"></div>
+          <div id="collab-form" style="background:rgba(0,229,255,0.03); border:1px solid rgba(0,229,255,0.15); border-radius:8px; padding:1.2rem;">
+            <p style="font-size:0.72rem; color:var(--cyan); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1rem; font-family:'Cinzel',serif;">➕ Ajouter un collaborateur</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr auto; gap:0.8rem; align-items:end;">
+              <div>
+                <span class="param-label">Prénom</span>
+                <input type="text" class="param-input" id="collab-prenom" placeholder="Ex: Marie" style="margin-bottom:0;" />
+              </div>
+              <div>
+                <span class="param-label">Mot de passe</span>
+                <input type="password" class="param-input" id="collab-pwd" placeholder="Mot de passe" style="margin-bottom:0;" />
+              </div>
+              <button class="btn-add" onclick="addCollab()" style="height:42px;">Ajouter</button>
+            </div>
+          </div>
+          <div style="display:none; margin-top:0.8rem; font-size:0.78rem; color:var(--vert);" id="collab-msg"></div>
+        </div>
+        <div class="param-card">
+          <h3>📧 Email de récupération</h3>
+          <p style="font-size:0.8rem; color:var(--gris); margin-bottom:1rem; line-height:1.6;">En cas de perte de mot de passe, un rappel sera envoyé à cet email.</p>
+          <span class="param-label">Votre email</span>
+          <input type="email" class="param-input" id="recovery-email" placeholder="votre@email.com" />
+          <button class="param-save" onclick="saveEmail()">Enregistrer</button>
+          <div style="display:none; margin-top:0.8rem; font-size:0.78rem; color:var(--vert);" id="email-msg">✅ Email enregistré !</div>
+        </div>
+        <div class="param-card">
+          <h3>ℹ️ Accès Staff</h3>
+          <p style="font-size:0.8rem; color:var(--gris); line-height:1.7;">Le staff peut accéder à :<br>✅ Réservations<br>✅ Salles & Fermetures<br><br>Le staff n'a pas accès à :<br>❌ Avis clients<br>❌ Tarifs<br>❌ Menu & Carte<br>❌ Paramètres</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RÉSERVATION -->
+<div class="modal-overlay" id="modal-resa">
+  <div class="modal">
+    <h3>➕ AJOUTER UNE RÉSERVATION</h3>
+    <div class="form-group"><label>Prénom & Nom</label><input type="text" id="m-nom" placeholder="Ex: Marie Dupont" /></div>
+    <div class="form-group"><label>Téléphone</label><input type="tel" id="m-tel" placeholder="+596 XXX XXX XXX" /></div>
+    <div class="form-group"><label>Salle</label><select id="m-salle"><option value="lagon">🌊 Lagon Bleu</option><option value="tokyo">🌸 Neo Tokyo</option></select></div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+      <div class="form-group"><label>Date</label><input type="date" id="m-date" /></div>
+      <div class="form-group"><label>Heure</label><select id="m-heure"><option>17h00</option><option>19h30</option><option>22h00</option></select></div>
+    </div>
+    <div class="form-group"><label>Nombre de personnes</label><input type="number" id="m-nb" min="1" max="10" value="4" onchange="calcModalPrice()" /></div>
+    <div class="form-group"><label>Prolongation</label><select id="m-prolo" onchange="calcModalPrice()"><option value="0">Non</option><option value="1">Oui (+30 min offertes)</option></select></div>
+    <div class="form-group"><label>Paiement</label><select id="m-paiement"><option value="especes">Espèces (acompte 30%)</option><option value="online">En ligne (100%)</option></select></div>
+    <div class="modal-price" style="margin-bottom:1rem;"><span>Total</span><span id="modal-price">80€</span></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" onclick="addResa()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL MENU -->
+<div class="modal-overlay" id="modal-menu">
+  <div class="modal">
+    <h3>➕ AJOUTER UN ARTICLE</h3>
+    <div class="form-group"><label>Catégorie</label><select id="mm-cat"><option>Cocktails</option><option>Bières</option><option>Mocktails</option><option>Boissons Soft</option><option>Boissons Chaudes</option><option>Tapas</option><option>Desserts</option><option>Formules</option></select></div>
+    <div class="form-group"><label>Nom</label><input type="text" id="mm-nom" placeholder="Ex: Mojito" /></div>
+    <div class="form-group"><label>Description</label><input type="text" id="mm-desc" placeholder="Ex: Menthe, citron, rhum blanc" /></div>
+    <div class="form-group"><label>Prix (€)</label><input type="number" id="mm-prix" placeholder="Ex: 10" step="0.5" /></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeMenuModal()">Annuler</button>
+      <button class="btn-confirm" onclick="addMenuItem()">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== MOTS DE PASSE =====
+  let OWNER_PASS = localStorage.getItem('kv_owner_pwd') || 'karavibes2025';
+  let STAFF_PASS = localStorage.getItem('kv_staff_pwd') || '';
+  let currentRole = 'owner';
+
+  function selectRole(role) {
+    currentRole = role;
+    document.getElementById('roleOwner').className = 'role-btn' + (role === 'owner' ? ' active' : '');
+    document.getElementById('roleStaff').className = 'role-btn' + (role === 'staff' ? ' staff-active' : '');
+  }
+
+  function login() {
+    const pwd = document.getElementById('pwdInput').value;
+    if (currentRole === 'owner' && pwd === OWNER_PASS) {
+      startDashboard('owner', 'Propriétaire');
+    } else if (currentRole === 'staff') {
+      const collabs = JSON.parse(localStorage.getItem('kv_collabs') || '[]');
+      const collab = collabs.find(c => c.pwd === pwd);
+      if (collab) {
+        startDashboard('staff', collab.prenom);
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+    }
+  }
+
+  function startDashboard(role, name) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    const roleEl = document.getElementById('sidebarRole');
+    roleEl.textContent = role === 'owner' ? '👑 ' + name : '👤 ' + name;
+    roleEl.className = 'sidebar-role ' + (role === 'owner' ? 'owner' : 'staff');
+    if (role === 'staff') {
+      document.querySelectorAll('.owner-only').forEach(el => el.style.display = 'none');
+    }
+    init();
+    if (role === 'owner') renderCollabs();
+  }
+
+  function logout() {
+    location.reload();
+  }
+
+  // ===== NAVIGATION =====
+  const pageTitles = { reservations:'Réservations', salles:'Salles & Fermetures', avis:'Avis clients', tarifs:'Tarifs', menu:'Menu & Carte', parametres:'Paramètres' };
+
+  function showPage(id, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    if (el) el.classList.add('active');
+    document.getElementById('pageTitle').textContent = pageTitles[id];
+    if (id === 'avis') loadAvis();
+  }
+
+  // ===== INIT =====
+  function init() {
+    const now = new Date();
+    document.getElementById('dateBadge').textContent = now.toLocaleDateString('fr-FR', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    document.getElementById('m-date').value = now.toISOString().split('T')[0];
+    loadReservations();
+    loadMenu();
+    loadTarifs();
+    loadFermetures();
+    const email = localStorage.getItem('kv_recovery_email');
+    if (email) document.getElementById('recovery-email').value = email;
+  }
+
+  // ===== RÉSERVATIONS =====
+  let reservations = [];
+
+  function loadReservations() {
+    reservations = JSON.parse(localStorage.getItem('kv_reservations') || '[]');
+    renderResa();
+  }
+
+  function saveReservations() { localStorage.setItem('kv_reservations', JSON.stringify(reservations)); }
+
+  function renderResa() {
+    const tbody = document.getElementById('resa-tbody');
+    if (!reservations.length) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📭</div>Aucune réservation.</div></td></tr>'; updateStats(); return; }
+    tbody.innerHTML = [...reservations].sort((a,b) => new Date(b.date)-new Date(a.date)).map((r,i) => `
+      <tr>
+        <td><strong>${r.nom}</strong><br><span style="font-size:0.72rem;color:var(--gris)">${r.tel||'—'}</span></td>
+        <td><span class="badge ${r.salle==='lagon'?'badge-cyan':'badge-rose'}">${r.salle==='lagon'?'🌊 Lagon Bleu':'🌸 Neo Tokyo'}</span></td>
+        <td>${new Date(r.date).toLocaleDateString('fr-FR')}</td>
+        <td>${r.heure}</td>
+        <td style="text-align:center">${r.nb}</td>
+        <td style="color:var(--or);font-family:'Cinzel',serif">${r.montant}€</td>
+        <td><span class="badge ${r.statut==='confirmé'?'badge-vert':r.statut==='annulé'?'badge-rouge':'badge-orange'}">${r.statut}</span></td>
+        <td>
+          <button class="action-btn" onclick="changeStatut(${i})">Statut</button>
+          <button class="action-btn danger" onclick="deleteResa(${i})">✕</button>
+        </td>
+      </tr>`).join('');
+    updateStats();
+  }
+
+  function updateStats() {
+    const today = new Date().toISOString().split('T')[0];
+    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
+    document.getElementById('stat-today').textContent = reservations.filter(r=>r.date===today).length;
+    document.getElementById('stat-week').textContent = reservations.filter(r=>new Date(r.date)>=weekAgo).length;
+    document.getElementById('stat-lagon').textContent = reservations.filter(r=>r.salle==='lagon').length;
+    document.getElementById('stat-tokyo').textContent = reservations.filter(r=>r.salle==='tokyo').length;
+  }
+
+  function changeStatut(i) {
+    const s = ['confirmé','en attente','annulé'];
+    reservations[i].statut = s[(s.indexOf(reservations[i].statut)+1)%3];
+    saveReservations(); renderResa();
+  }
+
+  function deleteResa(i) {
+    if (confirm('Supprimer cette réservation ?')) { reservations.splice(i,1); saveReservations(); renderResa(); }
+  }
+
+  function openModal() { document.getElementById('modal-resa').classList.add('open'); calcModalPrice(); }
+  function closeModal() { document.getElementById('modal-resa').classList.remove('open'); }
+
+  function calcModalPrice() {
+    const nb = parseInt(document.getElementById('m-nb').value)||4;
+    const prolo = document.getElementById('m-prolo').value==='1';
+    document.getElementById('modal-price').textContent = (Math.max(nb,4)*20 + (prolo?Math.max(nb,4)*15:0)) + '€';
+  }
+
+  function addResa() {
+    const nom = document.getElementById('m-nom').value.trim();
+    if (!nom) { alert('Veuillez saisir un nom'); return; }
+    const nb = parseInt(document.getElementById('m-nb').value)||4;
+    const prolo = document.getElementById('m-prolo').value==='1';
+    reservations.push({ nom, tel:document.getElementById('m-tel').value, salle:document.getElementById('m-salle').value, date:document.getElementById('m-date').value, heure:document.getElementById('m-heure').value, nb, montant:Math.max(nb,4)*20+(prolo?Math.max(nb,4)*15:0), paiement:document.getElementById('m-paiement').value, statut:'en attente', id:Date.now() });
+    saveReservations(); renderResa(); closeModal();
+    document.getElementById('m-nom').value=''; document.getElementById('m-tel').value='';
+  }
+
+  // ===== SALLES =====
+  function toggleSalle(salle, open) {
+    const statusEl = document.getElementById('status-'+salle);
+    statusEl.textContent = open ? 'Ouverte' : 'Fermée';
+    statusEl.className = 'salle-status badge ' + (open ? 'badge-vert' : 'badge-rouge');
+    localStorage.setItem('kv_salle_'+salle, open ? 'open' : 'closed');
+  }
+
+  function saveDispo(salle, jour, val) {
+    const key = 'kv_dispo_'+salle+'_'+jour;
+    localStorage.setItem(key, val ? '1' : '0');
+  }
+
+  // ===== FERMETURES EXCEPTIONNELLES =====
+  let fermetures = [];
+
+  function loadFermetures() {
+    fermetures = JSON.parse(localStorage.getItem('kv_fermetures') || '[]');
+    renderFermetures();
+  }
+
+  function ajouterFermeture(salle) {
+    const date = document.getElementById('ferm-'+salle+'-date').value;
+    const debut = document.getElementById('ferm-'+salle+'-debut').value;
+    const fin = document.getElementById('ferm-'+salle+'-fin').value;
+    const raison = document.getElementById('ferm-'+salle+'-raison').value;
+    if (!date || !debut || !fin) { alert('Veuillez remplir la date et les horaires.'); return; }
+    fermetures.push({ salle, date, debut, fin, raison: raison||'Non précisée', id:Date.now() });
+    localStorage.setItem('kv_fermetures', JSON.stringify(fermetures));
+    renderFermetures();
+    document.getElementById('ferm-'+salle+'-date').value='';
+    document.getElementById('ferm-'+salle+'-debut').value='';
+    document.getElementById('ferm-'+salle+'-fin').value='';
+    document.getElementById('ferm-'+salle+'-raison').value='';
+    alert('Fermeture enregistrée ✅');
+  }
+
+  function renderFermetures() {
+    const tbody = document.getElementById('fermetures-tbody');
+    if (!fermetures.length) { tbody.innerHTML='<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">✅</div>Aucune fermeture planifiée.</div></td></tr>'; return; }
+    tbody.innerHTML = fermetures.map((f,i) => `
+      <tr>
+        <td><span class="badge ${f.salle==='lagon'?'badge-cyan':'badge-rose'}">${f.salle==='lagon'?'🌊 Lagon Bleu':'🌸 Neo Tokyo'}</span></td>
+        <td>${new Date(f.date).toLocaleDateString('fr-FR')}</td>
+        <td>${f.debut} – ${f.fin}</td>
+        <td style="color:var(--gris)">${f.raison}</td>
+        <td><button class="action-btn danger" onclick="deleteFermeture(${i})">✕ Annuler</button></td>
+      </tr>`).join('');
+  }
+
+  function deleteFermeture(i) {
+    fermetures.splice(i,1);
+    localStorage.setItem('kv_fermetures', JSON.stringify(fermetures));
+    renderFermetures();
+  }
+
+  // ===== MESSAGE SITE =====
+  function saveMessage() {
+    const msg = document.getElementById('site-message').value.trim();
+    localStorage.setItem('kv_site_message', msg);
+    alert(msg ? 'Message publié sur le site ✅' : 'Message effacé.');
+  }
+
+  function clearMessage() {
+    document.getElementById('site-message').value='';
+    localStorage.removeItem('kv_site_message');
+    alert('Message effacé.');
+  }
+
+  // ===== AVIS =====
+  function loadAvis() {
+    const pending = JSON.parse(localStorage.getItem('kv_avis_pending')||'[]');
+    const valides = JSON.parse(localStorage.getItem('kv_avis_valides')||'[]');
+    const container = document.getElementById('avis-pending-container');
+    if (!pending.length) { container.innerHTML='<div class="empty-state"><div class="empty-icon">📭</div>Aucun avis en attente.</div>'; }
+    else {
+      container.innerHTML = pending.map((a,i) => `
+        <div class="avis-pending">
+          <div class="avis-pending-header">
+            <div><div class="avis-stars">${'⭐'.repeat(a.note)}</div><div class="avis-author">${a.prenom}</div></div>
+            <span style="font-size:0.72rem;color:var(--gris)">${new Date(a.date).toLocaleDateString('fr-FR')}</span>
+          </div>
+          <p class="avis-comment">"${a.comment}"</p>
+          <div class="avis-actions">
+            <button class="btn-valider" onclick="validerAvis(${i})">✅ Publier</button>
+            <button class="btn-refuser" onclick="refuserAvis(${i})">❌ Refuser</button>
+          </div>
+        </div>`).join('');
+    }
+    const tbody = document.getElementById('avis-valides-tbody');
+    if (!valides.length) { tbody.innerHTML='<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">⭐</div>Aucun avis publié.</div></td></tr>'; return; }
+    tbody.innerHTML = valides.map((a,i) => `
+      <tr>
+        <td>${a.prenom}</td>
+        <td>${'⭐'.repeat(a.note)}</td>
+        <td style="font-size:0.8rem;color:var(--gris);font-style:italic">"${a.comment}"</td>
+        <td style="font-size:0.78rem;color:var(--gris)">${new Date(a.date).toLocaleDateString('fr-FR')}</td>
+        <td><button class="action-btn danger" onclick="supprimerAvis(${i})">✕</button></td>
+      </tr>`).join('');
+  }
+
+  function validerAvis(i) {
+    const pending = JSON.parse(localStorage.getItem('kv_avis_pending')||'[]');
+    const valides = JSON.parse(localStorage.getItem('kv_avis_valides')||'[]');
+    valides.push(pending.splice(i,1)[0]);
+    localStorage.setItem('kv_avis_pending', JSON.stringify(pending));
+    localStorage.setItem('kv_avis_valides', JSON.stringify(valides));
+    loadAvis();
+  }
+
+  function refuserAvis(i) {
+    const pending = JSON.parse(localStorage.getItem('kv_avis_pending')||'[]');
+    pending.splice(i,1);
+    localStorage.setItem('kv_avis_pending', JSON.stringify(pending));
+    loadAvis();
+  }
+
+  function supprimerAvis(i) {
+    if (!confirm('Supprimer cet avis ?')) return;
+    const valides = JSON.parse(localStorage.getItem('kv_avis_valides')||'[]');
+    valides.splice(i,1);
+    localStorage.setItem('kv_avis_valides', JSON.stringify(valides));
+    loadAvis();
+  }
+
+  // ===== TARIFS =====
+  function loadTarifs() {
+    const t = JSON.parse(localStorage.getItem('kv_tarifs')||'{}');
+    if (t.prixPersonne) document.getElementById('prix-personne').value=t.prixPersonne;
+    if (t.minPersonnes) document.getElementById('min-personnes').value=t.minPersonnes;
+    if (t.maxPersonnes) document.getElementById('max-personnes').value=t.maxPersonnes;
+    if (t.prixProlo) document.getElementById('prix-prolo').value=t.prixProlo;
+  }
+
+  function saveTarifs() {
+    localStorage.setItem('kv_tarifs', JSON.stringify({ prixPersonne:document.getElementById('prix-personne').value, minPersonnes:document.getElementById('min-personnes').value, maxPersonnes:document.getElementById('max-personnes').value, prixProlo:document.getElementById('prix-prolo').value }));
+    const msg = document.getElementById('tarif-saved');
+    msg.style.display='block';
+    setTimeout(()=>msg.style.display='none',3000);
+  }
+
+  // ===== MENU =====
+  const defaultMenu = [
+    {cat:'Cocktails',nom:'Mojito',desc:'Menthe, Citron, Sprite, Rhum Blanc',prix:10,actif:true},
+    {cat:'Cocktails',nom:'Piña Colada',desc:'Crème de coco, Jus d\'ananas, Citron, Rhum Blanc',prix:10,actif:true},
+    {cat:'Cocktails',nom:'Sex on the Beach',desc:'Liqueur de Pêche, Jus de cranberry, Jus d\'orange, Vodka',prix:10,actif:true},
+    {cat:'Cocktails',nom:'Daiquiri',desc:'Citron, Sirop de canne, Rhum Blanc',prix:10,actif:true},
+    {cat:'Bières',nom:'Bière Pression 25cl',desc:'',prix:null,actif:true},
+    {cat:'Bières',nom:'Bière Pression 50cl',desc:'',prix:null,actif:true},
+    {cat:'Bières',nom:'Monaco 25cl',desc:'',prix:null,actif:true},
+    {cat:'Bières',nom:'Monaco 50cl',desc:'',prix:null,actif:true},
+    {cat:'Boissons Chaudes',nom:'Café Expresso',desc:'',prix:null,actif:true},
+    {cat:'Boissons Chaudes',nom:'Cappuccino',desc:'',prix:null,actif:true},
+    {cat:'Boissons Chaudes',nom:'Thé Infusion',desc:'Menthe, Camomille, Thé Vert',prix:null,actif:true},
+    {cat:'Boissons Chaudes',nom:'Chocolat Chaud',desc:'',prix:null,actif:true},
+    {cat:'Desserts',nom:'Moelleux au Chocolat',desc:'',prix:5.5,actif:true},
+    {cat:'Desserts',nom:'Café Gourmand',desc:'',prix:5.5,actif:true},
+  ];
+  let menuItems = [];
+
+  function loadMenu() {
+    const saved = localStorage.getItem('kv_menu');
+    menuItems = saved ? JSON.parse(saved) : [...defaultMenu];
+    renderMenu();
+  }
+
+  function renderMenu() {
+    document.getElementById('menu-tbody').innerHTML = menuItems.map((item,i) => `
+      <tr>
+        <td><span class="badge badge-orange">${item.cat}</span></td>
+        <td><strong>${item.nom}</strong></td>
+        <td style="font-size:0.78rem;color:var(--gris)">${item.desc||'—'}</td>
+        <td><input type="number" value="${item.prix||''}" placeholder="—" step="0.5" style="background:transparent;border:1px solid rgba(201,168,76,0.2);border-radius:4px;padding:0.3rem 0.5rem;color:var(--or);width:70px;font-family:'Cinzel',serif;outline:none;" onchange="updatePrix(${i},this.value)" />€</td>
+        <td><span class="badge ${item.actif?'badge-vert':'badge-rouge'}">${item.actif?'Actif':'Inactif'}</span></td>
+        <td>
+          <button class="action-btn" onclick="toggleMenuItem(${i})">${item.actif?'Masquer':'Afficher'}</button>
+          <button class="action-btn danger" onclick="deleteMenuItem(${i})">✕</button>
+        </td>
+      </tr>`).join('');
+  }
+
+  function updatePrix(i,val) { menuItems[i].prix=val?parseFloat(val):null; localStorage.setItem('kv_menu',JSON.stringify(menuItems)); }
+  function toggleMenuItem(i) { menuItems[i].actif=!menuItems[i].actif; localStorage.setItem('kv_menu',JSON.stringify(menuItems)); renderMenu(); }
+  function deleteMenuItem(i) { if(confirm('Supprimer ?')){ menuItems.splice(i,1); localStorage.setItem('kv_menu',JSON.stringify(menuItems)); renderMenu(); } }
+  function openMenuModal() { document.getElementById('modal-menu').classList.add('open'); }
+  function closeMenuModal() { document.getElementById('modal-menu').classList.remove('open'); }
+  function addMenuItem() {
+    const nom=document.getElementById('mm-nom').value.trim();
+    if(!nom){alert('Saisissez un nom');return;}
+    const prix=document.getElementById('mm-prix').value;
+    menuItems.push({cat:document.getElementById('mm-cat').value,nom,desc:document.getElementById('mm-desc').value,prix:prix?parseFloat(prix):null,actif:true});
+    localStorage.setItem('kv_menu',JSON.stringify(menuItems)); renderMenu(); closeMenuModal();
+    document.getElementById('mm-nom').value=''; document.getElementById('mm-desc').value=''; document.getElementById('mm-prix').value='';
+  }
+
+  // ===== PARAMÈTRES =====
+  function changeOwnerPwd() {
+    const p1=document.getElementById('new-owner-pwd').value;
+    const p2=document.getElementById('confirm-owner-pwd').value;
+    if(!p1){alert('Saisissez un mot de passe');return;}
+    if(p1!==p2){alert('Les mots de passe ne correspondent pas');return;}
+    OWNER_PASS=p1; localStorage.setItem('kv_owner_pwd',p1);
+    const msg=document.getElementById('owner-pwd-msg'); msg.style.display='block';
+    setTimeout(()=>msg.style.display='none',3000);
+    document.getElementById('new-owner-pwd').value=''; document.getElementById('confirm-owner-pwd').value='';
+  }
+
+  // ===== COLLABORATEURS =====
+  let collaborateurs = JSON.parse(localStorage.getItem('kv_collabs') || '[]');
+
+  function renderCollabs() {
+    const list = document.getElementById('collab-list');
+    const form = document.getElementById('collab-form');
+    if (!list) return;
+    if (!collaborateurs.length) {
+      list.innerHTML = '<p style="font-size:0.82rem; color:var(--gris); padding:0.5rem 0;">Aucun collaborateur pour l\'instant.</p>';
+    } else {
+      list.innerHTML = collaborateurs.map((c, i) => `
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:0.8rem 1rem; background:rgba(0,229,255,0.03); border:1px solid rgba(0,229,255,0.1); border-radius:6px;">
+          <div style="display:flex; align-items:center; gap:0.8rem;">
+            <span style="font-size:1.2rem;">👤</span>
+            <div>
+              <div style="font-size:0.88rem; font-weight:500; color:var(--blanc);">${c.prenom}</div>
+              <div style="font-size:0.7rem; color:var(--gris);">Mot de passe : ${'•'.repeat(c.pwd.length)}</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:0.5rem; align-items:center;">
+            <button class="action-btn" onclick="resetCollabPwd(${i})">Changer pwd</button>
+            <button class="action-btn danger" onclick="deleteCollab(${i})">✕ Retirer</button>
+          </div>
+        </div>`).join('');
+    }
+    // Masquer le formulaire si 5 collabs
+    if (form) form.style.display = collaborateurs.length >= 5 ? 'none' : 'block';
+  }
+
+  function addCollab() {
+    const prenom = document.getElementById('collab-prenom').value.trim();
+    const pwd = document.getElementById('collab-pwd').value;
+    const msg = document.getElementById('collab-msg');
+    if (!prenom || !pwd) { alert('Veuillez saisir un prénom et un mot de passe.'); return; }
+    if (collaborateurs.length >= 5) { alert('Maximum 5 collaborateurs atteint.'); return; }
+    if (collaborateurs.find(c => c.prenom.toLowerCase() === prenom.toLowerCase())) { alert('Ce prénom existe déjà.'); return; }
+    collaborateurs.push({ prenom, pwd });
+    localStorage.setItem('kv_collabs', JSON.stringify(collaborateurs));
+    document.getElementById('collab-prenom').value = '';
+    document.getElementById('collab-pwd').value = '';
+    msg.textContent = `✅ ${prenom} ajouté(e) avec succès !`;
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 3000);
+    renderCollabs();
+  }
+
+  function deleteCollab(i) {
+    if (!confirm(`Retirer ${collaborateurs[i].prenom} ?`)) return;
+    collaborateurs.splice(i, 1);
+    localStorage.setItem('kv_collabs', JSON.stringify(collaborateurs));
+    renderCollabs();
+  }
+
+  function resetCollabPwd(i) {
+    const newPwd = prompt(`Nouveau mot de passe pour ${collaborateurs[i].prenom} :`);
+    if (!newPwd) return;
+    collaborateurs[i].pwd = newPwd;
+    localStorage.setItem('kv_collabs', JSON.stringify(collaborateurs));
+    alert(`✅ Mot de passe de ${collaborateurs[i].prenom} mis à jour !`);
+    renderCollabs();
+  }
+
+  function saveEmail() {
+    const email=document.getElementById('recovery-email').value.trim();
+    if(!email){alert('Saisissez un email');return;}
+    localStorage.setItem('kv_recovery_email',email);
+    const msg=document.getElementById('email-msg'); msg.style.display='block';
+    setTimeout(()=>msg.style.display='none',3000);
+  }
+
+  // Close modals
+  document.getElementById('modal-resa').addEventListener('click',function(e){if(e.target===this)closeModal();});
+  document.getElementById('modal-menu').addEventListener('click',function(e){if(e.target===this)closeMenuModal();});
+</script>
+</body>
+</html>

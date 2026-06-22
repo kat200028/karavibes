@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KaraVibes — La Carte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --noir: #0a0a0a;
+      --or: #C9A84C;
+      --or-clair: #E8C97A;
+      --cyan: #00E5FF;
+      --rose: #FF2D78;
+      --rose-doux: #FF6B9D;
+      --blanc: #FAF8F5;
+      --gris: #8A8A9A;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--noir); color: var(--blanc); }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(10,10,10,0.95);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--or); letter-spacing: 0.1em; text-decoration: none; }
+    .nav-logo span { color: var(--blanc); }
+    .nav-back { font-size: 0.75rem; color: var(--gris); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-back:hover { color: var(--or); }
+
+    .hero-carte {
+      min-height: 40vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 8rem 2rem 4rem;
+      background: var(--noir);
+      position: relative; overflow: hidden; text-align: center;
+    }
+    .hero-carte::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 50% 60% at 30% 50%, rgba(0,229,255,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 70% 50%, rgba(255,45,120,0.07) 0%, transparent 60%);
+    }
+    .hero-carte-content { position: relative; z-index: 2; }
+    .hero-carte-eyebrow {
+      font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--or); margin-bottom: 1rem; display: block;
+    }
+    .hero-carte-title {
+      font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 600; color: var(--blanc); margin-bottom: 1rem;
+    }
+    .hero-carte-title span { color: var(--or); }
+    .hero-carte-desc { font-size: 0.9rem; color: rgba(250,248,245,0.5); letter-spacing: 0.08em; }
+
+    .neon-line {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--rose), transparent);
+      margin: 0;
+    }
+
+    .carte-body { padding: 4rem 2rem 6rem; max-width: 1000px; margin: 0 auto; }
+
+    .carte-section { margin-bottom: 4rem; }
+
+    .section-header {
+      display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;
+    }
+    .section-header::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(201,168,76,0.3), transparent);
+    }
+    .section-title-carte {
+      font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 0.2em;
+      text-transform: uppercase; white-space: nowrap;
+    }
+    .section-title-carte.gold { color: var(--or); }
+    .section-title-carte.cyan { color: var(--cyan); }
+    .section-title-carte.rose { color: var(--rose-doux); }
+
+    /* LA CARTE ITEMS — fond blanc/lumineux */
+    .items-grid {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .menu-item {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 1.2rem 1rem;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      gap: 1rem;
+    }
+
+    .menu-item:nth-child(odd) { border-right: 1px solid rgba(0,0,0,0.07); }
+    .menu-item:last-child, .menu-item:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+
+    .menu-item-info h4 {
+      font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600;
+      color: #1a1a1a; margin-bottom: 0.25rem;
+    }
+    .menu-item-info p { font-size: 0.75rem; color: #888; line-height: 1.5; }
+    .menu-item-price {
+      font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 600;
+      color: var(--or); white-space: nowrap;
+    }
+    .menu-item-price.tbd { color: #bbb; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-style: italic; font-weight: 400; }
+
+    /* Single column pour les petites catégories */
+    .items-grid.single { grid-template-columns: 1fr; }
+    .items-grid.single .menu-item { border-right: none; }
+
+    /* FORMULES */
+    .formules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .formule-card {
+      background: rgba(250,248,245,0.03);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 8px; padding: 1.5rem;
+      position: relative; overflow: hidden;
+    }
+    .formule-card.featured { border-color: var(--rose-doux); background: rgba(255,107,157,0.05); }
+    .formule-card-tag {
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--or); margin-bottom: 0.5rem; display: block;
+    }
+    .formule-card.featured .formule-card-tag { color: var(--rose-doux); }
+    .formule-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--blanc); margin-bottom: 0.8rem; }
+    .formule-card p { font-size: 0.82rem; color: rgba(250,248,245,0.6); line-height: 1.6; }
+    .formule-price {
+      font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--or);
+      margin-top: 1rem; display: block;
+    }
+    .formule-card.featured .formule-price { color: var(--rose-doux); }
+
+    footer {
+      background: rgba(0,0,0,0.5);
+      border-top: 1px solid rgba(201,168,76,0.1);
+      padding: 2rem; text-align: center;
+    }
+    footer p { font-size: 0.75rem; color: var(--gris); }
+    footer a { color: var(--or); text-decoration: none; }
+    .spider-link { color: rgba(138,138,154,0.1); text-decoration: none; font-size: 0.8rem; transition: color 0.3s; }
+    .spider-link:hover { color: rgba(138,138,154,0.3); }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .items-grid { grid-template-columns: 1fr; }
+      .items-grid .menu-item { border-right: none; }
+      .formules-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">KARA<span>VIBES</span></a>
+  <a href="index.html" class="nav-back">← Retour au site</a>
+</nav>
+
+<div class="hero-carte">
+  <div class="hero-carte-content">
+    <span class="hero-carte-eyebrow">KaraVibes · Studio Lounge Privé</span>
+    <h1 class="hero-carte-title">La <span>Carte</span></h1>
+    <p class="hero-carte-desc">Boissons · Tapas · Desserts · Formules</p>
+  </div>
+</div>
+
+<div class="neon-line"></div>
+
+<div class="carte-body">
+
+  <!-- COCKTAILS -->
+  <div class="carte-section">
+    <div class="section-header">
+      <h2 class="section-title-carte rose">🍹 Cocktails</h2>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <h4>Mojito</h4>
+          <p>Menthe, Citron, Sprite, Rhum Blanc</p>
+        </div>
+        <span class="menu-item-price">10€</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <h4>Piña Colada</h4>
+          <p>Crème de coco, Jus d'ananas, Citron, Rhum Blanc</p>
+        </div>
+        <span class="menu-item-price">10€</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <h4>Sex on the Beach</h4>
+          <p>Liqueur de Pêche, Jus de cranberry, Jus d'orange, Vodka</p>
+        </div>
+        <span class="menu-item-price">10€</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <h4>Daiquiri</h4>
+          <p>Citron, Sirop de canne, Rhum Blanc</p>
+        </div>
+        <span class="menu-item-price">10€</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BIÈRES -->
+  <div class="carte-section">
+    <div class="section-header">
+      <h2 class="section-title-carte cyan">🍺 Bières</h2>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item">
+        <div class="menu-item-info"><h4>Bière Pression 25cl</h4></div>
+        <span class="menu-item-price tbd">prix à venir</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info"><h4>Bière Pression 50cl</h4></div>
+        <span class="menu-item-price tbd">prix à venir</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info"><h4>Monaco 25cl</h4></div>
+        <span class="menu-item-price tbd">prix à venir</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info"><h4>Monaco 50cl</h4></div>
+        <span class="menu-item-price tbd">prix à venir</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCKTAILS & SOFTS -->
+  <div class="carte-section">
+    <div class="section-header">
+      <h2 class="section-title-carte rose">🥤 Mocktails & Softs</h2>
+    </div>
+    <div class="items-grid single">
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <h4>Mocktail Mojito</h4>
+          <p>Sans alcool</p>
+        </div>
+        <span class="menu-item-price tbd">prix à venir</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <h4>Boissons Soft</h4>
+          <p>Sélection à venir</p>
+        </div>
+        <span class="menu-item-price tbd">prix à venir</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOISSONS CHAUDES -->
+  <div class="carte-section">
+    <div class="section-header">
+      <h2 class="section-title-carte gold">☕ Boissons Chaudes</h2>
+    </div>
+    <div class="items-grid">
+      <div class="menu-item">
+        <div class="menu-item-info"><h4>Café Expresso</h4></div>
+        <span class="menu-item-price tbd">prix à venir</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info"><h4>Cappuccino</h4></div>
+        <span class="menu-item-price tbd">prix à venir</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <h4>Thé & Infusions</h4>
+          <p>Menthe, Camomille, Thé Vert</p>
+        </div>
+        <span class="menu-item-price tbd">prix à venir</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info"><h4>Chocolat Chaud</h4></div>
+        <span class="menu-item-price tbd">prix à venir</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAPAS -->
+  <div class="carte-section">
+    <div class="section-header">
+      <h2 class="section-title-carte rose">🫙 Tapas</h2>
+    </div>
+    <div class="items-grid single">
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <h4>Carte Tapas à venir</h4>
+          <p>Notre sélection de tapas sera disponible prochainement.</p>
+        </div>
+        <span class="menu-item-price tbd">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESSERTS -->
+  <div class="carte-section">
+    <div class="section-header">
+      <h2 class="section-title-carte gold">🍫 Desserts</h2>
+    </div>
+    <div class="items-grid single">
+      <div class="menu-item">
+        <div class="menu-item-info"><h4>Moelleux au Chocolat</h4></div>
+        <span class="menu-item-price">5.50€</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info"><h4>Café Gourmand</h4></div>
+        <span class="menu-item-price">5.50€</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULES -->
+  <div class="carte-section">
+    <div class="section-header">
+      <h2 class="section-title-carte gold">✨ Formules</h2>
+    </div>
+    <div class="formules-grid">
+      <div class="formule-card">
+        <span class="formule-card-tag">Séance Standard</span>
+        <h3>2h en salle privée</h3>
+        <p>Salle au choix — Lagon Bleu ou Neo Tokyo. Minimum 4 personnes, maximum 10.</p>
+        <span class="formule-price">20€ / pers</span>
+      </div>
+      <div class="formule-card featured">
+        <span class="formule-card-tag">⭐ Populaire</span>
+        <h3>Prolongation</h3>
+        <p>Restez plus longtemps ! 2h supplémentaires dont 30 min offertes incluses.</p>
+        <span class="formule-price">15€ / pers</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 KaraVibes · Studio Lounge Privé · Martinique &nbsp;|&nbsp; <a href="index.html">Retour au site</a> &nbsp;|&nbsp; <a href="#">Mentions légales</a></p>
+  <br>
+  <a href="admin.html" class="spider-link">🕷️</a>
+</footer>
+
+</body>
+</html>

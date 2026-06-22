@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KaraVibes — Studio Lounge Privé · Martinique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --noir: #0a0a0a;
+      --noir-doux: #111118;
+      --or: #C9A84C;
+      --or-clair: #E8C97A;
+      --or-pale: #F5E4B0;
+      --cyan: #00E5FF;
+      --rose: #FF2D78;
+      --blanc: #FAF8F5;
+      --gris: #8A8A9A;
+      --gris-clair: #E8E6E0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--blanc); color: var(--noir); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .nav-logo img { height: 52px; object-fit: contain; }
+    .nav-logo-text { font-family: 'Cinzel', serif; color: var(--or); font-size: 1.2rem; letter-spacing: 0.1em; text-decoration: none; }
+    .nav-logo-text span { color: var(--blanc); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--gris-clair); text-decoration: none; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--or); }
+    .lang-switcher { display: flex; gap: 0.4rem; }
+    .lang-btn { background: none; border: 1px solid rgba(201,168,76,0.3); color: var(--gris); font-size: 0.65rem; letter-spacing: 0.08em; padding: 0.25rem 0.5rem; border-radius: 3px; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; }
+    .lang-btn.active, .lang-btn:hover { background: var(--or); color: var(--noir); border-color: var(--or); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 0.5rem; }
+    .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--blanc); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; background: var(--noir);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; padding: 6rem 2rem 4rem; text-align: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 25% 50%, rgba(0,229,255,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 75% 50%, rgba(255,45,120,0.07) 0%, transparent 60%);
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 780px; }
+    .hero-logo { width: 130px; margin-bottom: 2rem; filter: drop-shadow(0 0 30px rgba(0,229,255,0.3)); animation: floatLogo 4s ease-in-out infinite; }
+    @keyframes floatLogo { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .hero-eyebrow { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.3em; color: var(--or); text-transform: uppercase; margin-bottom: 1.2rem; display: block; }
+    .hero-title { font-family: 'Cinzel', serif; font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 600; background: linear-gradient(135deg, #E8C97A, #C9A84C, #F5E4B0, #C9A84C); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.05; margin-bottom: 0.5rem; filter: drop-shadow(0 0 15px rgba(201,168,76,0.5)); }
+    .hero-subtitle { font-family: 'Cinzel', serif; font-size: clamp(0.65rem, 1.5vw, 0.8rem); letter-spacing: 0.25em; color: var(--or); text-transform: uppercase; margin-bottom: 2rem; }
+    .hero-desc { font-size: 1rem; color: rgba(250,248,245,0.6); line-height: 1.8; max-width: 520px; margin: 0 auto 3rem; }
+    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: linear-gradient(135deg, var(--or), var(--or-clair)); color: var(--noir); border: none; padding: 1rem 2.5rem; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; cursor: pointer; border-radius: 2px; transition: all 0.3s; display: inline-block; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,168,76,0.4); }
+    .btn-outline { background: transparent; color: var(--blanc); border: 1px solid rgba(250,248,245,0.25); padding: 1rem 2.5rem; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; cursor: pointer; border-radius: 2px; transition: all 0.3s; display: inline-block; }
+    .btn-outline:hover { border-color: var(--or); color: var(--or); }
+    .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--gris); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--or), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+    /* NEON DIVIDER */
+    .neon-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--cyan), var(--rose), transparent); }
+
+    /* SECTIONS */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--or); margin-bottom: 1rem; display: block; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.5rem; }
+    .section-title.light { color: var(--blanc); }
+    .section-title.dark { color: var(--noir); }
+
+    /* CONCEPT */
+    .concept { background: var(--noir); position: relative; overflow: hidden; }
+    .concept::before { content:''; position:absolute; top:0; right:0; width:500px; height:500px; background:radial-gradient(ellipse, rgba(255,45,120,0.05) 0%, transparent 70%); }
+    .concept::after { content:''; position:absolute; bottom:0; left:0; width:400px; height:400px; background:radial-gradient(ellipse, rgba(0,229,255,0.04) 0%, transparent 70%); }
+    .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .concept-text { position: relative; z-index: 2; }
+    .concept-text p { font-size: 1rem; color: rgba(250,248,245,0.65); line-height: 1.9; margin-bottom: 1.5rem; }
+    .concept-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
+    .stat-card { border: 1px solid rgba(201,168,76,0.15); padding: 1.2rem; border-radius: 4px; background: rgba(201,168,76,0.03); }
+    .stat-number { font-family: 'Cinzel', serif; font-size: 2rem; font-weight: 600; color: var(--or); display: block; margin-bottom: 0.2rem; }
+    .stat-label { font-size: 0.72rem; color: var(--gris); letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* ROOM CARDS */
+    .concept-rooms { display: flex; flex-direction: column; gap: 1.5rem; position: relative; z-index: 2; }
+    .room-card { border-radius: 8px; padding: 0; position: relative; overflow: hidden; cursor: pointer; transition: transform 0.3s; }
+    .room-card:hover { transform: translateY(-4px); }
+    .room-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+    .room-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem; }
+    .room-card.lagon { border: 1px solid rgba(0,229,255,0.3); }
+    .room-card.lagon .room-overlay { background: linear-gradient(to top, rgba(0,20,40,0.92) 0%, rgba(0,60,100,0.4) 60%, transparent 100%); }
+    .room-card.tokyo { border: 1px solid rgba(255,45,120,0.3); }
+    .room-card.tokyo .room-overlay { background: linear-gradient(to top, rgba(20,0,30,0.92) 0%, rgba(80,0,100,0.4) 60%, transparent 100%); }
+    .room-tag { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 0.4rem; }
+    .room-card.lagon .room-tag { color: var(--cyan); }
+    .room-card.tokyo .room-tag { color: var(--rose); }
+    .room-name { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--blanc); margin-bottom: 0.4rem; }
+    .room-desc { font-size: 0.8rem; color: rgba(250,248,245,0.7); line-height: 1.5; }
+    .room-capacity { margin-top: 0.7rem; font-size: 0.72rem; color: rgba(250,248,245,0.45); }
+
+    /* ROOM AMBIANCE IMAGES (placeholder avec gradient) */
+    .room-img-placeholder { width: 100%; height: 200px; display: block; }
+    .room-img-placeholder.lagon { background: linear-gradient(135deg, #001a2e 0%, #003d5c 40%, #005f8a 70%, #00bcd4 100%); }
+    .room-img-placeholder.tokyo { background: linear-gradient(135deg, #1a0028 0%, #3d0060 40%, #7b00a0 70%, #ff2d78 100%); }
+    .room-details { position: absolute; top: 1rem; right: 1rem; display: flex; gap: 0.4rem; }
+    .room-led { width: 8px; height: 8px; border-radius: 50%; animation: ledPulse 1.5s ease-in-out infinite; }
+    .room-card.lagon .room-led { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+    .room-card.tokyo .room-led { background: var(--rose); box-shadow: 0 0 8px var(--rose); animation-delay: 0.5s; }
+    @keyframes ledPulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* TARIFS */
+    .tarifs { background: linear-gradient(180deg, #0d0d18 0%, #0a0a0a 100%); }
+    .tarifs-header { text-align: center; margin-bottom: 4rem; }
+    .tarifs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+    .tarif-card { border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.3s; background: rgba(250,248,245,0.02); }
+    .tarif-card:hover { border-color: var(--or); }
+    .tarif-card.featured { background: rgba(255,45,120,0.04); border-color: rgba(255,45,120,0.3); }
+    .tarif-card.featured:hover { border-color: var(--rose); }
+    .tarif-badge { position: absolute; top: 1.2rem; right: 1.2rem; background: linear-gradient(135deg, var(--rose), #ff6b9d); color: var(--blanc); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 20px; }
+    .tarif-name { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--or); margin-bottom: 1rem; }
+    .tarif-card.featured .tarif-name { color: var(--rose); }
+    .tarif-price { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--blanc); line-height: 1; margin-bottom: 0.3rem; }
+    .tarif-unit { font-size: 0.78rem; color: var(--gris); margin-bottom: 1.5rem; }
+    .tarif-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .tarif-features li { font-size: 0.83rem; color: rgba(250,248,245,0.7); display: flex; align-items: center; gap: 0.7rem; }
+    .tarif-features li::before { content:'—'; color: var(--or); font-weight: 700; flex-shrink: 0; }
+    .tarif-card.featured .tarif-features li::before { color: var(--rose); }
+
+    /* RÉSERVATION */
+    .reservation { background: var(--noir); position: relative; overflow: hidden; }
+    .reservation::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 50% 60% at 15% 50%, rgba(0,229,255,0.04) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 85% 50%, rgba(255,45,120,0.04) 0%, transparent 60%); }
+    .reservation-content { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: start; }
+    .reservation-info p { color: rgba(250,248,245,0.6); font-size: 0.95rem; line-height: 1.8; margin-bottom: 2rem; margin-top: 1rem; }
+    .horaires { display: flex; flex-direction: column; gap: 0; }
+    .horaire-row { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; border-bottom: 1px solid rgba(201,168,76,0.08); font-size: 0.83rem; }
+    .horaire-day { color: var(--gris); }
+    .horaire-time { color: var(--or-pale); font-weight: 500; }
+    .horaire-ferme { color: rgba(138,138,154,0.35); }
+    .resa-form { background: rgba(250,248,245,0.03); border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; padding: 2.5rem; }
+    .resa-form h3 { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--or); margin-bottom: 2rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+    .form-group.full { grid-column: 1/-1; }
+    .form-group label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris); }
+    .form-group input, .form-group select { background: rgba(250,248,245,0.05); border: 1px solid rgba(201,168,76,0.18); border-radius: 4px; padding: 0.8rem 1rem; color: var(--blanc); font-family: 'Inter', sans-serif; font-size: 0.88rem; outline: none; width: 100%; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group select:focus { border-color: var(--or); }
+    .form-group select option { background: var(--noir-doux); }
+    .promo-check { display: flex; align-items: flex-start; gap: 0.8rem; padding: 1.2rem; background: rgba(255,45,120,0.05); border: 1px solid rgba(255,45,120,0.2); border-radius: 4px; margin-bottom: 1.5rem; cursor: pointer; }
+    .promo-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--rose); flex-shrink: 0; margin-top: 2px; }
+    .promo-check-text { font-size: 0.83rem; color: rgba(250,248,245,0.75); line-height: 1.5; }
+    .promo-check-text strong { color: var(--rose); display: block; margin-bottom: 0.2rem; }
+    .price-preview { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-top: 1px solid rgba(201,168,76,0.12); margin-bottom: 1.5rem; }
+    .price-preview-label { font-size: 0.78rem; color: var(--gris); }
+    .price-preview-amount { font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--or); }
+    .tel-resa { text-align: center; padding-top: 1.2rem; border-top: 1px solid rgba(201,168,76,0.08); font-size: 0.78rem; color: var(--gris); }
+    .tel-resa a { color: var(--or); text-decoration: none; }
+
+    /* CRÉNEAUX */
+    .creneaux-dispo { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+    .creneau-btn { padding: 0.5rem 0.9rem; border: 1px solid rgba(201,168,76,0.3); border-radius: 4px; background: rgba(201,168,76,0.05); color: var(--or-pale); font-size: 0.78rem; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; }
+    .creneau-btn:hover, .creneau-btn.selected { background: var(--or); color: var(--noir); border-color: var(--or); }
+    .creneau-btn.pris { background: rgba(231,76,60,0.1); color: rgba(231,76,60,0.5); border-color: rgba(231,76,60,0.2); cursor: not-allowed; text-decoration: line-through; }
+    .creneau-label { font-size: 0.68rem; color: var(--gris); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
+
+    /* AVIS */
+    .avis-section { background: #0d0d18; }
+    .avis-header { text-align: center; margin-bottom: 3rem; }
+    .avis-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 3rem; }
+    .avis-card { background: rgba(250,248,245,0.03); border: 1px solid rgba(201,168,76,0.12); border-radius: 8px; padding: 1.5rem; }
+    .avis-stars { color: var(--or); font-size: 0.9rem; margin-bottom: 0.8rem; letter-spacing: 0.1em; }
+    .avis-text { font-size: 0.85rem; color: rgba(250,248,245,0.65); line-height: 1.7; margin-bottom: 1rem; font-style: italic; }
+    .avis-author { font-size: 0.72rem; color: var(--or); letter-spacing: 0.08em; font-family: 'Cinzel', serif; }
+    .avis-form-card { background: rgba(250,248,245,0.02); border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; padding: 2rem; max-width: 600px; margin: 0 auto; }
+    .avis-form-card h3 { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--or); margin-bottom: 1.5rem; text-align: center; }
+    .stars-select { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .star-btn { font-size: 1.5rem; cursor: pointer; opacity: 0.3; transition: opacity 0.2s; background: none; border: none; }
+    .star-btn.active { opacity: 1; }
+    .avis-input { width: 100%; background: rgba(250,248,245,0.05); border: 1px solid rgba(201,168,76,0.18); border-radius: 4px; padding: 0.8rem 1rem; color: var(--blanc); font-family: 'Inter', sans-serif; font-size: 0.88rem; outline: none; margin-bottom: 1rem; }
+    .avis-input:focus { border-color: var(--or); }
+    textarea.avis-input { resize: vertical; min-height: 100px; }
+    .avis-note { font-size: 0.72rem; color: var(--gris); text-align: center; margin-top: 0.8rem; }
+
+    /* CATALOGUE */
+    .catalogue { background: var(--noir); text-align: center; position: relative; overflow: hidden; }
+    .catalogue::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 100%, rgba(0,229,255,0.05) 0%, transparent 60%); }
+    .catalogue-content { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; }
+    .catalogue-content p { font-size: 1rem; color: rgba(250,248,245,0.6); line-height: 1.8; margin-bottom: 2.5rem; }
+    .catalogue-platforms { display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .platform-badge { padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.72rem; color: var(--or-pale); letter-spacing: 0.06em; }
+    .platform-badge.c { border: 1px solid rgba(0,229,255,0.2); }
+    .platform-badge.r { border: 1px solid rgba(255,45,120,0.2); }
+
+    /* CONTACT */
+    .contact { background: var(--blanc); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-item { display: flex; gap: 1.2rem; align-items: flex-start; margin-bottom: 1.8rem; }
+    .contact-icon { width: 44px; height: 44px; border: 1px solid rgba(201,168,76,0.3); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--or); font-size: 1.1rem; flex-shrink: 0; }
+    .contact-item-text h4 { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris); margin-bottom: 0.3rem; }
+    .contact-item-text p, .contact-item-text a { font-size: 0.92rem; color: var(--noir); text-decoration: none; line-height: 1.6; }
+    .contact-item-text a:hover { color: var(--or); }
+    .map-placeholder { background: #eee; border-radius: 8px; height: 280px; display: flex; align-items: center; justify-content: center; color: var(--gris); font-size: 0.85rem; border: 1px solid var(--gris-clair); margin-top: 1rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 0.8rem; }
+    .contact-form input, .contact-form textarea { background: #f8f6f2; border: 1px solid var(--gris-clair); border-radius: 4px; padding: 0.9rem 1.2rem; font-family: 'Inter', sans-serif; font-size: 0.88rem; color: var(--noir); outline: none; transition: border-color 0.2s; width: 100%; }
+    .contact-form input:focus, .contact-form textarea:focus { border-color: var(--or); }
+    .contact-form textarea { resize: vertical; min-height: 120px; }
+    .btn-primary-dark { background: linear-gradient(135deg, var(--or), var(--or-clair)); color: var(--noir); border: none; padding: 0.9rem 2rem; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: all 0.3s; width: 100%; }
+    .btn-primary-dark:hover { box-shadow: 0 6px 20px rgba(201,168,76,0.3); }
+
+    /* FOOTER */
+    footer { background: var(--noir); padding: 3rem 2rem 2rem; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(201,168,76,0.1); }
+    .footer-logo-text { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 0.1em; }
+    .footer-logo-text .kara { color: var(--cyan); }
+    .footer-logo-text .vibes { color: var(--rose); }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.72rem; color: var(--gris); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--or); }
+    .footer-social { display: flex; gap: 0.8rem; }
+    .social-link { width: 36px; height: 36px; border: 1px solid rgba(201,168,76,0.2); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--gris); text-decoration: none; font-size: 0.8rem; transition: all 0.2s; }
+    .social-link:hover { border-color: var(--or); color: var(--or); }
+    .footer-bottom { max-width: 1100px; margin: 1.5rem auto 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-copy { font-size: 0.7rem; color: rgba(138,138,154,0.4); }
+    .footer-legal { display: flex; gap: 1rem; }
+    .footer-legal a { font-size: 0.7rem; color: rgba(138,138,154,0.4); text-decoration: none; }
+    .footer-legal a:hover { color: var(--or); }
+    .spider-link { font-size: 0.8rem; color: rgba(138,138,154,0.1); text-decoration: none; transition: color 0.3s; cursor: default; }
+    .spider-link:hover { color: rgba(138,138,154,0.35); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--noir); flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; z-index: 999; }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 1rem; }
+      .hamburger { display: flex; z-index: 1001; }
+      .lang-switcher { display: none; }
+      .concept-grid, .reservation-content, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .tarifs-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .avis-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#accueil" style="text-decoration:none;">
+    <img src="logo-karavibes.png" alt="KaraVibes" style="height:50px;" onerror="this.style.display='none'; document.getElementById('navLogoText').style.display='block'" />
+    <span id="navLogoText" style="display:none; font-family:'Cinzel',serif; font-size:1.1rem; letter-spacing:0.1em;"><span style="color:var(--or)">KARA</span><span style="color:var(--or)">VIBES</span></span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#concept">Le Concept</a></li>
+    <li><a href="#tarifs">Tarifs</a></li>
+    <li><a href="#reservation">Réserver</a></li>
+    <li><a href="menu.html">La Carte</a></li>
+    <li><a href="https://www.karafun.fr" target="_blank">Catalogue</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex; align-items:center; gap:1rem;">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="accueil">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <img src="logo-karavibes-icon.png" alt="KaraVibes" class="hero-logo" onerror="this.style.display='none'" />
+    <span class="hero-eyebrow">Martinique</span>
+    <h1 class="hero-title">KaraVibes</h1>
+    <p class="hero-subtitle">Lounge Bar · Karaoké Privé</p>
+    <p class="hero-desc">Deux univers immersifs, une liberté totale. Chantez, vibrez, célébrez — dans votre salle rien qu'à vous.</p>
+    <div class="hero-cta">
+      <a href="#reservation" class="btn-primary">Réserver ma salle</a>
+      <a href="#concept" class="btn-outline">Découvrir</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- CONCEPT -->
+<section class="concept" id="concept">
+  <div class="container">
+    <div class="concept-grid">
+      <div class="concept-text">
+        <span class="section-label">Notre univers</span>
+        <h2 class="section-title light">Un lounge, deux mondes à explorer</h2>
+        <p>KaraVibes c'est l'endroit où tout le monde peut se lâcher. Deux salles privées aux ambiances radicalement différentes, réservées rien que pour vous et votre groupe.</p>
+        <p>Pas de spectateurs, pas de jugement — juste vous, votre playlist et l'ambiance qui va avec. Que vous soyez en famille, entre amis ou en team building.</p>
+        <div class="concept-stats">
+          <div class="stat-card"><span class="stat-number" style="color:var(--cyan)">2</span><span class="stat-label">Salles thématiques</span></div>
+          <div class="stat-card"><span class="stat-number" style="color:var(--rose)">10</span><span class="stat-label">Personnes max</span></div>
+          <div class="stat-card"><span class="stat-number">2h</span><span class="stat-label">Par séance</span></div>
+          <div class="stat-card"><span class="stat-number">∞</span><span class="stat-label">Chansons dispo</span></div>
+        </div>
+      </div>
+      <div class="concept-rooms">
+        <div class="room-card lagon">
+          <div class="room-img-placeholder lagon"></div>
+          <div class="room-details"><div class="room-led"></div></div>
+          <div class="room-overlay">
+            <p class="room-tag">Salle Privée</p>
+            <h3 class="room-name">Lagon Bleu</h3>
+            <p class="room-desc">Un univers aquatique envoûtant. LEDs bleues, ambiance sous-marine, lumières tamisées.</p>
+            <p class="room-capacity">👥 1 à 10 personnes</p>
+          </div>
+        </div>
+        <div class="room-card tokyo">
+          <div class="room-img-placeholder tokyo"></div>
+          <div class="room-details"><div class="room-led"></div></div>
+          <div class="room-overlay">
+            <p class="room-tag">Salle Privée</p>
+            <h3 class="room-name">Neo Tokyo</h3>
+            <p class="room-desc">Plongez dans l'énergie de Tokyo by night. Néons, esthétique futuriste, ambiance électrique.</p>
+            <p class="room-capacity">👥 1 à 10 personnes</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- TARIFS -->
+<section class="tarifs" id="tarifs">
+  <div class="container">
+    <div class="tarifs-header">
+      <span class="section-label">Nos formules</span>
+      <h2 class="section-title light">Tarifs simples, plaisir maximum</h2>
+    </div>
+    <div class="tarifs-grid">
+      <div class="tarif-card">
+        <p class="tarif-name">Séance Standard</p>
+        <div class="tarif-price">20€</div>
+        <p class="tarif-unit">par personne · minimum 4 personnes</p>
+        <ul class="tarif-features">
+          <li>Salle privée au choix</li>
+          <li>Équipement karaoké inclus</li>
+          <li>Catalogue illimité</li>
+          <li>Maximum 10 personnes</li>
+        </ul>
+      </div>
+      <div class="tarif-card featured">
+        <div class="tarif-badge">⭐ Populaire</div>
+        <p class="tarif-name">Prolongation</p>
+        <div class="tarif-price">15€</div>
+        <p class="tarif-unit">par personne · 30 min offertes incluses</p>
+        <ul class="tarif-features">
+          <li>2h supplémentaires en salle</li>
+          <li>30 minutes OFFERTES</li>
+          <li>Même salle, même ambiance</li>
+          <li>À ajouter lors de la réservation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- RÉSERVATION -->
+<section class="reservation" id="reservation">
+  <div class="container">
+    <div class="reservation-content">
+      <div class="reservation-info">
+        <span class="section-label">Réservation</span>
+        <h2 class="section-title light">Réservez votre salle</h2>
+        <p>Choisissez votre salle, votre créneau et réglez en ligne. Votre place est confirmée instantanément.</p>
+        <div class="horaires">
+          <div class="horaire-row"><span class="horaire-day">Lundi</span><span class="horaire-ferme">Fermé</span></div>
+          <div class="horaire-row"><span class="horaire-day">Mardi</span><span class="horaire-time">17h00 – 00h00</span></div>
+          <div class="horaire-row"><span class="horaire-day">Mercredi</span><span class="horaire-time">17h00 – 00h00</span></div>
+          <div class="horaire-row"><span class="horaire-day">Jeudi</span><span class="horaire-time">17h00 – 00h00</span></div>
+          <div class="horaire-row"><span class="horaire-day">Vendredi</span><span class="horaire-time">15h00 – 03h00</span></div>
+          <div class="horaire-row"><span class="horaire-day">Samedi</span><span class="horaire-time">15h00 – 03h00</span></div>
+          <div class="horaire-row"><span class="horaire-day">Dimanche</span><span class="horaire-time">11h00 – 18h00</span></div>
+        </div>
+      </div>
+
+      <div class="resa-form">
+        <h3>Votre réservation</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>Prénom</label><input type="text" id="f-prenom" placeholder="Marie" /></div>
+          <div class="form-group"><label>Nom</label><input type="text" id="f-nom" placeholder="Dupont" /></div>
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" id="f-email" placeholder="votre@email.com" /></div>
+        <div class="form-group"><label>Téléphone</label><input type="tel" id="f-tel" placeholder="+596 XXX XXX XXX" /></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Salle</label>
+            <select id="f-salle" onchange="updateCreneaux()">
+              <option value="">Choisir...</option>
+              <option value="lagon">🌊 Lagon Bleu</option>
+              <option value="tokyo">🌸 Neo Tokyo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Nombre de personnes</label>
+            <select id="f-nb" onchange="calcPrice()">
+              <option value="">Choisir...</option>
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+              <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+              <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="f-date" onchange="updateCreneaux()" />
+        </div>
+        <div class="form-group">
+          <span class="creneau-label">Choisissez votre créneau</span>
+          <div class="creneaux-dispo" id="creneaux-container">
+            <span style="font-size:0.8rem; color:var(--gris);">Sélectionnez d'abord une salle et une date.</span>
+          </div>
+          <input type="hidden" id="f-heure" />
+        </div>
+
+        <label class="promo-check">
+          <input type="checkbox" id="f-prolo" onchange="calcPrice()" />
+          <div class="promo-check-text">
+            <strong>🎉 Prolonger — 30 min OFFERTES !</strong>
+            <span>Ajoutez 15€/personne et restez 2h de plus dans votre salle.</span>
+          </div>
+        </label>
+
+        <div class="price-preview">
+          <span class="price-preview-label">Total estimé</span>
+          <span class="price-preview-amount" id="priceDisplay">—</span>
+        </div>
+
+        <button class="btn-primary" style="width:100%;" onclick="submitResa()">Confirmer & Payer</button>
+        <div class="tel-resa" style="margin-top:1rem;">
+          Vous préférez réserver par téléphone ?
+          <a href="tel:+596XXXXXXXXX"> 📞 Appelez-nous</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- AVIS -->
+<section class="avis-section" id="avis">
+  <div class="container">
+    <div class="avis-header">
+      <span class="section-label">Témoignages</span>
+      <h2 class="section-title light">Ce qu'ils en disent</h2>
+    </div>
+    <div class="avis-grid" id="avis-grid">
+      <div style="grid-column:1/-1; text-align:center; padding:2rem; color:var(--gris); font-size:0.85rem;">
+        Les premiers avis apparaîtront ici après l'ouverture. 🎤
+      </div>
+    </div>
+    <div class="avis-form-card">
+      <h3>Laissez votre avis</h3>
+      <div class="stars-select" id="starsSelect">
+        <button class="star-btn" onclick="setStar(1)">⭐</button>
+        <button class="star-btn" onclick="setStar(2)">⭐</button>
+        <button class="star-btn" onclick="setStar(3)">⭐</button>
+        <button class="star-btn" onclick="setStar(4)">⭐</button>
+        <button class="star-btn" onclick="setStar(5)">⭐</button>
+      </div>
+      <input type="hidden" id="avis-note" value="0" />
+      <input class="avis-input" type="text" id="avis-prenom" placeholder="Votre prénom" />
+      <textarea class="avis-input" id="avis-commentaire" placeholder="Partagez votre expérience KaraVibes..."></textarea>
+      <button class="btn-primary" style="width:100%;" onclick="submitAvis()">Envoyer mon avis</button>
+      <p class="avis-note">Votre avis sera publié après validation. Merci ! 🙏</p>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- CATALOGUE -->
+<section class="catalogue" id="catalogue">
+  <div class="container">
+    <div class="catalogue-content">
+      <span class="section-label">Des milliers de titres</span>
+      <h2 class="section-title light">Le catalogue</h2>
+      <p>Chansons françaises, hits internationaux, zouk, reggaeton, R&B, antillais... Préparez votre playlist avant d'arriver !</p>
+      <div class="catalogue-platforms">
+        <span class="platform-badge c">🎵 Français</span>
+        <span class="platform-badge r">🎵 Anglais</span>
+        <span class="platform-badge c">🎵 Zouk</span>
+        <span class="platform-badge r">🎵 Reggaeton</span>
+        <span class="platform-badge c">🎵 R&B</span>
+        <span class="platform-badge r">🎵 Antillais</span>
+      </div>
+      <a href="https://www.karafun.fr" target="_blank" class="btn-primary">Voir le catalogue complet</a>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <span class="section-label">Nous trouver</span>
+        <h2 class="section-title dark">Contact & Accès</h2>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div class="contact-item-text"><h4>Adresse</h4><p>Martinique — adresse communiquée à la confirmation</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div class="contact-item-text"><h4>Téléphone</h4><a href="tel:+596XXXXXXXXX">+596 XXX XXX XXX</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📸</div>
+          <div class="contact-item-text"><h4>Instagram</h4><a href="#" target="_blank">@karavibes.martinique</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🕐</div>
+          <div class="contact-item-text"><h4>Horaires</h4>
+            <p>Mar–Jeu 17h–00h<br>Ven–Sam 15h–03h<br>Dim 11h–18h</p>
+          </div>
+        </div>
+        <div class="map-placeholder">🗺️ Plan disponible à l'ouverture</div>
+      </div>
+      <div>
+        <span class="section-label">Une question ?</span>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:1.5rem; color:var(--noir)">Écrivez-nous</h3>
+        <div class="contact-form">
+          <input type="text" placeholder="Votre nom" />
+          <input type="email" placeholder="Votre email" />
+          <input type="text" placeholder="Objet" />
+          <textarea placeholder="Votre message..."></textarea>
+          <button class="btn-primary-dark" onclick="alert('Message envoyé !')">Envoyer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <img src="logo-karavibes.png" alt="KaraVibes" style="height:44px;" onerror="this.style.display='none'; document.getElementById('footerLogoText').style.display='block'" />
+      <span id="footerLogoText" style="display:none;" class="footer-logo-text">KARAVIBES</span>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#concept">Le Concept</a></li>
+      <li><a href="#tarifs">Tarifs</a></li>
+      <li><a href="#reservation">Réserver</a></li>
+      <li><a href="menu.html">La Carte</a></li>
+      <li><a href="https://www.karafun.fr" target="_blank">Catalogue</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="footer-social">
+      <a href="#" class="social-link">IG</a>
+      <a href="#" class="social-link">FB</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 KaraVibes · Studio Lounge Privé · Martinique</p>
+    <div class="footer-legal">
+      <a href="#">Mentions légales</a>
+      <a href="#">CGV</a>
+    </div>
+    <a href="admin.html" class="spider-link" title="">🕷️</a>
+  </div>
+</footer>
+
+<script>
+  // ===== CRÉNEAUX =====
+  const HORAIRES_JOUR = {
+    0: null, // Lundi fermé
+    1: { debut: 17, fin: 24 }, // Mardi
+    2: { debut: 17, fin: 24 }, // Mercredi
+    3: { debut: 17, fin: 24 }, // Jeudi
+    4: { debut: 15, fin: 27 }, // Vendredi (03h = 27)
+    5: { debut: 15, fin: 27 }, // Samedi
+    6: { debut: 11, fin: 18 }  // Dimanche
+  };
+
+  function getCreneaux(jour) {
+    const h = HORAIRES_JOUR[jour];
+    if (!h) return [];
+    const creneaux = [];
+    let t = h.debut;
+    while (t + 2 <= h.fin) {
+      creneaux.push(t);
+      t += 2.5; // 2h séance + 30min nettoyage
+    }
+    return creneaux;
+  }
+
+  function formatH(h) {
+    const heure = Math.floor(h) % 24;
+    return heure.toString().padStart(2,'0') + 'h00';
+  }
+
+  function getReservations() {
+    return JSON.parse(localStorage.getItem('kv_reservations') || '[]');
+  }
+
+  function updateCreneaux() {
+    const salle = document.getElementById('f-salle').value;
+    const date = document.getElementById('f-date').value;
+    const container = document.getElementById('creneaux-container');
+    document.getElementById('f-heure').value = '';
+
+    if (!salle || !date) {
+      container.innerHTML = '<span style="font-size:0.8rem; color:var(--gris);">Sélectionnez d\'abord une salle et une date.</span>';
+      return;
+    }
+
+    const d = new Date(date);
+    const jour = (d.getDay() + 6) % 7; // 0=lundi
+    const creneaux = getCreneaux(jour);
+
+    if (creneaux.length === 0) {
+      container.innerHTML = '<span style="font-size:0.8rem; color:var(--rose);">Fermé ce jour-là.</span>';
+      return;
+    }
+
+    const reservations = getReservations();
+    const prises = reservations
+      .filter(r => r.salle === salle && r.date === date)
+      .map(r => r.heureNum);
+
+    container.innerHTML = creneaux.map(h => {
+      const pris = prises.includes(h);
+      return `<button class="creneau-btn ${pris ? 'pris' : ''}" onclick="${pris ? '' : `selectCreneau(${h}, this)`}" ${pris ? 'disabled' : ''}>
+        ${formatH(h)}
+      </button>`;
+    }).join('');
+  }
+
+  function selectCreneau(h, btn) {
+    document.querySelectorAll('.creneau-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('f-heure').value = formatH(h);
+    calcPrice();
+  }
+
+  // ===== CALCUL PRIX =====
+  function calcPrice() {
+    const nb = parseInt(document.getElementById('f-nb').value) || 0;
+    const prolo = document.getElementById('f-prolo').checked;
+    if (!nb) { document.getElementById('priceDisplay').textContent = '—'; return; }
+    const base = Math.max(nb, 4) * 20;
+    const ext = prolo ? Math.max(nb, 4) * 15 : 0;
+    document.getElementById('priceDisplay').textContent = (base + ext) + '€';
+  }
+
+  // ===== SOUMETTRE RÉSERVATION =====
+  function submitResa() {
+    const prenom = document.getElementById('f-prenom').value.trim();
+    const nom = document.getElementById('f-nom').value.trim();
+    const heure = document.getElementById('f-heure').value;
+    const salle = document.getElementById('f-salle').value;
+    const date = document.getElementById('f-date').value;
+
+    if (!prenom || !nom || !salle || !date || !heure) {
+      alert('Veuillez remplir tous les champs et choisir un créneau.');
+      return;
+    }
+
+    alert('Paiement en ligne disponible prochainement !\n\nVotre demande a bien été enregistrée. Nous vous contacterons pour confirmer votre réservation.\n\n📞 Ou appelez-nous directement !');
+  }
+
+  // ===== AVIS =====
+  let selectedStar = 0;
+
+  function setStar(n) {
+    selectedStar = n;
+    document.getElementById('avis-note').value = n;
+    document.querySelectorAll('.star-btn').forEach((btn, i) => {
+      btn.classList.toggle('active', i < n);
+    });
+  }
+
+  function submitAvis() {
+    const prenom = document.getElementById('avis-prenom').value.trim();
+    const comment = document.getElementById('avis-commentaire').value.trim();
+    const note = selectedStar;
+    if (!prenom || !comment || !note) {
+      alert('Veuillez remplir tous les champs et choisir une note.');
+      return;
+    }
+    const avis = JSON.parse(localStorage.getItem('kv_avis_pending') || '[]');
+    avis.push({ prenom, comment, note, date: new Date().toISOString(), statut: 'en_attente' });
+    localStorage.setItem('kv_avis_pending', JSON.stringify(avis));
+    document.getElementById('avis-prenom').value = '';
+    document.getElementById('avis-commentaire').value = '';
+    setStar(0);
+    alert('Merci pour votre avis ! Il sera publié après validation. 🙏');
+  }
+
+  function loadAvis() {
+    const avis = JSON.parse(localStorage.getItem('kv_avis_valides') || '[]');
+    const grid = document.getElementById('avis-grid');
+    if (avis.length === 0) return;
+    grid.innerHTML = avis.map(a => `
+      <div class="avis-card">
+        <div class="avis-stars">${'⭐'.repeat(a.note)}</div>
+        <p class="avis-text">"${a.comment}"</p>
+        <p class="avis-author">${a.prenom}</p>
+      </div>
+    `).join('');
+  }
+
+  // ===== NAV =====
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    nav.style.padding = window.scrollY > 50 ? '0.6rem 3rem' : '1rem 3rem';
+  });
+
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+  });
+
+  // Date min = aujourd'hui
+  document.getElementById('f-date').setAttribute('min', new Date().toISOString().split('T')[0]);
+
+  // Lang switcher simplifié
+  function setLang(lang) {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  loadAvis();
+</script>
+</body>
+</html>
