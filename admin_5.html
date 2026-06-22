@@ -202,6 +202,7 @@
     <div class="nav-item owner-only" onclick="showPage('avis', this)"><span class="nav-icon">⭐</span> Avis clients</div>
     <div class="nav-item owner-only" onclick="showPage('tarifs', this)"><span class="nav-icon">💰</span> Tarifs</div>
     <div class="nav-item owner-only" onclick="showPage('menu', this)"><span class="nav-icon">🍹</span> Menu & Carte</div>
+    <div class="nav-item owner-only" onclick="showPage('stock', this)"><span class="nav-icon">📦</span> Stock</div>
     <div class="nav-item owner-only" onclick="showPage('parametres', this)"><span class="nav-icon">⚙️</span> Paramètres</div>
     <div class="sidebar-footer">
       <button class="logout-btn" onclick="logout()">⬅ Déconnexion</button>
@@ -397,6 +398,28 @@
       </div>
     </div>
 
+    <!-- STOCK -->
+    <div class="page" id="page-stock">
+      <div class="table-card">
+        <div class="table-header">
+          <h3>📦 STOCK DES PRODUITS</h3>
+          <button class="btn-add" onclick="ouvrirAjoutStock()">+ Réception livraison</button>
+        </div>
+        <table>
+          <thead><tr><th>Catégorie</th><th>Article</th><th>Stock</th><th>Seuil alerte</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="stock-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header"><h3>🧾 HISTORIQUE DES MOUVEMENTS</h3></div>
+        <table>
+          <thead><tr><th>Article</th><th>Type</th><th>Quantité</th><th>Date</th></tr></thead>
+          <tbody id="stock-historique-tbody"><tr><td colspan="4"><div class="empty-state"><div class="empty-icon">📭</div>Aucun mouvement enregistré.</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- PARAMÈTRES -->
     <div class="page" id="page-parametres">
       <div class="params-grid">
@@ -530,7 +553,7 @@
   }
 
   // ===== NAVIGATION =====
-  const pageTitles = { reservations:'Réservations', salles:'Salles & Fermetures', avis:'Avis clients', tarifs:'Tarifs', menu:'Menu & Carte', parametres:'Paramètres' };
+  const pageTitles = { reservations:'Réservations', salles:'Salles & Fermetures', avis:'Avis clients', tarifs:'Tarifs', menu:'Menu & Carte', stock:'Stock', parametres:'Paramètres' };
 
   function showPage(id, el) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -539,6 +562,7 @@
     if (el) el.classList.add('active');
     document.getElementById('pageTitle').textContent = pageTitles[id];
     if (id === 'avis') loadAvis();
+    if (id === 'stock') renderStock();
   }
 
   // ===== INIT =====
@@ -765,26 +789,30 @@
 
   // ===== MENU =====
   const defaultMenu = [
-    {cat:'Cocktails',nom:'Mojito',desc:'Menthe, Citron, Sprite, Rhum Blanc',prix:10,actif:true},
-    {cat:'Cocktails',nom:'Piña Colada',desc:'Crème de coco, Jus d\'ananas, Citron, Rhum Blanc',prix:10,actif:true},
-    {cat:'Cocktails',nom:'Sex on the Beach',desc:'Liqueur de Pêche, Jus de cranberry, Jus d\'orange, Vodka',prix:10,actif:true},
-    {cat:'Cocktails',nom:'Daiquiri',desc:'Citron, Sirop de canne, Rhum Blanc',prix:10,actif:true},
-    {cat:'Bières',nom:'Bière Pression 25cl',desc:'',prix:null,actif:true},
-    {cat:'Bières',nom:'Bière Pression 50cl',desc:'',prix:null,actif:true},
-    {cat:'Bières',nom:'Monaco 25cl',desc:'',prix:null,actif:true},
-    {cat:'Bières',nom:'Monaco 50cl',desc:'',prix:null,actif:true},
-    {cat:'Boissons Chaudes',nom:'Café Expresso',desc:'',prix:null,actif:true},
-    {cat:'Boissons Chaudes',nom:'Cappuccino',desc:'',prix:null,actif:true},
-    {cat:'Boissons Chaudes',nom:'Thé Infusion',desc:'Menthe, Camomille, Thé Vert',prix:null,actif:true},
-    {cat:'Boissons Chaudes',nom:'Chocolat Chaud',desc:'',prix:null,actif:true},
-    {cat:'Desserts',nom:'Moelleux au Chocolat',desc:'',prix:5.5,actif:true},
-    {cat:'Desserts',nom:'Café Gourmand',desc:'',prix:5.5,actif:true},
+    {cat:'Cocktails',nom:'Mojito',desc:'Menthe, Citron, Sprite, Rhum Blanc',prix:10,actif:true,stock:0,seuil:20},
+    {cat:'Cocktails',nom:'Piña Colada',desc:'Crème de coco, Jus d\'ananas, Citron, Rhum Blanc',prix:10,actif:true,stock:0,seuil:20},
+    {cat:'Cocktails',nom:'Sex on the Beach',desc:'Liqueur de Pêche, Jus de cranberry, Jus d\'orange, Vodka',prix:10,actif:true,stock:0,seuil:20},
+    {cat:'Cocktails',nom:'Daiquiri',desc:'Citron, Sirop de canne, Rhum Blanc',prix:10,actif:true,stock:0,seuil:20},
+    {cat:'Bières',nom:'Bière Pression 25cl',desc:'',prix:null,actif:true,stock:0,seuil:20},
+    {cat:'Bières',nom:'Bière Pression 50cl',desc:'',prix:null,actif:true,stock:0,seuil:20},
+    {cat:'Bières',nom:'Monaco 25cl',desc:'',prix:null,actif:true,stock:0,seuil:20},
+    {cat:'Bières',nom:'Monaco 50cl',desc:'',prix:null,actif:true,stock:0,seuil:20},
+    {cat:'Boissons Chaudes',nom:'Café Expresso',desc:'',prix:null,actif:true,stock:0,seuil:20},
+    {cat:'Boissons Chaudes',nom:'Cappuccino',desc:'',prix:null,actif:true,stock:0,seuil:20},
+    {cat:'Boissons Chaudes',nom:'Thé Infusion',desc:'Menthe, Camomille, Thé Vert',prix:null,actif:true,stock:0,seuil:20},
+    {cat:'Boissons Chaudes',nom:'Chocolat Chaud',desc:'',prix:null,actif:true,stock:0,seuil:20},
+    {cat:'Desserts',nom:'Moelleux au Chocolat',desc:'',prix:5.5,actif:true,stock:0,seuil:20},
+    {cat:'Desserts',nom:'Café Gourmand',desc:'',prix:5.5,actif:true,stock:0,seuil:20},
   ];
   let menuItems = [];
 
   function loadMenu() {
     const saved = localStorage.getItem('kv_menu');
     menuItems = saved ? JSON.parse(saved) : [...defaultMenu];
+    menuItems.forEach(item => {
+      if (item.stock === undefined) item.stock = 0;
+      if (item.seuil === undefined) item.seuil = 20;
+    });
     renderMenu();
   }
 
@@ -815,6 +843,81 @@
     menuItems.push({cat:document.getElementById('mm-cat').value,nom,desc:document.getElementById('mm-desc').value,prix:prix?parseFloat(prix):null,actif:true});
     localStorage.setItem('kv_menu',JSON.stringify(menuItems)); renderMenu(); closeMenuModal();
     document.getElementById('mm-nom').value=''; document.getElementById('mm-desc').value=''; document.getElementById('mm-prix').value='';
+  }
+
+  // ===== STOCK =====
+  function getStockHistorique() { return JSON.parse(localStorage.getItem('kv_stock_historique') || '[]'); }
+  function saveStockHistorique(h) { localStorage.setItem('kv_stock_historique', JSON.stringify(h)); }
+
+  function logMouvementStock(nom, type, qty) {
+    const h = getStockHistorique();
+    h.unshift({ nom, type, qty, date: new Date().toISOString() });
+    saveStockHistorique(h);
+  }
+
+  function renderStock() {
+    const tbody = document.getElementById('stock-tbody');
+    tbody.innerHTML = menuItems.map((item, i) => `
+      <tr>
+        <td><span class="badge badge-orange">${item.cat}</span></td>
+        <td><strong>${item.nom}</strong></td>
+        <td style="text-align:center; font-family:'Cinzel',serif; color:var(--or);">${item.stock}</td>
+        <td>
+          <input type="number" value="${item.seuil}" min="0" style="background:transparent;border:1px solid rgba(201,168,76,0.2);border-radius:4px;padding:0.3rem 0.5rem;color:var(--blanc);width:60px;outline:none;" onchange="updateSeuil(${i}, this.value)" />
+        </td>
+        <td><span class="badge ${item.stock <= item.seuil ? 'badge-rouge' : 'badge-vert'}">${item.stock <= item.seuil ? '⚠️ Stock bas' : 'OK'}</span></td>
+        <td>
+          <button class="action-btn" onclick="vendreProduit(${i})">− Vente</button>
+          <button class="action-btn success" onclick="ajouterStock(${i})">+ Ajouter</button>
+        </td>
+      </tr>`).join('');
+    renderStockHistorique();
+  }
+
+  function updateSeuil(i, val) {
+    menuItems[i].seuil = parseInt(val) || 0;
+    localStorage.setItem('kv_menu', JSON.stringify(menuItems));
+    renderStock();
+  }
+
+  function vendreProduit(i) {
+    const item = menuItems[i];
+    if (item.stock <= 0) { alert(`Stock épuisé pour ${item.nom}.`); return; }
+    item.stock -= 1;
+    localStorage.setItem('kv_menu', JSON.stringify(menuItems));
+    logMouvementStock(item.nom, 'vente', 1);
+    renderStock();
+  }
+
+  function ajouterStock(i) {
+    const item = menuItems[i];
+    const qty = parseInt(prompt(`Quantité reçue pour ${item.nom} :`, '1'));
+    if (!qty || qty <= 0) return;
+    item.stock += qty;
+    localStorage.setItem('kv_menu', JSON.stringify(menuItems));
+    logMouvementStock(item.nom, 'livraison', qty);
+    renderStock();
+  }
+
+  function ouvrirAjoutStock() {
+    if (!menuItems.length) { alert('Aucun produit dans le menu.'); return; }
+    const noms = menuItems.map((m, i) => `${i + 1}. ${m.nom}`).join('\n');
+    const choix = parseInt(prompt(`Choisissez le n° du produit reçu :\n${noms}`));
+    if (!choix || choix < 1 || choix > menuItems.length) return;
+    ajouterStock(choix - 1);
+  }
+
+  function renderStockHistorique() {
+    const tbody = document.getElementById('stock-historique-tbody');
+    const h = getStockHistorique();
+    if (!h.length) { tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">📭</div>Aucun mouvement enregistré.</div></td></tr>'; return; }
+    tbody.innerHTML = h.slice(0, 100).map(m => `
+      <tr>
+        <td>${m.nom}</td>
+        <td><span class="badge ${m.type === 'vente' ? 'badge-rouge' : 'badge-vert'}">${m.type === 'vente' ? 'Vente' : 'Livraison'}</span></td>
+        <td style="text-align:center">${m.type === 'vente' ? '−' : '+'}${m.qty}</td>
+        <td style="font-size:0.78rem; color:var(--gris)">${new Date(m.date).toLocaleString('fr-FR')}</td>
+      </tr>`).join('');
   }
 
   // ===== PARAMÈTRES =====
