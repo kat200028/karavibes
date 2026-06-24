@@ -84,9 +84,9 @@
     .section-title-carte.cyan { color: var(--cyan); }
     .section-title-carte.rose { color: var(--rose-doux); }
 
-    /* LA CARTE ITEMS — fond doré */
+    /* LA CARTE ITEMS — fond blanc/lumineux */
     .items-grid {
-      background: linear-gradient(135deg, var(--or), var(--or-clair));
+      background: #ffffff;
       border-radius: 12px;
       padding: 2rem;
       display: grid;
@@ -97,23 +97,23 @@
     .menu-item {
       display: flex; justify-content: space-between; align-items: flex-start;
       padding: 1.2rem 1rem;
-      border-bottom: 1px solid rgba(10,10,10,0.15);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
       gap: 1rem;
     }
 
-    .menu-item:nth-child(odd) { border-right: 1px solid rgba(10,10,10,0.15); }
+    .menu-item:nth-child(odd) { border-right: 1px solid rgba(0,0,0,0.07); }
     .menu-item:last-child, .menu-item:nth-last-child(2):nth-child(odd) { border-bottom: none; }
 
     .menu-item-info h4 {
       font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600;
-      color: #1a1a1a; margin-bottom: 0.25rem;
+      color: var(--or); margin-bottom: 0.25rem;
     }
-    .menu-item-info p { font-size: 0.75rem; color: #3a2f12; line-height: 1.5; }
+    .menu-item-info p { font-size: 0.75rem; color: #888; line-height: 1.5; }
     .menu-item-price {
       font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 600;
-      color: #1a1a1a; white-space: nowrap;
+      color: var(--or); white-space: nowrap;
     }
-    .menu-item-price.tbd { color: #5c4d24; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-style: italic; font-weight: 400; }
+    .menu-item-price.tbd { color: #bbb; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-style: italic; font-weight: 400; }
 
     /* Single column pour les petites catégories */
     .items-grid.single { grid-template-columns: 1fr; }
