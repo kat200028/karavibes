@@ -195,7 +195,8 @@
 <!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
-    <div class="login-logo">KARAVIBES</div>
+    <img src="logo-karavibes.png" alt="KaraVibes" style="height:48px; object-fit:contain; margin-bottom:0.3rem;" onerror="this.style.display='none'; document.getElementById('loginLogoText').style.display='block'" />
+    <div class="login-logo" id="loginLogoText" style="display:none;">KARAVIBES</div>
     <span class="login-sub">Espace Administration</span>
     <div class="login-roles">
       <button class="role-btn active" id="roleOwner" onclick="selectRole('owner')"><span class="role-icon">👑</span><span class="role-name">Propriétaire</span><span class="role-desc">Accès complet</span></button>
@@ -211,7 +212,8 @@
 <div class="dashboard" id="dashboard">
   <div class="sidebar">
     <div class="sidebar-logo">
-      KARAVIBES
+      <img src="logo-karavibes.png" alt="KaraVibes" style="height:32px; object-fit:contain; display:block; margin-bottom:0.4rem;" onerror="this.style.display='none'; document.getElementById('sidebarLogoText').style.display='inline'" />
+      <span id="sidebarLogoText" style="display:none;">KARAVIBES</span>
       <span class="sidebar-role" id="sidebarRole">Propriétaire</span>
     </div>
     <div class="nav-item active" onclick="showPage('reservations', this)"><span class="nav-icon">📋</span> Réservations</div>
