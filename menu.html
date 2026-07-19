@@ -151,10 +151,16 @@
     .spider-link:hover { color: rgba(138,138,154,0.3); }
 
     @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .items-grid { grid-template-columns: 1fr; }
+      nav { padding: 0.8rem 1rem; }
+      .nav-back { font-size: 0.65rem; }
+      .carte-body { padding: 3rem 1rem 5rem; }
+      .items-grid { grid-template-columns: 1fr; padding: 1rem; }
       .items-grid .menu-item { border-right: none; }
+      .menu-item { flex-direction: row; gap: 0.5rem; padding: 0.9rem 0.5rem; }
+      .menu-item-info h4 { font-size: 0.9rem; }
+      .menu-item-price { font-size: 0.85rem; min-width: 40px; text-align: right; }
       .formules-grid { grid-template-columns: 1fr; }
+      .section-header { gap: 0.8rem; }
     }
   </style>
 </head>
