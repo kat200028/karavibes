@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KaraVibes — Règlement & Conditions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --noir: #0a0a0a; --or: #C9A84C; --or-clair: #E8C97A;
+      --cyan: #00E5FF; --rose: #FF2D78; --blanc: #FAF8F5; --gris: #8A8A9A;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:var(--noir); color:var(--blanc); }
+
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:1rem 3rem; background:rgba(10,10,10,0.95);
+      border-bottom:1px solid rgba(201,168,76,0.15); backdrop-filter:blur(12px);
+    }
+    .nav-logo { display:flex; align-items:center; gap:0.5rem; text-decoration:none; }
+    .nav-logo img { height:34px; object-fit:contain; }
+    .nav-back { font-size:0.75rem; color:var(--gris); text-decoration:none; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.2s; }
+    .nav-back:hover { color:var(--or); }
+
+    .page { max-width:800px; margin:0 auto; padding:8rem 2rem 6rem; }
+
+    .page-eyebrow { font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--or); margin-bottom:1rem; display:block; }
+    .page-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3rem); font-weight:700; color:var(--blanc); margin-bottom:0.5rem; }
+    .page-subtitle { font-size:0.9rem; color:var(--gris); margin-bottom:3rem; }
+
+    .neon-line { height:1px; background:linear-gradient(90deg,transparent,var(--cyan),var(--rose),transparent); margin-bottom:3rem; }
+
+    .bloc { margin-bottom:2.5rem; }
+    .bloc-title {
+      font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase;
+      color:var(--or); margin-bottom:1rem; padding-bottom:0.5rem;
+      border-bottom:1px solid rgba(201,168,76,0.15);
+    }
+    .bloc ul { list-style:none; display:flex; flex-direction:column; gap:0.7rem; }
+    .bloc ul li { font-size:0.9rem; color:rgba(250,248,245,0.75); line-height:1.7; padding-left:1.2rem; position:relative; }
+    .bloc ul li::before { content:'—'; position:absolute; left:0; color:var(--or); }
+    .bloc p { font-size:0.9rem; color:rgba(250,248,245,0.75); line-height:1.8; }
+
+    .annulation-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem; }
+    .annulation-card { background:rgba(250,248,245,0.03); border:1px solid rgba(201,168,76,0.15); border-radius:6px; padding:1.2rem; }
+    .annulation-card.ok { border-color:rgba(0,229,255,0.2); }
+    .annulation-card.warning { border-color:rgba(255,107,157,0.2); }
+    .annulation-delay { font-family:'Cinzel',serif; font-size:1rem; color:var(--or); margin-bottom:0.4rem; }
+    .annulation-card.ok .annulation-delay { color:var(--cyan); }
+    .annulation-card.warning .annulation-delay { color:var(--rose); }
+    .annulation-rule { font-size:0.82rem; color:rgba(250,248,245,0.65); line-height:1.5; }
+
+    .highlight-box {
+      background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.2);
+      border-radius:8px; padding:1.5rem; margin-top:1rem;
+    }
+    .highlight-box p { font-size:0.85rem; color:rgba(250,248,245,0.7); line-height:1.8; }
+
+    footer { text-align:center; padding:2rem; border-top:1px solid rgba(201,168,76,0.1); margin-top:4rem; }
+    footer p { font-size:0.72rem; color:rgba(138,138,154,0.4); }
+
+    @media (max-width:600px) {
+      nav { padding:0.8rem 1rem; }
+      .annulation-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="logo-icon.png" alt="KaraVibes" />
+    <span style="font-family:'Cinzel',serif; font-size:1.1rem; letter-spacing:0.1em;"><span style="color:var(--or)">KARA</span><span style="color:var(--blanc)">VIBES</span></span>
+  </a>
+  <a href="index.html" class="nav-back">← Retour</a>
+</nav>
+
+<div class="page">
+  <span class="page-eyebrow">Studio Lounge Privé · Trois-Îlets, Martinique</span>
+  <h1 class="page-title">Règlement & Conditions</h1>
+  <p class="page-subtitle">Merci de lire ces informations avant votre réservation.</p>
+  <div class="neon-line"></div>
+
+  <!-- RÈGLEMENT INTÉRIEUR -->
+  <div class="bloc">
+    <div class="bloc-title">📋 Règlement Intérieur</div>
+    <ul>
+      <li>L'accès aux salles est réservé aux personnes ayant effectué une réservation confirmée.</li>
+      <li>Chaque session est privée et non partagée. Votre salle vous appartient pour la durée réservée.</li>
+      <li>Les salles accueillent de 1 à 10 personnes maximum. Ce nombre ne peut pas être dépassé.</li>
+      <li>Il est interdit d'apporter de la nourriture ou des boissons de l'extérieur.</li>
+      <li>Le matériel (micros, écrans, équipements) doit être utilisé avec soin. Tout dommage intentionnel sera facturé.</li>
+      <li>KaraVibes se réserve le droit d'interrompre une session en cas de comportement irrespectueux ou dangereux, sans remboursement.</li>
+      <li>Le niveau sonore en dehors des salles doit rester raisonnable. Les salles sont insonorisées mais merci de respecter les espaces communs.</li>
+      <li>L'accès est interdit aux mineurs non accompagnés d'un adulte responsable.</li>
+      <li>La consommation excessive d'alcool pouvant nuire à la sécurité sera gérée par notre équipe.</li>
+      <li>Il est interdit de fumer (y compris cigarettes électroniques) à l'intérieur des salles.</li>
+    </ul>
+  </div>
+
+  <!-- POLITIQUE D'ANNULATION -->
+  <div class="bloc">
+    <div class="bloc-title">❌ Politique d'Annulation</div>
+    <div class="annulation-grid">
+      <div class="annulation-card ok">
+        <div class="annulation-delay">Plus de 48h avant</div>
+        <div class="annulation-rule">Annulation gratuite. Remboursement intégral de l'acompte si paiement effectué.</div>
+      </div>
+      <div class="annulation-card ok">
+        <div class="annulation-delay">Entre 24h et 48h avant</div>
+        <div class="annulation-rule">Avoir valable 3 mois sur une prochaine réservation. Pas de remboursement direct.</div>
+      </div>
+      <div class="annulation-card warning">
+        <div class="annulation-delay">Moins de 24h avant</div>
+        <div class="annulation-rule">Aucun remboursement. La session est considérée comme consommée.</div>
+      </div>
+      <div class="annulation-card warning">
+        <div class="annulation-delay">Non-présentation</div>
+        <div class="annulation-rule">La réservation est perdue sans remboursement ni avoir.</div>
+      </div>
+    </div>
+    <div class="highlight-box">
+      <p>⚠️ En cas de force majeure (intempéries, problème de santé justifié), contactez-nous dès que possible. Nous étudierons chaque situation avec bienveillance et proposerons un report si possible.</p>
+    </div>
+  </div>
+
+  <!-- RÉSERVATION -->
+  <div class="bloc">
+    <div class="bloc-title">🎤 Conditions de Réservation</div>
+    <ul>
+      <li>La réservation est valide uniquement après confirmation de notre part (email ou message).</li>
+      <li>Un minimum de 4 personnes est requis pour la tarification standard (80€ minimum).</li>
+      <li>Les groupes de moins de 4 personnes sont acceptés mais facturés pour 4 (80€ minimum).</li>
+      <li>La durée standard d'une session est de 2h. La prolongation est possible selon disponibilité.</li>
+      <li>L'heure de début est l'heure à laquelle votre groupe doit être présent. Tout retard est déduit de votre temps de session.</li>
+      <li>Les packages entreprises et événements spéciaux sont sur devis, contactez-nous directement.</li>
+    </ul>
+  </div>
+
+  <!-- RESPONSABILITÉ -->
+  <div class="bloc">
+    <div class="bloc-title">⚖️ Responsabilité</div>
+    <ul>
+      <li>KaraVibes décline toute responsabilité en cas de perte ou vol d'objets personnels dans les locaux.</li>
+      <li>Le client est responsable de son groupe pendant toute la durée de la session.</li>
+      <li>Toute dégradation du matériel ou des locaux fera l'objet d'une facturation au tarif de remplacement.</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 KaraVibes · Studio Lounge Privé · Trois-Îlets, Martinique</p>
+</footer>
+
+</body>
+</html>

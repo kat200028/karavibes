@@ -522,6 +522,10 @@
           <span class="price-preview-amount" id="priceDisplay">—</span>
         </div>
 
+        <label style="display:flex; align-items:flex-start; gap:0.6rem; margin-bottom:1rem; cursor:pointer;">
+          <input type="checkbox" id="accept-reglement" style="margin-top:3px; accent-color:var(--or);" />
+          <span style="font-size:0.78rem; color:var(--gris); line-height:1.5;">J'ai lu et j'accepte le <a href="reglement.html" target="_blank" style="color:var(--or); text-decoration:underline;">règlement intérieur et la politique d'annulation</a></span>
+        </label>
         <button class="btn-primary" style="width:100%;" onclick="submitResa()">Confirmer & Payer</button>
         <div class="tel-resa" style="margin-top:1rem;">
           Vous préférez réserver par téléphone ?
@@ -652,7 +656,7 @@
     <p class="footer-copy">© 2025 KaraVibes · Studio Lounge Privé · Martinique</p>
     <div class="footer-legal">
       <a href="#">Mentions légales</a>
-      <a href="#">CGV</a>
+      <a href="reglement.html">Règlement & Conditions</a>
     </div>
     <a href="admin_5.html" class="spider-link" title="">🕷️</a>
   </div>
@@ -852,6 +856,10 @@
 
   // ===== SOUMETTRE RÉSERVATION =====
   async function submitResa() {
+    if (!document.getElementById('accept-reglement').checked) {
+      alert('Merci d\'accepter le règlement intérieur avant de confirmer votre réservation.');
+      return;
+    }
     const prenom = document.getElementById('f-prenom').value.trim();
     const nom = document.getElementById('f-nom').value.trim();
     const tel = document.getElementById('f-tel').value.trim();
