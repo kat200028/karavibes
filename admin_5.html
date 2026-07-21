@@ -155,6 +155,15 @@
     .param-label { font-size:0.68rem; color:var(--gris); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:0.3rem; }
     .param-save { background:linear-gradient(135deg,var(--or),var(--or-clair)); border:none; border-radius:6px; padding:0.6rem 1.5rem; color:var(--noir); font-family:'Inter',sans-serif; font-weight:600; font-size:0.78rem; cursor:pointer; width:100%; }
 
+    /* TABLEAU DE BORD */
+    .ca-bar-row { display:flex; align-items:center; gap:1rem; margin-bottom:0.7rem; }
+    .ca-bar-label { font-size:0.75rem; color:var(--gris); width:60px; text-align:right; flex-shrink:0; }
+    .ca-bar-track { flex:1; background:rgba(250,248,245,0.05); border-radius:20px; height:20px; overflow:hidden; }
+    .ca-bar-fill { height:100%; border-radius:20px; background:linear-gradient(90deg,var(--or),var(--or-clair)); min-width:4px; transition:width 0.6s ease; }
+    .ca-bar-value { font-family:'Cinzel',serif; font-size:0.78rem; color:var(--or); width:60px; flex-shrink:0; }
+
+    /* DEVIS */
+
     /* CAISSE */
     .caisse-cats { display: flex; flex-direction: column; gap: 2rem; }
     .caisse-cat-title { font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1rem; }
@@ -217,6 +226,8 @@
     <div class="nav-item active" onclick="showPage('reservations', this)"><span class="nav-icon">📋</span> Réservations</div>
     <div class="nav-item" onclick="showPage('salles', this)"><span class="nav-icon">🚪</span> Salles & Fermetures</div>
     <div class="nav-item" onclick="showPage('caisse', this)"><span class="nav-icon">🛒</span> Caisse</div>
+    <div class="nav-item owner-only" onclick="showPage('tableau', this)"><span class="nav-icon">📊</span> Tableau de bord CA</div>
+    <div class="nav-item owner-only" onclick="showPage('devis', this)"><span class="nav-icon">📝</span> Devis entreprises</div>
     <div class="nav-item owner-only" onclick="showPage('avis', this)"><span class="nav-icon">⭐</span> Avis clients</div>
     <div class="nav-item owner-only" onclick="showPage('tarifs', this)"><span class="nav-icon">💰</span> Tarifs</div>
     <div class="nav-item owner-only" onclick="showPage('menu', this)"><span class="nav-icon">🍹</span> Menu & Carte</div>
@@ -244,7 +255,10 @@
       <div class="table-card">
         <div class="table-header">
           <h3>📋 LISTE DES RÉSERVATIONS</h3>
-          <button class="btn-add owner-only" onclick="openModal()">+ Ajouter manuellement</button>
+          <div style="display:flex;gap:0.6rem;align-items:center;">
+            <button class="btn-add owner-only" onclick="openModal()">+ Ajouter manuellement</button>
+            <button class="btn-add owner-only" onclick="imprimerResa()" style="background:rgba(201,168,76,0.15);color:var(--or);border:1px solid rgba(201,168,76,0.3);">🖨️ Imprimer</button>
+          </div>
         </div>
         <table>
           <thead><tr><th>Client</th><th>Salle</th><th>Date</th><th>Heure</th><th>Personnes</th><th>Montant</th><th>Statut</th><th>Actions</th></tr></thead>
@@ -278,9 +292,9 @@
               <div><div class="toggle-label">Salle disponible</div><div class="toggle-sub">Désactiver pour fermer complètement</div></div>
               <label class="toggle"><input type="checkbox" id="toggle-lagon" checked onchange="toggleSalle('lagon', this.checked)" /><span class="toggle-slider"></span></label>
             </div>
-            <div class="toggle-row">
-              <div><div class="toggle-label">Mardi</div><div class="toggle-sub">17h00 – 00h00</div></div>
-              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('lagon','mar',this.checked)" /><span class="toggle-slider"></span></label>
+            <div class="toggle-row" style="opacity:0.4;">
+              <div><div class="toggle-label">Lundi – Mardi</div><div class="toggle-sub">Fermé</div></div>
+              <span style="font-size:0.7rem;color:var(--rouge);">FERMÉ</span>
             </div>
             <div class="toggle-row">
               <div><div class="toggle-label">Mercredi</div><div class="toggle-sub">17h00 – 00h00</div></div>
@@ -291,15 +305,15 @@
               <label class="toggle"><input type="checkbox" checked onchange="saveDispo('lagon','jeu',this.checked)" /><span class="toggle-slider"></span></label>
             </div>
             <div class="toggle-row">
-              <div><div class="toggle-label">Vendredi</div><div class="toggle-sub">15h00 – 03h00</div></div>
+              <div><div class="toggle-label">Vendredi</div><div class="toggle-sub">15h00 – 00h00</div></div>
               <label class="toggle"><input type="checkbox" checked onchange="saveDispo('lagon','ven',this.checked)" /><span class="toggle-slider"></span></label>
             </div>
             <div class="toggle-row">
-              <div><div class="toggle-label">Samedi</div><div class="toggle-sub">15h00 – 03h00</div></div>
+              <div><div class="toggle-label">Samedi</div><div class="toggle-sub">15h00 – 00h00</div></div>
               <label class="toggle"><input type="checkbox" checked onchange="saveDispo('lagon','sam',this.checked)" /><span class="toggle-slider"></span></label>
             </div>
             <div class="toggle-row">
-              <div><div class="toggle-label">Dimanche</div><div class="toggle-sub">11h00 – 18h00</div></div>
+              <div><div class="toggle-label">Dimanche</div><div class="toggle-sub">11h00 – 20h00</div></div>
               <label class="toggle"><input type="checkbox" checked onchange="saveDispo('lagon','dim',this.checked)" /><span class="toggle-slider"></span></label>
             </div>
             <div class="fermeture-form">
@@ -326,9 +340,9 @@
               <div><div class="toggle-label">Salle disponible</div><div class="toggle-sub">Désactiver pour fermer complètement</div></div>
               <label class="toggle"><input type="checkbox" id="toggle-tokyo" checked onchange="toggleSalle('tokyo', this.checked)" /><span class="toggle-slider"></span></label>
             </div>
-            <div class="toggle-row">
-              <div><div class="toggle-label">Mardi</div><div class="toggle-sub">17h00 – 00h00</div></div>
-              <label class="toggle"><input type="checkbox" checked onchange="saveDispo('tokyo','mar',this.checked)" /><span class="toggle-slider"></span></label>
+            <div class="toggle-row" style="opacity:0.4;">
+              <div><div class="toggle-label">Lundi – Mardi</div><div class="toggle-sub">Fermé</div></div>
+              <span style="font-size:0.7rem;color:var(--rouge);">FERMÉ</span>
             </div>
             <div class="toggle-row">
               <div><div class="toggle-label">Mercredi</div><div class="toggle-sub">17h00 – 00h00</div></div>
@@ -339,15 +353,15 @@
               <label class="toggle"><input type="checkbox" checked onchange="saveDispo('tokyo','jeu',this.checked)" /><span class="toggle-slider"></span></label>
             </div>
             <div class="toggle-row">
-              <div><div class="toggle-label">Vendredi</div><div class="toggle-sub">15h00 – 03h00</div></div>
+              <div><div class="toggle-label">Vendredi</div><div class="toggle-sub">15h00 – 00h00</div></div>
               <label class="toggle"><input type="checkbox" checked onchange="saveDispo('tokyo','ven',this.checked)" /><span class="toggle-slider"></span></label>
             </div>
             <div class="toggle-row">
-              <div><div class="toggle-label">Samedi</div><div class="toggle-sub">15h00 – 03h00</div></div>
+              <div><div class="toggle-label">Samedi</div><div class="toggle-sub">15h00 – 00h00</div></div>
               <label class="toggle"><input type="checkbox" checked onchange="saveDispo('tokyo','sam',this.checked)" /><span class="toggle-slider"></span></label>
             </div>
             <div class="toggle-row">
-              <div><div class="toggle-label">Dimanche</div><div class="toggle-sub">11h00 – 18h00</div></div>
+              <div><div class="toggle-label">Dimanche</div><div class="toggle-sub">11h00 – 20h00</div></div>
               <label class="toggle"><input type="checkbox" checked onchange="saveDispo('tokyo','dim',this.checked)" /><span class="toggle-slider"></span></label>
             </div>
             <div class="fermeture-form">
@@ -379,7 +393,94 @@
       <div class="caisse-cats" id="caisse-container"></div>
       <div class="caisse-ticket">
         <span>Total de la vente en cours</span>
-        <span id="caisse-total">0€</span>
+        <div style="display:flex;align-items:center;gap:1.5rem;">
+          <span id="caisse-total" style="font-family:'Cinzel',serif;color:var(--or);font-size:1.3rem;">0€</span>
+          <button class="btn-add" onclick="cloturerCaisse()" style="background:rgba(46,204,113,0.15);color:var(--vert);border:1px solid rgba(46,204,113,0.3);">✅ Clôturer</button>
+        </div>
+      </div>
+      <div class="table-card" style="margin-top:1.5rem;">
+        <div class="table-header"><h3>🧾 HISTORIQUE DES VENTES</h3></div>
+        <div id="caisse-historique" style="padding:0.5rem 1.5rem 1rem;"><div class="empty-state"><div class="empty-icon">📭</div>Aucune vente clôturée.</div></div>
+      </div>
+    </div>
+
+    <!-- TABLEAU DE BORD CA -->
+    <div class="page" id="page-tableau">
+      <div class="stats-row" id="ca-stats-row">
+        <div class="stat-card"><div class="stat-label">CA Ce mois</div><div class="stat-value" id="ca-mois" style="color:var(--or)">0€</div><div class="stat-sub" id="ca-mois-nb">0 réservations</div></div>
+        <div class="stat-card"><div class="stat-label">CA Cette semaine</div><div class="stat-value" id="ca-semaine" style="color:var(--or)">0€</div><div class="stat-sub" id="ca-semaine-nb">0 réservations</div></div>
+        <div class="stat-card"><div class="stat-label">CA Lagon Bleu</div><div class="stat-value" id="ca-lagon" style="color:var(--cyan)">0€</div><div class="stat-sub">total</div></div>
+        <div class="stat-card"><div class="stat-label">CA Neo Tokyo</div><div class="stat-value" id="ca-tokyo" style="color:var(--rose)">0€</div><div class="stat-sub">total</div></div>
+      </div>
+      <div class="table-card" style="margin-bottom:1.5rem;">
+        <div class="table-header"><h3>📆 CA PAR MOIS</h3></div>
+        <div id="ca-chart" style="padding:1.5rem;"></div>
+      </div>
+      <div class="table-card">
+        <div class="table-header"><h3>🏆 RÉSUMÉ PAR SALLE</h3></div>
+        <table>
+          <thead><tr><th>Salle</th><th>Nb réservations</th><th>CA total</th><th>CA moyen</th></tr></thead>
+          <tbody id="ca-salles-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DEVIS ENTREPRISES -->
+    <div class="page" id="page-devis">
+      <div class="message-card" style="background:rgba(201,168,76,0.03);">
+        <h3>📝 NOUVEAU DEVIS</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+          <div>
+            <span class="param-label">Entreprise / Contact</span>
+            <input type="text" class="param-input" id="dv-entreprise" placeholder="Ex: Société Martin" />
+          </div>
+          <div>
+            <span class="param-label">Téléphone</span>
+            <input type="tel" class="param-input" id="dv-tel" placeholder="+596 XXX XXX XXX" />
+          </div>
+          <div>
+            <span class="param-label">Date souhaitée</span>
+            <input type="date" class="param-input" id="dv-date" />
+          </div>
+          <div>
+            <span class="param-label">Nombre de personnes</span>
+            <input type="number" class="param-input" id="dv-nb" min="1" placeholder="Ex: 15" />
+          </div>
+          <div>
+            <span class="param-label">Type d'événement</span>
+            <select class="param-input" id="dv-type">
+              <option>Team building</option>
+              <option>Soirée d'entreprise</option>
+              <option>EVJF / EVG</option>
+              <option>Anniversaire privatisé</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div>
+            <span class="param-label">Formule</span>
+            <select class="param-input" id="dv-formule">
+              <option value="2h">2h karaoké</option>
+              <option value="3h">3h karaoké</option>
+              <option value="privatisation">Privatisation complète</option>
+              <option value="sur_mesure">Sur mesure</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <span class="param-label">Notes / Demandes spécifiques</span>
+          <textarea class="message-input" id="dv-notes" placeholder="Ex: décoration anniversaire, champagne, allergies..."></textarea>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;margin-top:0.5rem;">
+          <button class="btn-publish" onclick="ajouterDevis()">💾 Enregistrer le devis</button>
+          <span style="font-size:0.75rem;color:var(--gris);">Le devis sera affiché dans la liste ci-dessous</span>
+        </div>
+      </div>
+      <div class="table-card">
+        <div class="table-header"><h3>📋 DEVIS EN COURS</h3></div>
+        <table>
+          <thead><tr><th>Entreprise</th><th>Téléphone</th><th>Date</th><th>Personnes</th><th>Type</th><th>Formule</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="devis-tbody"><tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📝</div>Aucun devis pour l'instant.</div></td></tr></tbody>
+        </table>
       </div>
     </div>
 
@@ -600,7 +701,7 @@
   }
 
   // ===== NAVIGATION =====
-  const pageTitles = { reservations:'Réservations', salles:'Salles & Fermetures', caisse:'Caisse', avis:'Avis clients', tarifs:'Tarifs', menu:'Menu & Carte', stock:'Stock', parametres:'Paramètres' };
+  const pageTitles = { reservations:'Réservations', salles:'Salles & Fermetures', caisse:'Caisse', tableau:'Tableau de bord CA', devis:'Devis entreprises', avis:'Avis clients', tarifs:'Tarifs', menu:'Menu & Carte', stock:'Stock', parametres:'Paramètres' };
 
   function showPage(id, el) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -611,6 +712,8 @@
     if (id === 'avis') loadAvis();
     if (id === 'stock') renderStock();
     if (id === 'caisse') renderCaisse();
+    if (id === 'tableau') renderTableauCA();
+    if (id === 'devis') renderDevis();
   }
 
   // ===== INIT =====
@@ -909,6 +1012,7 @@
     ticketTotal = 0;
     updateCaisseTotal();
     renderCaisseGrid();
+    renderCaisseHistorique();
   }
 
   function renderCaisseGrid() {
@@ -1123,6 +1227,179 @@
     localStorage.setItem('kv_recovery_email',email);
     const msg=document.getElementById('email-msg'); msg.style.display='block';
     setTimeout(()=>msg.style.display='none',3000);
+  }
+
+  // ===== TABLEAU DE BORD CA =====
+  function renderTableauCA() {
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
+
+    const resMois = reservations.filter(r => r.date >= startOfMonth && r.statut !== 'annulé');
+    const resSemaine = reservations.filter(r => new Date(r.date) >= weekAgo && r.statut !== 'annulé');
+    const resLagon = reservations.filter(r => r.salle === 'lagon' && r.statut !== 'annulé');
+    const resTokyo = reservations.filter(r => r.salle === 'tokyo' && r.statut !== 'annulé');
+
+    const sum = arr => arr.reduce((t,r) => t + (r.montant||0), 0);
+
+    document.getElementById('ca-mois').textContent = sum(resMois) + '€';
+    document.getElementById('ca-mois-nb').textContent = resMois.length + ' réservations';
+    document.getElementById('ca-semaine').textContent = sum(resSemaine) + '€';
+    document.getElementById('ca-semaine-nb').textContent = resSemaine.length + ' réservations';
+    document.getElementById('ca-lagon').textContent = sum(resLagon) + '€';
+    document.getElementById('ca-tokyo').textContent = sum(resTokyo) + '€';
+
+    // Graphique par mois (6 derniers mois)
+    const chart = document.getElementById('ca-chart');
+    const moisLabels = [];
+    const moisValues = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = d.toISOString().slice(0,7);
+      const label = d.toLocaleDateString('fr-FR', { month:'short', year:'2-digit' });
+      const ca = reservations.filter(r => r.date && r.date.startsWith(key) && r.statut !== 'annulé').reduce((t,r) => t + (r.montant||0), 0);
+      moisLabels.push(label);
+      moisValues.push(ca);
+    }
+    const maxVal = Math.max(...moisValues, 1);
+    chart.innerHTML = moisLabels.map((label, i) => `
+      <div class="ca-bar-row">
+        <span class="ca-bar-label">${label}</span>
+        <div class="ca-bar-track"><div class="ca-bar-fill" style="width:${Math.round((moisValues[i]/maxVal)*100)}%"></div></div>
+        <span class="ca-bar-value">${moisValues[i]}€</span>
+      </div>`).join('');
+
+    // Résumé par salle
+    const tbody = document.getElementById('ca-salles-tbody');
+    const salles = [
+      { nom:'🌊 Lagon Bleu', classe:'badge-cyan', res: resLagon },
+      { nom:'🌸 Neo Tokyo', classe:'badge-rose', res: resTokyo }
+    ];
+    tbody.innerHTML = salles.map(s => {
+      const ca = sum(s.res);
+      const moy = s.res.length ? Math.round(ca / s.res.length) : 0;
+      return `<tr>
+        <td><span class="badge ${s.classe}">${s.nom}</span></td>
+        <td style="text-align:center">${s.res.length}</td>
+        <td style="font-family:'Cinzel',serif;color:var(--or)">${ca}€</td>
+        <td style="color:var(--gris)">${moy}€ / rés.</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // ===== DEVIS ENTREPRISES =====
+  let devisList = JSON.parse(localStorage.getItem('kv_devis') || '[]');
+
+  function renderDevis() {
+    const tbody = document.getElementById('devis-tbody');
+    if (!devisList.length) {
+      tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📝</div>Aucun devis pour l\'instant.</div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = [...devisList].reverse().map((d, ri) => {
+      const i = devisList.length - 1 - ri;
+      const statutColor = d.statut === 'confirmé' ? 'badge-vert' : d.statut === 'refusé' ? 'badge-rouge' : 'badge-orange';
+      return `<tr>
+        <td><strong>${d.entreprise}</strong>${d.notes ? `<br><span style="font-size:0.72rem;color:var(--gris)">${d.notes}</span>` : ''}</td>
+        <td>${d.tel || '—'}</td>
+        <td>${d.date ? new Date(d.date).toLocaleDateString('fr-FR') : '—'}</td>
+        <td style="text-align:center">${d.nb || '—'}</td>
+        <td style="font-size:0.78rem;color:var(--gris)">${d.type}</td>
+        <td><span class="badge badge-cyan" style="font-size:0.7rem;">${d.formule}</span></td>
+        <td><span class="badge ${statutColor}">${d.statut}</span></td>
+        <td>
+          <button class="action-btn success" onclick="changerStatutDevis(${i},'confirmé')">✅</button>
+          <button class="action-btn" onclick="changerStatutDevis(${i},'refusé')" style="border-color:rgba(231,76,60,0.3);color:var(--rouge);">✕</button>
+          <button class="action-btn danger" onclick="supprimerDevis(${i})">🗑</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  function ajouterDevis() {
+    const entreprise = document.getElementById('dv-entreprise').value.trim();
+    if (!entreprise) { alert('Veuillez saisir le nom de l\'entreprise.'); return; }
+    devisList.push({
+      entreprise,
+      tel: document.getElementById('dv-tel').value,
+      date: document.getElementById('dv-date').value,
+      nb: document.getElementById('dv-nb').value,
+      type: document.getElementById('dv-type').value,
+      formule: document.getElementById('dv-formule').value,
+      notes: document.getElementById('dv-notes').value,
+      statut: 'en attente',
+      created: new Date().toISOString()
+    });
+    localStorage.setItem('kv_devis', JSON.stringify(devisList));
+    ['dv-entreprise','dv-tel','dv-date','dv-nb','dv-notes'].forEach(id => document.getElementById(id).value = '');
+    renderDevis();
+    alert('✅ Devis enregistré !');
+  }
+
+  function changerStatutDevis(i, statut) {
+    devisList[i].statut = statut;
+    localStorage.setItem('kv_devis', JSON.stringify(devisList));
+    renderDevis();
+  }
+
+  function supprimerDevis(i) {
+    if (!confirm('Supprimer ce devis ?')) return;
+    devisList.splice(i, 1);
+    localStorage.setItem('kv_devis', JSON.stringify(devisList));
+    renderDevis();
+  }
+
+  // ===== IMPRESSION RÉSERVATIONS =====
+  function imprimerResa() {
+    const dateStr = new Date().toLocaleDateString('fr-FR', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    const rows = [...reservations].sort((a,b) => new Date(a.date)-new Date(b.date));
+    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>KaraVibes — Réservations</title>
+    <style>body{font-family:Arial,sans-serif;margin:2cm;color:#111;}h1{font-size:18px;margin-bottom:4px;}p.sub{font-size:11px;color:#666;margin-bottom:20px;}
+    table{width:100%;border-collapse:collapse;font-size:12px;}th{background:#f5f5f5;border:1px solid #ddd;padding:8px;text-align:left;}
+    td{border:1px solid #ddd;padding:7px;}.ok{color:#27ae60;font-weight:bold;}.ko{color:#e74c3c;}.att{color:#e67e22;}
+    @media print{body{margin:1cm;}}</style></head><body>
+    <h1>KaraVibes — Liste des réservations</h1><p class="sub">Imprimé le ${dateStr}</p>
+    <table><thead><tr><th>Client</th><th>Téléphone</th><th>Salle</th><th>Date</th><th>Heure</th><th>Nb</th><th>Montant</th><th>Statut</th></tr></thead><tbody>
+    ${rows.map(r=>`<tr>
+      <td><strong>${r.nom}</strong></td>
+      <td>${r.tel||'—'}</td>
+      <td>${r.salle==='lagon'?'Lagon Bleu':'Neo Tokyo'}</td>
+      <td>${new Date(r.date).toLocaleDateString('fr-FR')}</td>
+      <td>${r.heure}</td>
+      <td style="text-align:center">${r.nb}</td>
+      <td><strong>${r.montant}€</strong></td>
+      <td class="${r.statut==='confirmé'?'ok':r.statut==='annulé'?'ko':'att'}">${r.statut}</td>
+    </tr>`).join('')}
+    </tbody></table></body></html>`;
+    const w = window.open('', '_blank');
+    w.document.write(html);
+    w.document.close();
+    w.print();
+  }
+
+  // ===== CAISSE : CLÔTURE DU SOIR =====
+  function cloturerCaisse() {
+    if (!ticketTotal) { alert('Aucune vente en cours.'); return; }
+    const historique = JSON.parse(localStorage.getItem('kv_caisse_historique') || '[]');
+    historique.unshift({ date: new Date().toISOString(), total: ticketTotal });
+    localStorage.setItem('kv_caisse_historique', JSON.stringify(historique));
+    ticketTotal = 0;
+    updateCaisseTotal();
+    renderCaisseGrid();
+    renderCaisseHistorique();
+    alert('✅ Vente clôturée et enregistrée !');
+  }
+
+  function renderCaisseHistorique() {
+    const h = JSON.parse(localStorage.getItem('kv_caisse_historique') || '[]');
+    const el = document.getElementById('caisse-historique');
+    if (!el) return;
+    if (!h.length) { el.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div>Aucune vente clôturée.</div>'; return; }
+    el.innerHTML = h.slice(0,20).map(v=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid rgba(201,168,76,0.06);">
+        <span style="font-size:0.78rem;color:var(--gris)">${new Date(v.date).toLocaleString('fr-FR')}</span>
+        <span style="font-family:'Cinzel',serif;color:var(--or)">${v.total.toFixed(2).replace(/\.00$/,'')}€</span>
+      </div>`).join('');
   }
 
   // Close modals
