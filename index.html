@@ -239,6 +239,67 @@
     .spider-link { font-size: 0.8rem; color: rgba(138,138,154,0.1); text-decoration: none; transition: color 0.3s; cursor: default; }
     .spider-link:hover { color: rgba(138,138,154,0.35); }
 
+    /* ROOM CTA hint */
+    .room-cta-hint { font-size: 0.72rem; color: var(--or); letter-spacing: 0.1em; margin-top: 0.6rem; font-family: 'Cinzel', serif; }
+
+    /* ROOM MODAL */
+    .room-modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .room-modal-overlay.open { display: flex; }
+    .room-modal {
+      background: #0f0f14; border-radius: 12px; max-width: 700px; width: 100%;
+      max-height: 90vh; overflow-y: auto; position: relative;
+    }
+    .room-modal-hero {
+      height: 200px; border-radius: 12px 12px 0 0; position: relative;
+      display: flex; align-items: flex-end; padding: 1.5rem;
+    }
+    .room-modal-hero.lagon { background: linear-gradient(135deg, #001a2e 0%, #003d5c 40%, #005f8a 70%, #00bcd4 100%); }
+    .room-modal-hero.tokyo { background: linear-gradient(135deg, #1a0028 0%, #3d0060 40%, #7b00a0 70%, #ff2d78 100%); }
+    .room-modal-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+    .room-modal-tag { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; display: block; margin-bottom: 0.3rem; }
+    .room-modal-body { padding: 1.5rem; }
+    .room-modal-close {
+      position: absolute; top: 1rem; right: 1rem; background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 32px; height: 32px;
+      border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex;
+      align-items: center; justify-content: center; z-index: 10;
+    }
+    .room-modal-section { margin-bottom: 1.5rem; }
+    .room-modal-section h4 {
+      font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--or); margin-bottom: 0.8rem;
+      padding-bottom: 0.4rem; border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .modal-horaires { display: flex; flex-direction: column; gap: 0.3rem; }
+    .modal-horaire-row { display: flex; justify-content: space-between; font-size: 0.83rem; padding: 0.3rem 0; }
+    .modal-horaire-day { color: var(--gris); }
+    .modal-horaire-time { color: var(--or-pale); font-weight: 500; }
+    .modal-horaire-ferme { color: rgba(138,138,154,0.35); }
+    .modal-cocktails { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .modal-cocktail { background: rgba(255,255,255,0.03); border: 1px solid rgba(201,168,76,0.1); border-radius: 6px; padding: 0.7rem; }
+    .modal-cocktail-name { font-size: 0.82rem; font-weight: 600; color: var(--blanc); margin-bottom: 0.15rem; }
+    .modal-cocktail-price { font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--or); }
+    .modal-capacity-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 20px; padding: 0.4rem 1rem; font-size: 0.82rem; color: var(--or-pale);
+    }
+    .modal-btn-resa {
+      width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--or), var(--or-clair));
+      color: var(--noir); border: none; border-radius: 6px; font-family: 'Inter', sans-serif;
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s; margin-top: 0.5rem;
+    }
+    .modal-btn-resa:hover { box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+    @media (max-width: 600px) {
+      .modal-cocktails { grid-template-columns: 1fr; }
+      .room-modal-title { font-size: 1.5rem; }
+    }
+
     /* MOBILE */
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
@@ -320,7 +381,7 @@
         </div>
       </div>
       <div class="concept-rooms">
-        <div class="room-card lagon">
+        <div class="room-card lagon" onclick="openRoomModal('lagon')">
           <div class="room-img-placeholder lagon"></div>
           <div class="room-details"><div class="room-led"></div></div>
           <div class="room-overlay">
@@ -328,9 +389,10 @@
             <h3 class="room-name">Lagon Bleu</h3>
             <p class="room-desc">Un univers aquatique envoûtant. LEDs bleues, ambiance sous-marine, lumières tamisées.</p>
             <p class="room-capacity">👥 1 à 10 personnes</p>
+            <p class="room-cta-hint">Voir la salle →</p>
           </div>
         </div>
-        <div class="room-card tokyo">
+        <div class="room-card tokyo" onclick="openRoomModal('tokyo')">
           <div class="room-img-placeholder tokyo"></div>
           <div class="room-details"><div class="room-led"></div></div>
           <div class="room-overlay">
@@ -338,6 +400,7 @@
             <h3 class="room-name">Neo Tokyo</h3>
             <p class="room-desc">Plongez dans l'énergie de Tokyo by night. Néons, esthétique futuriste, ambiance électrique.</p>
             <p class="room-capacity">👥 1 à 10 personnes</p>
+            <p class="room-cta-hint">Voir la salle →</p>
           </div>
         </div>
       </div>
@@ -397,8 +460,8 @@
           <div class="horaire-row"><span class="horaire-day">Mardi</span><span class="horaire-ferme">Fermé</span></div>
           <div class="horaire-row"><span class="horaire-day">Mercredi</span><span class="horaire-time">17h00 – 00h00</span></div>
           <div class="horaire-row"><span class="horaire-day">Jeudi</span><span class="horaire-time">17h00 – 00h00</span></div>
-          <div class="horaire-row"><span class="horaire-day">Vendredi</span><span class="horaire-time">15h00 – 01h00</span></div>
-          <div class="horaire-row"><span class="horaire-day">Samedi</span><span class="horaire-time">15h00 – 01h00</span></div>
+          <div class="horaire-row"><span class="horaire-day">Vendredi</span><span class="horaire-time">15h00 – 00h00</span></div>
+          <div class="horaire-row"><span class="horaire-day">Samedi</span><span class="horaire-time">15h00 – 00h00</span></div>
           <div class="horaire-row"><span class="horaire-day">Dimanche</span><span class="horaire-time">11h00 – 20h00</span></div>
         </div>
       </div>
@@ -533,18 +596,14 @@
           <div class="contact-icon">📍</div>
           <div class="contact-item-text"><h4>Adresse</h4><p>Martinique — adresse communiquée à la confirmation</p></div>
         </div>
-        <div class="contact-item">
-          <div class="contact-icon">📞</div>
-          <div class="contact-item-text"><h4>Téléphone</h4><a href="tel:+596XXXXXXXXX">+596 XXX XXX XXX</a></div>
-        </div>
-        <div class="contact-item">
+<div class="contact-item">
           <div class="contact-icon">📸</div>
           <div class="contact-item-text"><h4>Instagram</h4><a href="#" target="_blank">@karavibes.martinique</a></div>
         </div>
         <div class="contact-item">
           <div class="contact-icon">🕐</div>
           <div class="contact-item-text"><h4>Horaires</h4>
-            <p>Mer–Jeu 17h–00h<br>Ven–Sam 15h–01h<br>Dim 11h–20h</p>
+            <p>Mer–Jeu 17h–00h<br>Ven–Sam 15h–00h<br>Dim 11h–20h</p>
           </div>
         </div>
         <div class="map-placeholder">🗺️ Plan disponible à l'ouverture</div>
@@ -595,6 +654,82 @@
     <a href="admin_5.html" class="spider-link" title="">🕷️</a>
   </div>
 </footer>
+
+<!-- MODAL LAGON BLEU -->
+<div class="room-modal-overlay" id="modal-lagon">
+  <div class="room-modal">
+    <div class="room-modal-hero lagon">
+      <button class="room-modal-close" onclick="closeRoomModal()">✕</button>
+      <div>
+        <span class="room-modal-tag" style="color:#00E5FF">Salle Privée · Univers Aquatique</span>
+        <div class="room-modal-title">Lagon Bleu</div>
+      </div>
+    </div>
+    <div class="room-modal-body">
+      <div class="room-modal-section">
+        <div class="modal-capacity-badge">👥 1 à 10 personnes · Karaoké privatisé</div>
+      </div>
+      <div class="room-modal-section">
+        <h4>🕐 Horaires & Disponibilités</h4>
+        <div class="modal-horaires">
+          <div class="modal-horaire-row"><span class="modal-horaire-day">Lundi – Mardi</span><span class="modal-horaire-ferme">Fermé</span></div>
+          <div class="modal-horaire-row"><span class="modal-horaire-day">Mercredi – Jeudi</span><span class="modal-horaire-time">17h00 – 00h00</span></div>
+          <div class="modal-horaire-row"><span class="modal-horaire-day">Vendredi – Samedi</span><span class="modal-horaire-time">15h00 – 00h00</span></div>
+          <div class="modal-horaire-row"><span class="modal-horaire-day">Dimanche</span><span class="modal-horaire-time">11h00 – 20h00</span></div>
+        </div>
+      </div>
+      <div class="room-modal-section">
+        <h4>🍹 Cocktails Exclusifs — Lagon Bleu</h4>
+        <div class="modal-cocktails">
+          <div class="modal-cocktail"><div class="modal-cocktail-name">Blue Lagoon</div><div class="modal-cocktail-price">10€</div></div>
+          <div class="modal-cocktail"><div class="modal-cocktail-name">Mer des Caraïbes</div><div class="modal-cocktail-price">11€</div></div>
+          <div class="modal-cocktail"><div class="modal-cocktail-name">Coral Reef</div><div class="modal-cocktail-price">11€</div></div>
+          <div class="modal-cocktail"><div class="modal-cocktail-name">Aqua Vibes</div><div class="modal-cocktail-price">10€</div></div>
+        </div>
+        <p style="font-size:0.72rem; color:var(--gris); margin-top:0.6rem;">Cocktails spéciaux réservés aux clients de la salle Lagon Bleu</p>
+      </div>
+      <button class="modal-btn-resa" onclick="closeRoomModal(); selectSalleEtReserver('lagon')">🎤 Réserver le Lagon Bleu</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NEO TOKYO -->
+<div class="room-modal-overlay" id="modal-tokyo">
+  <div class="room-modal">
+    <div class="room-modal-hero tokyo">
+      <button class="room-modal-close" onclick="closeRoomModal()">✕</button>
+      <div>
+        <span class="room-modal-tag" style="color:#FF6B9D">Salle Privée · Esthétique Futuriste</span>
+        <div class="room-modal-title">Neo Tokyo</div>
+      </div>
+    </div>
+    <div class="room-modal-body">
+      <div class="room-modal-section">
+        <div class="modal-capacity-badge">👥 1 à 10 personnes · Karaoké privatisé</div>
+      </div>
+      <div class="room-modal-section">
+        <h4>🕐 Horaires & Disponibilités</h4>
+        <div class="modal-horaires">
+          <div class="modal-horaire-row"><span class="modal-horaire-day">Lundi – Mardi</span><span class="modal-horaire-ferme">Fermé</span></div>
+          <div class="modal-horaire-row"><span class="modal-horaire-day">Mercredi – Jeudi</span><span class="modal-horaire-time">17h00 – 00h00</span></div>
+          <div class="modal-horaire-row"><span class="modal-horaire-day">Vendredi – Samedi</span><span class="modal-horaire-time">15h00 – 00h00</span></div>
+          <div class="modal-horaire-row"><span class="modal-horaire-day">Dimanche</span><span class="modal-horaire-time">11h00 – 20h00</span></div>
+        </div>
+      </div>
+      <div class="room-modal-section">
+        <h4>🍹 Cocktails Exclusifs — Neo Tokyo</h4>
+        <div class="modal-cocktails">
+          <div class="modal-cocktail"><div class="modal-cocktail-name">Tokyo Neon</div><div class="modal-cocktail-price">11€</div></div>
+          <div class="modal-cocktail"><div class="modal-cocktail-name">Sakura Storm</div><div class="modal-cocktail-price">11€</div></div>
+          <div class="modal-cocktail"><div class="modal-cocktail-name">Cyber Punch</div><div class="modal-cocktail-price">10€</div></div>
+          <div class="modal-cocktail"><div class="modal-cocktail-name">Shibuya Nights</div><div class="modal-cocktail-price">12€</div></div>
+        </div>
+        <p style="font-size:0.72rem; color:var(--gris); margin-top:0.6rem;">Cocktails spéciaux réservés aux clients de la salle Neo Tokyo</p>
+      </div>
+      <button class="modal-btn-resa" onclick="closeRoomModal(); selectSalleEtReserver('tokyo')">🎤 Réserver Neo Tokyo</button>
+    </div>
+  </div>
+</div>
 
 <script>
   // ===== CRÉNEAUX =====
@@ -794,6 +929,29 @@
   }
 
   loadAvis();
+
+  // ===== ROOM MODALS =====
+  function openRoomModal(salle) {
+    document.getElementById('modal-' + salle).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeRoomModal() {
+    document.querySelectorAll('.room-modal-overlay').forEach(m => m.classList.remove('open'));
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.room-modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeRoomModal();
+    });
+  });
+  function selectSalleEtReserver(salle) {
+    const select = document.getElementById('f-salle');
+    if (select) {
+      select.value = salle;
+      select.dispatchEvent(new Event('change'));
+    }
+    document.getElementById('reservation').scrollIntoView({ behavior: 'smooth' });
+  }
 </script>
 </body>
 </html>
