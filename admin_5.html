@@ -164,6 +164,23 @@
 
     /* DEVIS */
 
+    /* PLANNING ADMIN */
+    .apl-table { width:100%; border-collapse:separate; border-spacing:0 0; min-width:700px; }
+    .apl-table th { font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gris); padding:0.6rem 0.5rem; text-align:center; background:rgba(0,0,0,0.2); border-bottom:1px solid rgba(201,168,76,0.1); }
+    .apl-table th.day-head { color:var(--or); }
+    .apl-table th.day-head.today { color:var(--cyan); }
+    .apl-table td { padding:0.3rem 0.4rem; vertical-align:top; border-bottom:1px solid rgba(201,168,76,0.04); }
+    .apl-table td.room-label { font-size:0.72rem; color:var(--gris); white-space:nowrap; padding-right:0.8rem; font-family:'Cinzel',serif; letter-spacing:0.05em; }
+    .apl-table td.room-label.lagon { color:var(--cyan); }
+    .apl-table td.room-label.tokyo { color:var(--rose); }
+    .apl-slot { display:inline-block; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.72rem; font-weight:500; margin:0.15rem; white-space:nowrap; cursor:default; }
+    .apl-slot.libre { background:rgba(46,204,113,0.12); border:1px solid rgba(46,204,113,0.3); color:#2ECC71; }
+    .apl-slot.attente { background:rgba(201,168,76,0.15); border:1px solid rgba(201,168,76,0.35); color:var(--or); cursor:pointer; }
+    .apl-slot.attente:hover { background:rgba(201,168,76,0.25); }
+    .apl-slot.confirme { background:rgba(46,204,113,0.1); border:1px solid rgba(46,204,113,0.25); color:#27ae60; cursor:pointer; }
+    .apl-slot.ferme { background:rgba(231,76,60,0.06); border:1px solid rgba(231,76,60,0.15); color:rgba(231,76,60,0.4); }
+    .apl-table td.closed { background:rgba(0,0,0,0.15); }
+
     /* CAISSE */
     .caisse-cats { display: flex; flex-direction: column; gap: 2rem; }
     .caisse-cat-title { font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1rem; }
@@ -224,6 +241,7 @@
       <span class="sidebar-role" id="sidebarRole">Propriétaire</span>
     </div>
     <div class="nav-item active" onclick="showPage('reservations', this)"><span class="nav-icon">📋</span> Réservations</div>
+    <div class="nav-item" onclick="showPage('planning', this)"><span class="nav-icon">📅</span> Planning</div>
     <div class="nav-item" onclick="showPage('salles', this)"><span class="nav-icon">🚪</span> Salles & Fermetures</div>
     <div class="nav-item" onclick="showPage('caisse', this)"><span class="nav-icon">🛒</span> Caisse</div>
     <div class="nav-item owner-only" onclick="showPage('tableau', this)"><span class="nav-icon">📊</span> Tableau de bord CA</div>
@@ -264,6 +282,27 @@
           <thead><tr><th>Client</th><th>Salle</th><th>Date</th><th>Heure</th><th>Personnes</th><th>Montant</th><th>Statut</th><th>Actions</th></tr></thead>
           <tbody id="resa-tbody"><tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📭</div>Aucune réservation pour l'instant.</div></td></tr></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- PLANNING ADMIN -->
+    <div class="page" id="page-planning">
+      <div style="display:flex; gap:0.8rem; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap;">
+        <button class="btn-add" onclick="planningPrev()" style="background:none; border:1px solid rgba(201,168,76,0.2); color:var(--gris);">← Semaine précédente</button>
+        <span id="planning-week-label" style="font-family:'Cinzel',serif; font-size:0.8rem; color:var(--or); letter-spacing:0.1em; flex:1; text-align:center;"></span>
+        <button class="btn-add" onclick="planningNext()">Semaine suivante →</button>
+      </div>
+
+      <!-- Légende -->
+      <div style="display:flex; gap:1.5rem; margin-bottom:1.5rem; font-size:0.75rem; flex-wrap:wrap;">
+        <span style="display:flex; align-items:center; gap:0.4rem;"><span style="width:12px;height:12px;border-radius:3px;background:rgba(46,204,113,0.25);border:1px solid rgba(46,204,113,0.5);display:inline-block;"></span> Disponible</span>
+        <span style="display:flex; align-items:center; gap:0.4rem;"><span style="width:12px;height:12px;border-radius:3px;background:rgba(201,168,76,0.2);border:1px solid rgba(201,168,76,0.4);display:inline-block;"></span> Réservé (en attente)</span>
+        <span style="display:flex; align-items:center; gap:0.4rem;"><span style="width:12px;height:12px;border-radius:3px;background:rgba(46,204,113,0.15);border:1px solid rgba(46,204,113,0.4);display:inline-block;"></span> Confirmé</span>
+        <span style="display:flex; align-items:center; gap:0.4rem;"><span style="width:12px;height:12px;border-radius:3px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.2);display:inline-block;"></span> Fermé</span>
+      </div>
+
+      <div id="admin-planning-grid" style="overflow-x:auto;">
+        <div style="text-align:center; padding:3rem; color:var(--gris); font-size:0.85rem;">Chargement…</div>
       </div>
     </div>
 
@@ -701,7 +740,7 @@
   }
 
   // ===== NAVIGATION =====
-  const pageTitles = { reservations:'Réservations', salles:'Salles & Fermetures', caisse:'Caisse', tableau:'Tableau de bord CA', devis:'Devis entreprises', avis:'Avis clients', tarifs:'Tarifs', menu:'Menu & Carte', stock:'Stock', parametres:'Paramètres' };
+  const pageTitles = { reservations:'Réservations', planning:'Planning', salles:'Salles & Fermetures', caisse:'Caisse', tableau:'Tableau de bord CA', devis:'Devis entreprises', avis:'Avis clients', tarifs:'Tarifs', menu:'Menu & Carte', stock:'Stock', parametres:'Paramètres' };
 
   function showPage(id, el) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -714,6 +753,7 @@
     if (id === 'caisse') renderCaisse();
     if (id === 'tableau') renderTableauCA();
     if (id === 'devis') renderDevis();
+    if (id === 'planning') renderAdminPlanning();
   }
 
   // ===== INIT =====
@@ -1400,6 +1440,125 @@
         <span style="font-size:0.78rem;color:var(--gris)">${new Date(v.date).toLocaleString('fr-FR')}</span>
         <span style="font-family:'Cinzel',serif;color:var(--or)">${v.total.toFixed(2).replace(/\.00$/,'')}€</span>
       </div>`).join('');
+  }
+
+  // ===== PLANNING ADMIN =====
+  const CRENEAUX_JOUR_ADMIN = {
+    0: null,               // Lundi fermé
+    1: null,               // Mardi fermé
+    2: [17, 19.5, 22],    // Mercredi
+    3: [17, 19.5, 22],    // Jeudi
+    4: [15, 17.5, 20, 22],// Vendredi
+    5: [15, 17.5, 20, 22],// Samedi
+    6: [11, 13.5, 16, 18] // Dimanche
+  };
+
+  function fmtH(h) {
+    const hh = Math.floor(h) % 24;
+    const mm = (h % 1 === 0.5) ? '30' : '00';
+    return hh.toString().padStart(2,'0') + 'h' + mm;
+  }
+
+  let planningWeekOffset = 0;
+
+  function getWeekStart(offset) {
+    const d = new Date();
+    d.setHours(0,0,0,0);
+    const dow = d.getDay(); // 0=dim
+    const diff = (dow === 0 ? -6 : 1 - dow); // lundi
+    d.setDate(d.getDate() + diff + offset * 7);
+    return d;
+  }
+
+  function planningPrev() { planningWeekOffset--; renderAdminPlanning(); }
+  function planningNext() { planningWeekOffset++; renderAdminPlanning(); }
+
+  async function renderAdminPlanning() {
+    const grid = document.getElementById('admin-planning-grid');
+    grid.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--gris);">Chargement…</div>';
+
+    const weekStart = getWeekStart(planningWeekOffset);
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(weekStart);
+      d.setDate(d.getDate() + i);
+      days.push(d);
+    }
+
+    const fromStr = days[0].toISOString().split('T')[0];
+    const toStr = days[6].toISOString().split('T')[0];
+
+    document.getElementById('planning-week-label').textContent =
+      days[0].toLocaleDateString('fr-FR', { day:'numeric', month:'long' }) + ' – ' +
+      days[6].toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+
+    const { data: resaData, error } = await supabase.from('reservations').select('*').gte('date', fromStr).lte('date', toStr);
+    const resas = error ? [] : (resaData || []);
+
+    const fermetures = JSON.parse(localStorage.getItem('kv_fermetures') || '[]');
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    const salles = ['lagon', 'tokyo'];
+    const salleLabels = { lagon: '🌊 Lagon', tokyo: '🌸 Tokyo' };
+
+    // Build table
+    let html = '<table class="apl-table"><thead><tr><th></th>';
+    days.forEach(d => {
+      const dStr = d.toISOString().split('T')[0];
+      const isToday = dStr === todayStr;
+      const label = d.toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
+      html += `<th class="day-head${isToday?' today':''}">${isToday?'⭐ ':''  }${label}</th>`;
+    });
+    html += '</tr></thead><tbody>';
+
+    salles.forEach(salle => {
+      const cls = salle === 'lagon' ? 'lagon' : 'tokyo';
+      html += `<tr><td class="room-label ${cls}">${salleLabels[salle]}</td>`;
+      days.forEach(d => {
+        const dStr = d.toISOString().split('T')[0];
+        const dow = (d.getDay() + 6) % 7;
+        const creneaux = CRENEAUX_JOUR_ADMIN[dow];
+
+        // Check if salle is globally closed that day
+        const salleOpen = localStorage.getItem('kv_salle_' + salle) !== 'closed';
+        const dispoKey = 'kv_dispo_' + salle + '_' + ['lun','mar','mer','jeu','ven','sam','dim'][dow];
+        const dispoDay = localStorage.getItem(dispoKey) !== '0';
+
+        if (!creneaux || !salleOpen || !dispoDay) {
+          html += `<td class="closed" colspan="1"><span class="apl-slot ferme">Fermé</span></td>`;
+          return;
+        }
+
+        const dayResas = resas.filter(r => r.salle === salle && r.date === dStr);
+        const prises = dayResas.map(r => r.heure_num);
+        const fermees = fermetures
+          .filter(f => f.salle === salle && f.date === dStr)
+          .flatMap(f => creneaux.filter(h => h >= parseFloat(f.debut.replace(':','.')) - 1));
+
+        const slots = creneaux.map(h => {
+          const resa = dayResas.find(r => r.heure_num === h);
+          if (resa) {
+            const statut = resa.statut === 'confirmé' ? 'confirme' : 'attente';
+            const emoji = resa.statut === 'confirmé' ? '✅' : '⏳';
+            return `<span class="apl-slot ${statut}" title="${resa.nom} · ${resa.nb} pers. · ${resa.statut}" onclick="showResaDetail(${resa.id})">${emoji} ${fmtH(h)}</span>`;
+          }
+          if (fermees.includes(h)) return `<span class="apl-slot ferme">🔒 ${fmtH(h)}</span>`;
+          return `<span class="apl-slot libre">✓ ${fmtH(h)}</span>`;
+        }).join('');
+
+        html += `<td>${slots}</td>`;
+      });
+      html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+    grid.innerHTML = html;
+  }
+
+  function showResaDetail(id) {
+    const r = reservations.find(r => r.id === id);
+    if (!r) return;
+    alert(`📋 Réservation #${r.id}\n👤 ${r.nom}${r.tel ? ' — ' + r.tel : ''}\n🗓 ${new Date(r.date).toLocaleDateString('fr-FR')} à ${r.heure}\n👥 ${r.nb} personnes\n💶 ${r.montant}€\n📌 Statut : ${r.statut}`);
   }
 
   // Close modals
