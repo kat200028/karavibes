@@ -382,7 +382,7 @@
       </div>
       <div class="concept-rooms">
         <div class="room-card lagon" onclick="openRoomModal('lagon')">
-          <div class="room-img-placeholder lagon"></div>
+          <img src="salle-lagon.jpeg" alt="Lagon Bleu" class="room-img" />
           <div class="room-details"><div class="room-led"></div></div>
           <div class="room-overlay">
             <p class="room-tag">Salle Privée</p>
@@ -393,7 +393,7 @@
           </div>
         </div>
         <div class="room-card tokyo" onclick="openRoomModal('tokyo')">
-          <div class="room-img-placeholder tokyo"></div>
+          <img src="salle-tokyo.jpeg" alt="Neo Tokyo" class="room-img" />
           <div class="room-details"><div class="room-led"></div></div>
           <div class="room-overlay">
             <p class="room-tag">Salle Privée</p>
@@ -658,7 +658,7 @@
 <!-- MODAL LAGON BLEU -->
 <div class="room-modal-overlay" id="modal-lagon">
   <div class="room-modal">
-    <div class="room-modal-hero lagon">
+    <div class="room-modal-hero lagon" style="background-image:url('salle-lagon.jpeg'); background-size:cover; background-position:center;">
       <button class="room-modal-close" onclick="closeRoomModal()">✕</button>
       <div>
         <span class="room-modal-tag" style="color:#00E5FF">Salle Privée · Univers Aquatique</span>
@@ -708,7 +708,7 @@
 <!-- MODAL NEO TOKYO -->
 <div class="room-modal-overlay" id="modal-tokyo">
   <div class="room-modal">
-    <div class="room-modal-hero tokyo">
+    <div class="room-modal-hero tokyo" style="background-image:url('salle-tokyo.jpeg'); background-size:cover; background-position:center;">
       <button class="room-modal-close" onclick="closeRoomModal()">✕</button>
       <div>
         <span class="room-modal-tag" style="color:#FF6B9D">Salle Privée · Esthétique Futuriste</span>
