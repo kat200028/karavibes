@@ -176,6 +176,28 @@
     .creneau-btn.pris { background: rgba(231,76,60,0.1); color: rgba(231,76,60,0.5); border-color: rgba(231,76,60,0.2); cursor: not-allowed; text-decoration: line-through; }
     .creneau-label { font-size: 0.68rem; color: var(--gris); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
 
+    /* PLANNING */
+    .planning-section { background: #0a0a12; position: relative; overflow: hidden; }
+    .planning-section::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(0,229,255,0.03) 0%, transparent 70%); pointer-events:none; }
+    .planning-scroll { display: flex; gap: 0.6rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.3) transparent; margin-bottom: 2rem; }
+    .planning-scroll::-webkit-scrollbar { height: 4px; }
+    .planning-scroll::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+    .planning-day-tab { flex-shrink: 0; padding: 0.6rem 1.2rem; border-radius: 20px; border: 1px solid rgba(201,168,76,0.2); background: none; color: var(--gris); font-family: 'Inter', sans-serif; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .planning-day-tab:hover { border-color: var(--or); color: var(--or); }
+    .planning-day-tab.active { background: rgba(201,168,76,0.12); border-color: var(--or); color: var(--or); }
+    .planning-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .planning-room { background: rgba(250,248,245,0.02); border: 1px solid rgba(201,168,76,0.1); border-radius: 10px; padding: 1.5rem; }
+    .planning-room-title { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(201,168,76,0.1); }
+    .planning-room-title.lagon { color: var(--cyan); }
+    .planning-room-title.tokyo { color: var(--rose); }
+    .planning-slots { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .planning-slot { padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.05em; border: 1px solid; cursor: pointer; transition: all 0.2s; }
+    .planning-slot.dispo { border-color: rgba(46,204,113,0.4); color: #2ECC71; background: rgba(46,204,113,0.08); }
+    .planning-slot.dispo:hover { background: rgba(46,204,113,0.18); transform: translateY(-1px); }
+    .planning-slot.pris { border-color: rgba(231,76,60,0.3); color: rgba(231,76,60,0.5); background: rgba(231,76,60,0.05); cursor: not-allowed; text-decoration: line-through; }
+    .planning-loading { text-align: center; padding: 2rem; color: var(--gris); font-size: 0.85rem; }
+    .planning-ferme { color: rgba(138,138,154,0.4); font-size: 0.82rem; padding: 0.5rem 0; }
+
     /* AVIS */
     .avis-section { background: #0d0d18; }
     .avis-header { text-align: center; margin-bottom: 3rem; }
@@ -331,6 +353,7 @@
   <ul class="nav-links" id="navLinks">
     <li><a href="#concept">Le Concept</a></li>
     <li><a href="#tarifs">Tarifs</a></li>
+    <li><a href="#planning">Planning</a></li>
     <li><a href="#reservation">Réserver</a></li>
     <li><a href="menu.html">La Carte</a></li>
     <li><a href="https://www.karafun.fr" target="_blank">Catalogue</a></li>
@@ -444,6 +467,21 @@
           <li>À ajouter lors de la réservation</li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- PLANNING -->
+<section class="planning-section" id="planning">
+  <div class="container">
+    <span class="section-label">Disponibilités en temps réel</span>
+    <h2 class="section-title light" style="margin-bottom:0.5rem;">Planning des créneaux</h2>
+    <p style="font-size:0.88rem; color:var(--gris); margin-bottom:2rem;">Cliquez sur un créneau disponible pour pré-remplir votre réservation instantanément.</p>
+    <div class="planning-scroll" id="planning-tabs"></div>
+    <div id="planning-content">
+      <div class="planning-loading">Chargement des disponibilités…</div>
     </div>
   </div>
 </section>
@@ -767,26 +805,19 @@
 
 <script>
   // ===== CRÉNEAUX =====
-  const HORAIRES_JOUR = {
+  // Créneaux fixes par jour (0=Lun … 6=Dim)
+  const CRENEAUX_JOUR = {
     0: null, // Lundi fermé
-    1: { debut: 17, fin: 24 }, // Mardi
-    2: { debut: 17, fin: 24 }, // Mercredi
-    3: { debut: 17, fin: 24 }, // Jeudi
-    4: { debut: 15, fin: 27 }, // Vendredi (03h = 27)
-    5: { debut: 15, fin: 27 }, // Samedi
-    6: { debut: 11, fin: 18 }  // Dimanche
+    1: null, // Mardi fermé
+    2: [17, 19.5, 22],         // Mercredi
+    3: [17, 19.5, 22],         // Jeudi
+    4: [15, 17.5, 20, 22],     // Vendredi
+    5: [15, 17.5, 20, 22],     // Samedi
+    6: [11, 13.5, 16, 18]      // Dimanche
   };
 
   function getCreneaux(jour) {
-    const h = HORAIRES_JOUR[jour];
-    if (!h) return [];
-    const creneaux = [];
-    let t = h.debut;
-    while (t + 2 <= h.fin) {
-      creneaux.push(t);
-      t += 2.5; // 2h séance + 30min nettoyage
-    }
-    return creneaux;
+    return CRENEAUX_JOUR[jour] || [];
   }
 
   function formatH(h) {
@@ -967,6 +998,113 @@
   }
 
   loadAvis();
+
+  // ===== PLANNING =====
+  let planningReservations = [];
+  let planningJourActif = null;
+
+  function getOpenDays(n) {
+    const days = [];
+    const d = new Date();
+    d.setHours(0,0,0,0);
+    while (days.length < n) {
+      const dow = d.getDay(); // 0=dim JS, mais notre index: 0=lun
+      const idx = (dow + 6) % 7;
+      if (CRENEAUX_JOUR[idx]) days.push(new Date(d));
+      d.setDate(d.getDate() + 1);
+    }
+    return days;
+  }
+
+  function fmtDate(d) {
+    return d.toISOString().split('T')[0];
+  }
+
+  function fmtTabLabel(d) {
+    const j = d.toLocaleDateString('fr-FR', { weekday:'short' });
+    const n = d.getDate();
+    const m = d.toLocaleDateString('fr-FR', { month:'short' });
+    return `${j} ${n} ${m}`;
+  }
+
+  async function initPlanning() {
+    const days = getOpenDays(14);
+    const from = fmtDate(days[0]);
+    const to = fmtDate(days[days.length - 1]);
+    const { data, error } = await supabase.from('reservations').select('salle,date,heure_num').gte('date', from).lte('date', to);
+    if (!error && data) planningReservations = data;
+    renderPlanningTabs(days);
+    renderPlanningDay(days[0]);
+    planningJourActif = fmtDate(days[0]);
+  }
+
+  function renderPlanningTabs(days) {
+    const tabs = document.getElementById('planning-tabs');
+    tabs.innerHTML = days.map((d, i) => {
+      const dateStr = fmtDate(d);
+      return `<button class="planning-day-tab${i===0?' active':''}" id="ptab-${dateStr}" onclick="switchPlanningDay('${dateStr}', this)">${fmtTabLabel(d)}</button>`;
+    }).join('');
+  }
+
+  function switchPlanningDay(dateStr, btn) {
+    document.querySelectorAll('.planning-day-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    const d = new Date(dateStr + 'T00:00:00');
+    renderPlanningDay(d);
+    planningJourActif = dateStr;
+  }
+
+  function renderPlanningDay(d) {
+    const dateStr = fmtDate(d);
+    const dow = (d.getDay() + 6) % 7;
+    const creneaux = getCreneaux(dow);
+    const content = document.getElementById('planning-content');
+
+    const salles = [
+      { key: 'lagon', label: '🌊 Lagon Bleu', cls: 'lagon' },
+      { key: 'tokyo', label: '🌸 Neo Tokyo', cls: 'tokyo' }
+    ];
+
+    content.innerHTML = `<div class="planning-grid">${salles.map(s => {
+      const prises = planningReservations
+        .filter(r => r.salle === s.key && r.date === dateStr)
+        .map(r => r.heure_num);
+      const slots = creneaux.map(h => {
+        const pris = prises.includes(h);
+        const label = formatH(h);
+        if (pris) return `<span class="planning-slot pris">${label}</span>`;
+        return `<button class="planning-slot dispo" onclick="choisirCreneau('${s.key}','${dateStr}',${h},'${label}')" title="Réserver ${s.label} le ${dateStr} à ${label}">✅ ${label}</button>`;
+      }).join('');
+      return `<div class="planning-room">
+        <div class="planning-room-title ${s.cls}">${s.label}</div>
+        <div class="planning-slots">${slots || '<span class="planning-ferme">Fermé</span>'}</div>
+      </div>`;
+    }).join('')}</div>`;
+  }
+
+  function choisirCreneau(salle, dateStr, heureNum, heureLabel) {
+    // Pre-fill form
+    const selSalle = document.getElementById('f-salle');
+    selSalle.value = salle;
+    selSalle.dispatchEvent(new Event('change'));
+    document.getElementById('f-date').value = dateStr;
+    document.getElementById('f-heure').value = heureLabel;
+    // Mark selected in form creneaux (will re-render after updateCreneaux)
+    updateCreneaux().then(() => {
+      document.querySelectorAll('.creneau-btn').forEach(btn => {
+        if (btn.textContent.trim() === heureLabel) {
+          btn.classList.add('selected');
+        }
+      });
+    });
+    // Store heure_num
+    selectedHeureNum = heureNum;
+    calcPrice();
+    // Scroll to reservation form
+    document.getElementById('reservation').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  initPlanning();
 
   // ===== ROOM MODALS =====
   function openRoomModal(salle) {
