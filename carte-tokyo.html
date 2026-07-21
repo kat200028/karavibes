@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KaraVibes – Cocktails Neo Tokyo</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #36eef4;
+    --rose: #ee69eb;
+    --blue: #3f70c2;
+    --gold: #f5c842;
+    --black: #080c14;
+    --panel: #111b2e;
+    --border: #1e2f4a;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--black);
+    font-family: 'Rajdhani', sans-serif;
+    color: #e0eaff; min-height:100vh; overflow-x:hidden;
+  }
+  body::before {
+    content:''; position:fixed; top:0; left:0; right:0; bottom:0;
+    background:repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events:none; z-index:100;
+  }
+  .glow-orb { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; z-index:0; opacity:0.12; }
+  .orb1 { width:400px; height:400px; background:var(--cyan); top:-100px; left:-100px; }
+  .orb2 { width:300px; height:300px; background:var(--rose); bottom:100px; right:-80px; }
+
+  .page { max-width:900px; margin:0 auto; padding:20px 20px 50px; position:relative; }
+
+  /* NAV BACK */
+  .nav-back-bar {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.8rem 0; margin-bottom:1rem;
+    border-bottom:1px solid var(--border);
+  }
+  .btn-back {
+    font-family:'Orbitron',monospace; font-size:0.65rem; letter-spacing:0.1em;
+    color:rgba(224,234,255,0.35); text-decoration:none; text-transform:uppercase;
+    transition:color 0.2s;
+  }
+  .btn-back:hover { color:var(--cyan); }
+  .nav-brand { font-family:'Orbitron',monospace; font-size:0.75rem; color:var(--cyan); letter-spacing:0.15em; opacity:0.7; }
+
+  /* HEADER */
+  .header { text-align:center; margin:20px 0 10px; position:relative; }
+  .header::before {
+    content:''; position:absolute; top:50%; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--cyan), var(--rose), transparent);
+  }
+  .logo-zone { position:relative; display:inline-block; background:var(--black); padding:0 30px; }
+  .brand-tag { font-family:'Orbitron',monospace; font-size:10px; letter-spacing:6px; color:var(--cyan); text-transform:uppercase; margin-bottom:6px; opacity:0.8; }
+  .brand-name { font-family:'Orbitron',monospace; font-size:42px; font-weight:900; letter-spacing:4px; background:linear-gradient(135deg, var(--cyan) 0%, var(--rose) 60%, var(--gold) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; }
+  .room-tag { font-family:'Orbitron',monospace; font-size:13px; letter-spacing:8px; color:var(--rose); text-transform:uppercase; margin-top:6px; }
+  .jp-sub { font-family:'Noto Sans JP',sans-serif; font-size:11px; color:rgba(54,238,244,0.5); letter-spacing:3px; margin-top:4px; }
+
+  .holo-stripe { height:3px; background:linear-gradient(90deg, var(--cyan), var(--blue), var(--rose), var(--gold), var(--cyan)); margin:24px 0 32px; opacity:0.6; }
+
+  /* SECTIONS */
+  .section-title { font-family:'Orbitron',monospace; font-size:10px; letter-spacing:5px; text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+  .section-title.alcool { color:var(--cyan); }
+  .section-title.soft { color:var(--rose); }
+  .section-title::after { content:''; flex:1; height:1px; background:currentColor; opacity:0.3; }
+
+  .divider { display:flex; align-items:center; gap:12px; margin:20px 0; }
+  .divider::before, .divider::after { content:''; flex:1; height:1px; background:linear-gradient(90deg, transparent, var(--border)); }
+  .divider::after { background:linear-gradient(90deg, var(--border), transparent); }
+  .divider span { font-size:10px; color:var(--cyan); letter-spacing:4px; text-transform:uppercase; opacity:0.6; }
+
+  .drinks-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px; }
+  .drinks-grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:24px; max-width:600px; margin-left:auto; margin-right:auto; }
+
+  .drink-card { background:var(--panel); border:1px solid var(--border); border-radius:3px; padding:16px 14px; position:relative; overflow:hidden; }
+  .drink-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+  .drink-card.alcool::before { background:linear-gradient(90deg, var(--cyan), var(--blue)); }
+  .drink-card.soft::before { background:linear-gradient(90deg, var(--rose), var(--gold)); }
+  .drink-card::after { content:attr(data-num); position:absolute; top:8px; right:10px; font-family:'Orbitron',monospace; font-size:9px; color:rgba(255,255,255,0.12); font-weight:900; letter-spacing:1px; }
+
+  .drink-universe { font-size:9px; letter-spacing:3px; text-transform:uppercase; margin-bottom:4px; opacity:0.7; }
+  .alcool .drink-universe { color:var(--cyan); }
+  .soft .drink-universe { color:var(--rose); }
+
+  .drink-name { font-family:'Orbitron',monospace; font-size:13px; font-weight:700; line-height:1.2; margin-bottom:6px; color:#fff; }
+  .alcool .drink-name { text-shadow:0 0 20px rgba(54,238,244,0.4); }
+  .soft .drink-name { text-shadow:0 0 20px rgba(238,105,235,0.4); }
+
+  .drink-subtitle { font-size:10px; color:rgba(255,255,255,0.4); font-style:italic; margin-bottom:10px; letter-spacing:0.5px; }
+  .drink-desc { font-size:11.5px; color:rgba(224,234,255,0.75); line-height:1.5; letter-spacing:0.3px; }
+
+  .drink-badge { display:inline-block; margin-top:10px; padding:2px 8px; border-radius:2px; font-size:9px; letter-spacing:2px; text-transform:uppercase; font-family:'Orbitron',monospace; }
+  .alcool .drink-badge { background:rgba(54,238,244,0.1); border:1px solid rgba(54,238,244,0.3); color:var(--cyan); }
+  .soft .drink-badge { background:rgba(238,105,235,0.1); border:1px solid rgba(238,105,235,0.3); color:var(--rose); }
+
+  .note { text-align:center; font-size:11px; color:rgba(255,255,255,0.25); letter-spacing:2px; margin-top:24px; font-style:italic; }
+
+  .footer { text-align:center; margin-top:30px; padding-top:20px; border-top:1px solid var(--border); }
+  .footer-text { font-family:'Orbitron',monospace; font-size:9px; letter-spacing:4px; color:rgba(255,255,255,0.2); text-transform:uppercase; }
+  .footer-tagline { font-size:11px; color:rgba(54,238,244,0.5); margin-top:6px; letter-spacing:2px; }
+
+  @media (max-width:700px) {
+    .drinks-grid { grid-template-columns:1fr 1fr; }
+    .drinks-grid-2 { grid-template-columns:1fr 1fr; }
+    .brand-name { font-size:28px; }
+  }
+  @media (max-width:480px) {
+    .drinks-grid, .drinks-grid-2 { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="glow-orb orb1"></div>
+<div class="glow-orb orb2"></div>
+
+<div class="page">
+
+  <div class="nav-back-bar">
+    <a href="index.html" class="btn-back">← Retour au site</a>
+    <span class="nav-brand">KaraVibes</span>
+    <a href="menu.html" class="btn-back">Carte complète →</a>
+  </div>
+
+  <div class="header">
+    <div class="logo-zone">
+      <div class="brand-tag">★ Exclusive Box Menu ★</div>
+      <div class="brand-name">KaraVibes</div>
+      <div class="room-tag">NEO TOKYO</div>
+      <div class="jp-sub">ネオ東京 — ドリンクメニュー</div>
+    </div>
+  </div>
+  <div class="holo-stripe"></div>
+
+  <!-- COCKTAILS ALCOOLISÉS -->
+  <div class="section-title alcool"><span>⚡ Cocktails</span></div>
+  <div class="drinks-grid">
+    <div class="drink-card alcool" data-num="01">
+      <div class="drink-universe">Naruto</div>
+      <div class="drink-name">Rasengan Rush</div>
+      <div class="drink-subtitle">L'attaque tourbillonnante</div>
+      <div class="drink-desc">Vodka · Curaçao bleu · Limonade · Jus de citron · Glaçons</div>
+      <span class="drink-badge">Alcoolisé</span>
+    </div>
+    <div class="drink-card alcool" data-num="02">
+      <div class="drink-universe">Dragon Ball</div>
+      <div class="drink-name">Kamehameha</div>
+      <div class="drink-subtitle">L'énergie du Super Saiyen</div>
+      <div class="drink-desc">Rhum blanc · Jus de mangue · Gingembre · Sirop passion · Glaçons</div>
+      <span class="drink-badge">Alcoolisé</span>
+    </div>
+    <div class="drink-card alcool" data-num="03">
+      <div class="drink-universe">One Piece</div>
+      <div class="drink-name">Gomu Gomu Punch</div>
+      <div class="drink-subtitle">Le punch du futur Roi des Pirates</div>
+      <div class="drink-desc">Rhum · Jus de fraise · Jus d'orange · Grenadine · Citron vert</div>
+      <span class="drink-badge">Alcoolisé</span>
+    </div>
+    <div class="drink-card alcool" data-num="04">
+      <div class="drink-universe">Naruto</div>
+      <div class="drink-name">Sharingan</div>
+      <div class="drink-subtitle">Le regard qui hypnotise</div>
+      <div class="drink-desc">Gin · Cranberry · Grenadine · Jus de citron · Glaçons</div>
+      <span class="drink-badge">Alcoolisé</span>
+    </div>
+    <div class="drink-card alcool" data-num="05">
+      <div class="drink-universe">L'Attaque des Titans</div>
+      <div class="drink-name">Titan's Fury</div>
+      <div class="drink-subtitle">La rage du colosse</div>
+      <div class="drink-desc">Whisky · Cola · Sirop de réglisse · Orange amère · Glaçons</div>
+      <span class="drink-badge">Alcoolisé</span>
+    </div>
+    <div class="drink-card alcool" data-num="06">
+      <div class="drink-universe">Demon Slayer</div>
+      <div class="drink-name">Demon Slayer</div>
+      <div class="drink-subtitle">Souffle total de concentration</div>
+      <div class="drink-desc">Vodka · Lychee · Jus de myrtille · Sirop de rose · Glaçons</div>
+      <span class="drink-badge">Alcoolisé</span>
+    </div>
+  </div>
+
+  <div class="divider"><span>∿∿∿</span></div>
+
+  <!-- MOCKTAILS -->
+  <div class="section-title soft"><span>✦ Mocktails</span></div>
+  <div class="drinks-grid-2">
+    <div class="drink-card soft" data-num="07">
+      <div class="drink-universe">Pokémon</div>
+      <div class="drink-name">Pikachu Spark</div>
+      <div class="drink-subtitle">L'éclat électrique</div>
+      <div class="drink-desc">Citron pressé · Sirop de gingembre · Schweppes citron · Glaçons · Zeste de citron</div>
+      <span class="drink-badge">Sans alcool</span>
+    </div>
+    <div class="drink-card soft" data-num="08">
+      <div class="drink-universe">One Piece</div>
+      <div class="drink-name">Soul King Fizz</div>
+      <div class="drink-subtitle">La mélodie des mers</div>
+      <div class="drink-desc">Jus de myrtille · Sirop de cassis · Soda · Jus de citron · Glaçons</div>
+      <span class="drink-badge">Sans alcool</span>
+    </div>
+    <div class="drink-card soft" data-num="09">
+      <div class="drink-universe">Naruto</div>
+      <div class="drink-name">Sakura Blossom</div>
+      <div class="drink-subtitle">La douceur de Konoha</div>
+      <div class="drink-desc">Sirop de litchi · Grenadine · Eau de rose · Soda · Glaçons</div>
+      <span class="drink-badge">Sans alcool</span>
+    </div>
+    <div class="drink-card soft" data-num="10">
+      <div class="drink-universe">Univers Japonais</div>
+      <div class="drink-name">Ramune Ocean</div>
+      <div class="drink-subtitle">La vague de Tokyo</div>
+      <div class="drink-desc">Soda Ramune original · Sirop curaçao bleu · Boule de glace vanille · Glaçons</div>
+      <span class="drink-badge">Sans alcool</span>
+    </div>
+  </div>
+
+  <div class="note">✦ Selon disponibilité · Les prix sont TTC · Carte complète disponible sur demande ✦</div>
+
+  <div class="footer">
+    <div class="footer-text">KaraVibes · Neo Tokyo · Trois-Îlets, Martinique</div>
+    <div class="footer-tagline">Chante. Bois. Vibre. — ネオ東京へようこそ</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KaraVibes – Cocktails Lagon Bleu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lagoon: #0ea5b5;
+    --lagoon-light: #5fd4dd;
+    --deep: #073b4c;
+    --sand: #e8c178;
+    --coral: #ff8966;
+    --panel: #0a4a5d;
+    --panel2: #0c5468;
+    --border: rgba(95,212,221,0.22);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--deep);
+    background-image: radial-gradient(ellipse at top, rgba(14,165,181,0.25), transparent 60%), radial-gradient(ellipse at bottom, rgba(255,137,102,0.08), transparent 50%);
+    font-family: 'Jost', sans-serif; font-weight: 300;
+    color: #f7f9f7; min-height: 100vh;
+  }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background-image: repeating-radial-gradient(circle at 50% 0%, transparent 0, transparent 60px, rgba(95,212,221,0.02) 61px, rgba(95,212,221,0.02) 62px);
+    pointer-events:none; z-index:999;
+  }
+  .page { max-width:920px; margin:0 auto; padding:20px 24px 60px; }
+
+  /* NAV BACK */
+  .nav-back-bar {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.8rem 0; margin-bottom:1rem;
+    border-bottom:1px solid var(--border);
+  }
+  .btn-back {
+    font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.1em;
+    color:rgba(247,249,247,0.5); text-decoration:none; text-transform:uppercase;
+    transition:color 0.2s;
+  }
+  .btn-back:hover { color:var(--lagoon-light); }
+  .nav-brand { font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--sand); letter-spacing:0.15em; }
+
+  /* HEADER */
+  .header { text-align:center; padding:20px 0 10px; position:relative; }
+  .header::before {
+    content:''; position:absolute; top:50%; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--lagoon-light), var(--sand), transparent); opacity:0.5;
+  }
+  .logo-zone { position:relative; display:inline-block; padding:0 30px; }
+  .brand-tag { font-family:'Jost',sans-serif; font-size:10px; letter-spacing:7px; text-transform:uppercase; color:var(--sand); opacity:0.85; margin-bottom:8px; }
+  .brand-name { font-family:'Cormorant Garamond',serif; font-size:52px; font-weight:600; letter-spacing:1px; color:#f7f9f7; }
+  .brand-name em { font-style:italic; color:var(--lagoon-light); }
+  .room-tag { font-family:'Jost',sans-serif; font-size:13px; letter-spacing:8px; text-transform:uppercase; color:var(--lagoon-light); margin-top:10px; }
+  .wave-sub { font-size:11px; color:rgba(247,249,247,0.45); letter-spacing:2px; margin-top:6px; font-style:italic; font-family:'Cormorant Garamond',serif; }
+
+  .ornament { display:flex; align-items:center; justify-content:center; gap:16px; margin:22px 0 30px; }
+  .ornament .line { width:80px; height:1px; background:var(--border); }
+  .ornament .mark { color:var(--sand); font-size:16px; }
+
+  /* SECTIONS */
+  .sec { margin:32px 0 16px; }
+  .sec-top { display:flex; align-items:center; gap:14px; }
+  .sec-label { font-family:'Jost',sans-serif; font-size:14px; font-weight:500; letter-spacing:3px; text-transform:uppercase; color:#f7f9f7; white-space:nowrap; }
+  .sec-line { flex:1; height:1px; background:var(--border); }
+  .sec-bar { height:3px; width:56px; border-radius:2px; margin-top:8px; }
+  .sec-bar.lagoon { background:linear-gradient(90deg, var(--lagoon), var(--lagoon-light)); }
+  .sec-bar.sand { background:linear-gradient(90deg, var(--sand), var(--coral)); }
+
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+
+  .card {
+    background:var(--panel); border:1px solid var(--border); border-radius:4px;
+    padding:16px; position:relative; overflow:hidden;
+  }
+  .card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+  .card.lagoon::before { background:linear-gradient(90deg, var(--lagoon), var(--lagoon-light)); }
+  .card.sand::before { background:linear-gradient(90deg, var(--sand), var(--coral)); }
+
+  .card-num { position:absolute; top:10px; right:12px; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:13px; color:rgba(247,249,247,0.18); }
+  .card-name { font-family:'Cormorant Garamond',serif; font-size:21px; font-weight:600; color:#f7f9f7; margin-bottom:8px; line-height:1.15; padding-right:20px; }
+  .card-ing { font-size:12px; color:rgba(247,249,247,0.6); line-height:1.6; }
+
+  .badge { display:inline-block; margin-top:12px; padding:3px 10px; border-radius:2px; font-size:9px; letter-spacing:2px; text-transform:uppercase; font-family:'Jost',sans-serif; font-weight:500; }
+  .badge.lagoon { background:rgba(14,165,181,0.18); border:1px solid rgba(95,212,221,0.35); color:var(--lagoon-light); }
+  .badge.sand { background:rgba(232,193,120,0.15); border:1px solid rgba(232,193,120,0.35); color:var(--sand); }
+
+  .note { text-align:center; font-size:11px; color:rgba(247,249,247,0.3); letter-spacing:2px; margin-top:24px; font-style:italic; font-family:'Cormorant Garamond',serif; }
+
+  .footer { text-align:center; margin-top:40px; }
+  .footer-name { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:19px; color:var(--lagoon-light); }
+  .footer-loc { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(247,249,247,0.4); margin-top:8px; }
+
+  @media (max-width:700px) {
+    .grid3 { grid-template-columns:1fr 1fr; }
+    .brand-name { font-size:36px; }
+  }
+  @media (max-width:480px) {
+    .grid3 { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="nav-back-bar">
+    <a href="index.html" class="btn-back">← Retour au site</a>
+    <span class="nav-brand">KaraVibes</span>
+    <a href="menu.html" class="btn-back">Carte complète →</a>
+  </div>
+
+  <div class="header">
+    <div class="logo-zone">
+      <div class="brand-tag">★ Exclusive Box Menu ★</div>
+      <div class="brand-name">Kara<em>Vibes</em></div>
+      <div class="room-tag">Lagon Bleu</div>
+      <div class="wave-sub">Île en île, verre en verre</div>
+    </div>
+  </div>
+  <div class="ornament"><div class="line"></div><span class="mark">〜</span><div class="line"></div></div>
+
+  <!-- COCKTAILS -->
+  <div class="sec">
+    <div class="sec-top"><span class="sec-label">Cocktails</span><div class="sec-line"></div></div>
+    <div class="sec-bar lagoon"></div>
+  </div>
+  <div class="grid3">
+    <div class="card lagoon"><span class="card-num">01</span><div class="card-name">Bahama Breeze</div><div class="card-ing">Rhum · Jus d'ananas · Curaçao bleu · Citron vert</div><span class="badge lagoon">Alcoolisé</span></div>
+    <div class="card lagoon"><span class="card-num">02</span><div class="card-name">Coral Reef</div><div class="card-ing">Vodka · Liqueur de pêche · Jus d'orange · Grenadine</div><span class="badge lagoon">Alcoolisé</span></div>
+    <div class="card lagoon"><span class="card-num">03</span><div class="card-name">Lagoon Sunset</div><div class="card-ing">Rhum ambré · Jus de mangue · Sirop de passion · Citron</div><span class="badge lagoon">Alcoolisé</span></div>
+    <div class="card lagoon"><span class="card-num">04</span><div class="card-name">Palm Tree Punch</div><div class="card-ing">Rhum blanc · Jus d'ananas · Jus de goyave · Grenadine</div><span class="badge lagoon">Alcoolisé</span></div>
+    <div class="card lagoon"><span class="card-num">05</span><div class="card-name">Turquoise Tide</div><div class="card-ing">Gin · Curaçao bleu · Citron vert · Eau gazeuse</div><span class="badge lagoon">Alcoolisé</span></div>
+    <div class="card lagoon"><span class="card-num">06</span><div class="card-name">Castaway Rum</div><div class="card-ing">Rhum vieux · Fruit de la passion · Miel · Citron</div><span class="badge lagoon">Alcoolisé</span></div>
+  </div>
+
+  <!-- MOCKTAILS -->
+  <div class="sec">
+    <div class="sec-top"><span class="sec-label">Mocktails</span><div class="sec-line"></div></div>
+    <div class="sec-bar sand"></div>
+  </div>
+  <div class="grid3">
+    <div class="card sand"><span class="card-num">07</span><div class="card-name">Island Breeze</div><div class="card-ing">Jus d'ananas · Jus de coco · Grenadine</div><span class="badge sand">Sans alcool</span></div>
+    <div class="card sand"><span class="card-num">08</span><div class="card-name">Blue Lagoon Splash</div><div class="card-ing">Limonade · Sirop curaçao bleu · Citron</div><span class="badge sand">Sans alcool</span></div>
+    <div class="card sand"><span class="card-num">09</span><div class="card-name">Mango Tide</div><div class="card-ing">Jus de mangue · Jus d'orange · Eau gazeuse</div><span class="badge sand">Sans alcool</span></div>
+    <div class="card sand"><span class="card-num">10</span><div class="card-name">Coconut Paradise</div><div class="card-ing">Lait de coco · Jus d'ananas · Glace pilée</div><span class="badge sand">Sans alcool</span></div>
+    <div class="card sand"><span class="card-num">11</span><div class="card-name">Sunny Shore</div><div class="card-ing">Jus de goyave · Citron vert · Sirop de fraise · Eau gazeuse</div><span class="badge sand">Sans alcool</span></div>
+  </div>
+
+  <div class="note">✦ Selon disponibilité · Les prix sont TTC · Carte complète disponible sur demande ✦</div>
+
+  <div class="footer">
+    <div class="ornament"><div class="line"></div><span class="mark">〜</span><div class="line"></div></div>
+    <div class="footer-name">Chante. Bois. Vibre.</div>
+    <div class="footer-loc">KaraVibes · Lagon Bleu · Trois-Îlets, Martinique</div>
+  </div>
+
+</div>
+</body>
+</html>
