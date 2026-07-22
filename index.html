@@ -179,24 +179,34 @@
     /* PLANNING */
     .planning-section { background: #0a0a12; position: relative; overflow: hidden; }
     .planning-section::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(0,229,255,0.03) 0%, transparent 70%); pointer-events:none; }
-    .planning-scroll { display: flex; gap: 0.6rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.3) transparent; margin-bottom: 2rem; }
+    .planning-scroll { display: flex; gap: 0.6rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.3) transparent; margin-bottom: 2.5rem; }
     .planning-scroll::-webkit-scrollbar { height: 4px; }
     .planning-scroll::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
-    .planning-day-tab { flex-shrink: 0; padding: 0.6rem 1.2rem; border-radius: 20px; border: 1px solid rgba(201,168,76,0.2); background: none; color: var(--gris); font-family: 'Inter', sans-serif; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .planning-day-tab { flex-shrink: 0; padding: 0.6rem 1.3rem; border-radius: 20px; border: 1px solid rgba(201,168,76,0.2); background: none; color: var(--gris); font-family: 'Inter', sans-serif; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
     .planning-day-tab:hover { border-color: var(--or); color: var(--or); }
     .planning-day-tab.active { background: rgba(201,168,76,0.12); border-color: var(--or); color: var(--or); }
-    .planning-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .planning-room { background: rgba(250,248,245,0.02); border: 1px solid rgba(201,168,76,0.1); border-radius: 10px; padding: 1.5rem; }
-    .planning-room-title { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(201,168,76,0.1); }
-    .planning-room-title.lagon { color: var(--cyan); }
-    .planning-room-title.tokyo { color: var(--rose); }
-    .planning-slots { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-    .planning-slot { padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.05em; border: 1px solid; cursor: pointer; transition: all 0.2s; }
-    .planning-slot.dispo { border-color: rgba(46,204,113,0.4); color: #2ECC71; background: rgba(46,204,113,0.08); }
-    .planning-slot.dispo:hover { background: rgba(46,204,113,0.18); transform: translateY(-1px); }
-    .planning-slot.pris { border-color: rgba(231,76,60,0.3); color: rgba(231,76,60,0.5); background: rgba(231,76,60,0.05); cursor: not-allowed; text-decoration: line-through; }
-    .planning-loading { text-align: center; padding: 2rem; color: var(--gris); font-size: 0.85rem; }
-    .planning-ferme { color: rgba(138,138,154,0.4); font-size: 0.82rem; padding: 0.5rem 0; }
+    .planning-cards { display: flex; flex-direction: column; gap: 1.2rem; }
+    .planning-card { display: grid; grid-template-columns: 200px 1fr; border-radius: 10px; overflow: hidden; border: 1px solid rgba(201,168,76,0.12); background: rgba(250,248,245,0.02); transition: border-color 0.3s; }
+    .planning-card:hover { border-color: rgba(201,168,76,0.25); }
+    .planning-card-photo { position: relative; overflow: hidden; height: 160px; }
+    .planning-card-photo img { width:100%; height:100%; object-fit:cover; filter: brightness(0.45) blur(1px); transition: filter 0.4s; }
+    .planning-card:hover .planning-card-photo img { filter: brightness(0.6) blur(0px); }
+    .planning-card-photo-overlay { position:absolute; inset:0; background: linear-gradient(90deg, rgba(0,0,0,0.1), rgba(0,0,0,0.5)); }
+    .planning-card-photo-label { position:absolute; bottom:0.8rem; left:0.8rem; font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; }
+    .planning-card-photo-label.lagon { color: var(--cyan); }
+    .planning-card-photo-label.tokyo { color: var(--rose); }
+    .planning-card-body { padding: 1.2rem 1.5rem; display:flex; flex-direction:column; justify-content:space-between; }
+    .planning-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.8rem; }
+    .planning-card-name { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--blanc); }
+    .planning-card-infos { font-size:0.76rem; color:var(--gris); margin-top:0.25rem; line-height:1.6; }
+    .planning-card-savoir { font-size:0.72rem; color:var(--or); border:1px solid rgba(201,168,76,0.3); border-radius:4px; padding:0.35rem 0.8rem; background:none; cursor:pointer; font-family:'Inter',sans-serif; letter-spacing:0.06em; transition:all 0.2s; white-space:nowrap; flex-shrink:0; }
+    .planning-card-savoir:hover { background:rgba(201,168,76,0.1); }
+    .planning-slots { display: flex; flex-wrap: wrap; gap: 0.55rem; align-items:center; }
+    .planning-slot { padding: 0.55rem 1rem; border-radius: 6px; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em; border: 1px solid; cursor: pointer; transition: all 0.2s; font-family:'Inter',sans-serif; }
+    .planning-slot.dispo { border-color: rgba(201,168,76,0.5); color: var(--or); background: rgba(201,168,76,0.1); }
+    .planning-slot.dispo:hover { background: rgba(201,168,76,0.22); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(201,168,76,0.15); }
+    .planning-slot.pris { border-color: rgba(231,76,60,0.25); color: rgba(231,76,60,0.45); background: rgba(231,76,60,0.04); cursor: not-allowed; font-size:0.78rem; }
+    .planning-ferme { color: rgba(138,138,154,0.35); font-size: 0.82rem; font-style:italic; }
 
     /* AVIS */
     .avis-section { background: #0d0d18; }
@@ -337,6 +347,9 @@
       .tarifs-grid { grid-template-columns: 1fr; }
       .form-grid { grid-template-columns: 1fr; }
       .avis-grid { grid-template-columns: 1fr; }
+      .planning-card { grid-template-columns: 1fr; }
+      .planning-card-photo { height: 140px; }
+      .planning-card-top { flex-wrap: wrap; gap: 0.6rem; }
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -477,11 +490,11 @@
 <section class="planning-section" id="planning">
   <div class="container">
     <span class="section-label">Disponibilités en temps réel</span>
-    <h2 class="section-title light" style="margin-bottom:0.5rem;">Planning des créneaux</h2>
-    <p style="font-size:0.88rem; color:var(--gris); margin-bottom:2rem;">Cliquez sur un créneau disponible pour pré-remplir votre réservation instantanément.</p>
+    <h2 class="section-title light" style="margin-bottom:0.5rem;">Choisissez votre créneau</h2>
+    <p style="font-size:0.88rem; color:var(--gris); margin-bottom:2rem;">Sélectionnez un jour puis cliquez sur un créneau pour réserver directement.</p>
     <div class="planning-scroll" id="planning-tabs"></div>
-    <div id="planning-content">
-      <div class="planning-loading">Chargement des disponibilités…</div>
+    <div id="planning-content" class="planning-cards">
+      <p style="color:var(--gris);font-size:0.85rem;">Chargement des disponibilités…</p>
     </div>
   </div>
 </section>
@@ -1061,25 +1074,45 @@
     const content = document.getElementById('planning-content');
 
     const salles = [
-      { key: 'lagon', label: '🌊 Lagon Bleu', cls: 'lagon' },
-      { key: 'tokyo', label: '🌸 Neo Tokyo', cls: 'tokyo' }
+      { key: 'lagon', label: 'Lagon Bleu', cls: 'lagon', photo: 'salle-lagon.jpeg', cap: '1 à 10 chanteurs', duree: '2h par session' },
+      { key: 'tokyo', label: 'Neo Tokyo',  cls: 'tokyo', photo: 'salle-tokyo.jpeg', cap: '1 à 10 chanteurs', duree: '2h par session' }
     ];
 
-    content.innerHTML = `<div class="planning-grid">${salles.map(s => {
+    if (!creneaux.length) {
+      content.innerHTML = '<p style="color:var(--gris);font-size:0.88rem;text-align:center;padding:2rem 0;">Fermé ce jour — nous vous attendons mercredi !</p>';
+      return;
+    }
+
+    content.innerHTML = salles.map(s => {
       const prises = planningReservations
         .filter(r => r.salle === s.key && r.date === dateStr)
         .map(r => r.heure_num);
+
       const slots = creneaux.map(h => {
         const pris = prises.includes(h);
         const label = formatH(h);
-        if (pris) return `<span class="planning-slot pris">${label}</span>`;
-        return `<button class="planning-slot dispo" onclick="choisirCreneau('${s.key}','${dateStr}',${h},'${label}')" title="Réserver ${s.label} le ${dateStr} à ${label}">✅ ${label}</button>`;
+        if (pris) return `<span class="planning-slot pris">🔴 ${label} — Complet</span>`;
+        return `<button class="planning-slot dispo" onclick="choisirCreneau('${s.key}','${dateStr}',${h},'${label}')">${label}</button>`;
       }).join('');
-      return `<div class="planning-room">
-        <div class="planning-room-title ${s.cls}">${s.label}</div>
-        <div class="planning-slots">${slots || '<span class="planning-ferme">Fermé</span>'}</div>
+
+      return `<div class="planning-card">
+        <div class="planning-card-photo">
+          <img src="${s.photo}" alt="${s.label}" />
+          <div class="planning-card-photo-overlay"></div>
+          <span class="planning-card-photo-label ${s.cls}">${s.cls === 'lagon' ? '🌊' : '🌸'} ${s.label}</span>
+        </div>
+        <div class="planning-card-body">
+          <div class="planning-card-top">
+            <div>
+              <div class="planning-card-name">${s.label}</div>
+              <div class="planning-card-infos">Salle pour ${s.cap}<br>Durée de la session : ${s.duree}</div>
+            </div>
+            <button class="planning-card-savoir" onclick="openRoomModal('${s.key}')">En savoir plus</button>
+          </div>
+          <div class="planning-slots">${slots}</div>
+        </div>
       </div>`;
-    }).join('')}</div>`;
+    }).join('');
   }
 
   function choisirCreneau(salle, dateStr, heureNum, heureLabel) {
