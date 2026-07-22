@@ -225,7 +225,7 @@
     <span class="login-sub">Espace Administration</span>
     <div class="login-roles">
       <button class="role-btn active" id="roleOwner" onclick="selectRole('owner')"><span class="role-icon">👑</span><span class="role-name">Propriétaire</span><span class="role-desc">Accès complet</span></button>
-      <button class="role-btn" id="roleStaff" onclick="selectRole('staff')"><span class="role-icon">👤</span><span class="role-name">Staff / Collaborateur</span><span class="role-desc">Réservations et salles</span></button>
+      <button class="role-btn" id="roleStaff" onclick="selectRole('staff')"><span class="role-icon">👤</span><span class="role-name">Staff / Employé</span><span class="role-desc">Réservations, planning & caisse</span></button>
     </div>
     <input type="password" id="pwdInput" placeholder="••••••••••" onkeydown="if(event.key==='Enter') login()" />
     <button class="login-btn" onclick="login()">Accéder</button>
@@ -628,8 +628,11 @@
           <div style="display:none; margin-top:0.8rem; font-size:0.78rem; color:var(--vert);" id="email-msg">✅ Email enregistré !</div>
         </div>
         <div class="param-card">
-          <h3>ℹ️ Accès Staff</h3>
-          <p style="font-size:0.8rem; color:var(--gris); line-height:1.7;">Le staff peut accéder à :<br>✅ Réservations<br>✅ Salles & Fermetures<br><br>Le staff n'a pas accès à :<br>❌ Avis clients<br>❌ Tarifs<br>❌ Menu & Carte<br>❌ Paramètres</p>
+          <h3>ℹ️ Accès Staff / Employé</h3>
+          <p style="font-size:0.75rem; color:var(--cyan); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.6rem; font-family:'Cinzel',serif;">✅ Pages accessibles</p>
+          <p style="font-size:0.82rem; color:rgba(250,248,245,0.7); line-height:1.9; margin-bottom:1rem;">📋 Réservations — voir & changer statut<br>📅 Planning — vue semaine en temps réel<br>🚪 Salles & Fermetures — bloquer créneaux<br>🛒 Caisse — encaisser les ventes</p>
+          <p style="font-size:0.75rem; color:var(--rouge); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.6rem; font-family:'Cinzel',serif;">❌ Pages réservées propriétaire</p>
+          <p style="font-size:0.82rem; color:rgba(250,248,245,0.4); line-height:1.9;">📊 Tableau de bord CA<br>📝 Devis entreprises<br>⭐ Avis clients<br>💰 Tarifs<br>🍹 Menu & Carte<br>📦 Stock<br>⚙️ Paramètres</p>
         </div>
       </div>
     </div>
