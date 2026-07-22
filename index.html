@@ -1021,13 +1021,25 @@
       <input type="email" id="bp-email" placeholder="votre@email.com" />
     </div>
     <div class="modal-booking-field">
-      <label data-i18n="bp-nb-label">Nombre de personnes</label>
+      <label>Adultes</label>
       <div class="modal-booking-nb">
         <button class="nb-btn" onclick="changeNb(-1)">−</button>
         <span class="nb-value" id="bp-nb">4</span>
         <button class="nb-btn" onclick="changeNb(1)">+</button>
-        <span class="nb-label" data-i18n="nb-label">personne(s) · min. 4 facturées</span>
+        <span class="nb-label">adulte(s) · 20€/pers</span>
       </div>
+    </div>
+    <div class="modal-booking-field">
+      <label>Enfants <span style="font-size:0.6rem;color:var(--gris);text-transform:none;letter-spacing:0;">moins de 10 ans · 10€/pers</span></label>
+      <div class="modal-booking-nb">
+        <button class="nb-btn" onclick="changeEnfants(-1)">−</button>
+        <span class="nb-value" id="bp-enfants">0</span>
+        <button class="nb-btn" onclick="changeEnfants(1)">+</button>
+        <span class="nb-label">enfant(s)</span>
+      </div>
+    </div>
+    <div id="bp-min-notice" style="font-size:0.68rem;color:var(--or);text-align:center;margin-top:-0.3rem;display:none;">
+      ⚠️ Minimum 80€ appliqué (équivalent 4 adultes)
     </div>
     <label class="modal-booking-prolo">
       <input type="checkbox" id="bp-prolo" onchange="updateBPPrice()" />
@@ -1469,7 +1481,10 @@
   function choisirDepuisModal(salle, dateStr, heureNum, heureLabel) {
     bpData = { salle, date: dateStr, heureNum, heureLabel };
     bpNb = 4;
+    bpEnfants = 0;
     document.getElementById('bp-nb').textContent = bpNb;
+    document.getElementById('bp-enfants').textContent = bpEnfants;
+    document.getElementById('bp-min-notice').style.display = 'none';
     document.getElementById('bp-prolo').checked = false;
     document.getElementById('bp-prenom').value = '';
     document.getElementById('bp-nom').value = '';
@@ -1488,17 +1503,30 @@
     document.getElementById('booking-panel').classList.add('open');
   }
 
+  let bpEnfants = 0;
+
   function changeNb(delta) {
-    bpNb = Math.max(1, Math.min(10, bpNb + delta));
+    bpNb = Math.max(1, Math.min(10 - bpEnfants, bpNb + delta));
     document.getElementById('bp-nb').textContent = bpNb;
+    updateBPPrice();
+  }
+
+  function changeEnfants(delta) {
+    bpEnfants = Math.max(0, Math.min(10 - bpNb, bpEnfants + delta));
+    document.getElementById('bp-enfants').textContent = bpEnfants;
     updateBPPrice();
   }
 
   function updateBPPrice() {
     const prolo = document.getElementById('bp-prolo').checked;
-    const facture = Math.max(bpNb, 4);
-    const total = facture * 20 + (prolo ? facture * 15 : 0);
+    const baseCalc = bpNb * 20 + bpEnfants * 10;
+    const base = Math.max(baseCalc, 80);
+    const totalPersonnes = bpNb + bpEnfants;
+    const proloCalc = prolo ? (bpNb * 15 + bpEnfants * 10) : 0;
+    const total = base + proloCalc;
     document.getElementById('bp-price').textContent = total + '€';
+    const notice = document.getElementById('bp-min-notice');
+    notice.style.display = (baseCalc < 80) ? 'block' : 'none';
   }
 
   function closeBookingPanel() {
@@ -1521,8 +1549,9 @@
     btn.disabled = true;
     btn.textContent = 'Envoi en cours…';
 
-    const facture = Math.max(bpNb, 4);
-    const montant = facture * 20 + (prolo ? facture * 15 : 0);
+    const baseCalc = bpNb * 20 + bpEnfants * 10;
+    const base = Math.max(baseCalc, 80);
+    const montant = base + (prolo ? (bpNb * 15 + bpEnfants * 10) : 0);
 
     const { error } = await supabase.from('reservations').insert({
       nom: prenom + ' ' + nom,
@@ -1532,7 +1561,8 @@
       date: bpData.date,
       heure: bpData.heureLabel,
       heure_num: bpData.heureNum,
-      nb: bpNb,
+      nb: bpNb + bpEnfants,
+      nb_enfants: bpEnfants,
       montant,
       prolongation: prolo,
       paiement: 'especes',
