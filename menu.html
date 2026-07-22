@@ -83,11 +83,11 @@
     .section-title-carte.cyan { color: var(--cyan); }
     .section-title-carte.rose { color: var(--rose-doux); }
 
-    /* LA CARTE ITEMS — fond blanc/lumineux */
+    /* LA CARTE ITEMS */
     .items-grid {
-      background: #ffffff;
       border-radius: 12px;
-      padding: 2rem;
+      overflow: hidden;
+      border: 1px solid rgba(201,168,76,0.12);
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0;
@@ -95,24 +95,27 @@
 
     .menu-item {
       display: flex; justify-content: space-between; align-items: flex-start;
-      padding: 1.2rem 1rem;
-      border-bottom: 1px solid rgba(0,0,0,0.07);
+      padding: 1.1rem 1.2rem;
+      border-bottom: 1px solid rgba(201,168,76,0.08);
       gap: 1rem;
+      background: rgba(250,248,245,0.02);
+      transition: background 0.2s;
     }
+    .menu-item:hover { background: rgba(201,168,76,0.05); }
 
-    .menu-item:nth-child(odd) { border-right: 1px solid rgba(0,0,0,0.07); }
+    .menu-item:nth-child(odd) { border-right: 1px solid rgba(201,168,76,0.08); }
     .menu-item:last-child, .menu-item:nth-last-child(2):nth-child(odd) { border-bottom: none; }
 
     .menu-item-info h4 {
-      font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600;
-      color: #1a1a1a; margin-bottom: 0.25rem;
+      font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 600;
+      color: var(--blanc); margin-bottom: 0.2rem;
     }
-    .menu-item-info p { font-size: 0.75rem; color: #888; line-height: 1.5; }
+    .menu-item-info p { font-size: 0.72rem; color: var(--gris); line-height: 1.5; }
     .menu-item-price {
-      font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 600;
+      font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 600;
       color: var(--or); white-space: nowrap;
     }
-    .menu-item-price.tbd { color: #bbb; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-style: italic; font-weight: 400; }
+    .menu-item-price.tbd { color: var(--gris); font-family: 'Inter', sans-serif; font-size: 0.75rem; font-style: italic; font-weight: 400; }
 
     /* Single column pour les petites catégories */
     .items-grid.single { grid-template-columns: 1fr; }
@@ -169,7 +172,7 @@
 <nav>
   <a href="index.html" class="nav-logo" style="display:flex; align-items:center; gap:0.5rem;">
     <img src="logo-icon.png" alt="" style="height:34px; object-fit:contain;" />
-    <span style="color:var(--or)">KARA</span><span style="color:var(--blanc)">VIBES</span>
+    <span style="color:var(--or)">KARA</span><span style="color:var(--or-clair)">VIBES</span>
   </a>
   <a href="index.html" class="nav-back">← Retour au site</a>
 </nav>
@@ -202,8 +205,8 @@
       <div class="menu-item"><div class="menu-item-info"><h4>Daiquiri</h4><p>Rhum blanc, citron vert, sucre de canne</p></div><span class="menu-item-price">10€</span></div>
       <div class="menu-item"><div class="menu-item-info"><h4>Planteur</h4><p>Rhum, jus d'ananas, jus d'orange, jus de goyave, sirop de canne, muscade</p></div><span class="menu-item-price">9€</span></div>
     </div>
-    <div style="margin-top:1rem; padding:1rem 1.2rem; background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.2); border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
-      <div><span style="font-family:'Playfair Display',serif; font-size:1rem; color:#1a1a1a; font-weight:600;">Création du Barman</span> <span style="font-size:0.7rem; letter-spacing:0.1em; color:var(--rose); border:1px solid rgba(255,45,120,0.3); padding:2px 8px; border-radius:3px; margin-left:8px;">SURPRISE</span></div>
+    <div style="margin-top:1rem; padding:1rem 1.2rem; background:rgba(255,45,120,0.06); border:1px solid rgba(255,45,120,0.2); border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+      <div><span style="font-family:'Playfair Display',serif; font-size:1rem; color:var(--blanc); font-weight:600;">Création du Barman</span> <span style="font-size:0.65rem; letter-spacing:0.12em; color:var(--rose); border:1px solid rgba(255,45,120,0.3); padding:2px 8px; border-radius:3px; margin-left:8px;">SURPRISE</span></div>
       <span class="menu-item-price">20€</span>
     </div>
   </div>
@@ -219,9 +222,9 @@
       <div class="menu-item"><div class="menu-item-info"><h4>Virgin Mojito Fruit</h4><p>Menthe, citron vert, sucre de canne, purée de fruit, eau gazeuse</p></div><span class="menu-item-price">9€</span></div>
       <div class="menu-item"><div class="menu-item-info"><h4>Virgin Piña Colada</h4><p>Crème de coco, jus d'ananas</p></div><span class="menu-item-price">9€</span></div>
     </div>
-    <div style="margin-top:1rem; padding:1rem 1.2rem; background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.2); border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
-      <span style="font-family:'Playfair Display',serif; font-size:1rem; color:#1a1a1a; font-weight:600;">Création Sans Alcool</span>
-      <span class="menu-item-price">12€</span>
+    <div style="margin-top:1rem; padding:1rem 1.2rem; background:rgba(0,229,255,0.04); border:1px solid rgba(0,229,255,0.15); border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-family:'Playfair Display',serif; font-size:1rem; color:var(--blanc); font-weight:600;">Création Sans Alcool</span>
+      <span class="menu-item-price" style="color:var(--cyan);">12€</span>
     </div>
   </div>
 
@@ -310,8 +313,8 @@
       <div class="menu-item"><div class="menu-item-info"><h4>Assiette de Fromage</h4></div><span class="menu-item-price">16€</span></div>
       <div class="menu-item"><div class="menu-item-info"><h4>Assiette de Charcuterie</h4></div><span class="menu-item-price">18€</span></div>
     </div>
-    <div style="margin-top:1rem; padding:1rem 1.2rem; background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.2); border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
-      <div><span style="font-family:'Playfair Display',serif; font-size:1rem; color:#1a1a1a; font-weight:600;">Assiette Mixte</span> <span style="font-size:0.7rem; letter-spacing:0.1em; color:var(--or); border:1px solid rgba(201,168,76,0.4); padding:2px 8px; border-radius:3px; margin-left:8px;">FROMAGE &amp; CHARCUTERIE</span></div>
+    <div style="margin-top:1rem; padding:1rem 1.2rem; background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.25); border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+      <div><span style="font-family:'Playfair Display',serif; font-size:1rem; color:var(--blanc); font-weight:600;">Assiette Mixte</span> <span style="font-size:0.65rem; letter-spacing:0.12em; color:var(--or); border:1px solid rgba(201,168,76,0.35); padding:2px 8px; border-radius:3px; margin-left:8px;">FROMAGE &amp; CHARCUTERIE</span></div>
       <span class="menu-item-price">25€</span>
     </div>
     <p style="font-size:0.75rem; color:var(--gris); font-style:italic; margin-top:1rem;">Amuse-gueule pays (poulet fumé, morue, saucisson, thon) — bientôt disponible.</p>
@@ -339,18 +342,6 @@
         <span class="formule-card-tag">Séance Standard</span>
         <h3>2h en salle privée</h3>
         <p>Salle au choix — Lagon Bleu ou Neo Tokyo. Minimum 4 personnes, maximum 10.</p>
-        <span class="formule-price">20€ / pers</span>
-      </div>
-      <div class="formule-card featured">
-        <span class="formule-card-tag">⭐ Populaire</span>
-        <h3>Prolongation</h3>
-        <p>Restez plus longtemps ! 2h supplémentaires dont 30 min offertes incluses.</p>
-        <span class="formule-price">15€ / pers</span>
-      </div>
-    </div>
-  </div>
-
-</div>
         <span class="formule-price">20€ / pers</span>
       </div>
       <div class="formule-card featured">
