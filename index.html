@@ -348,6 +348,89 @@
       background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2);
       border-radius: 20px; padding: 0.4rem 1rem; font-size: 0.82rem; color: var(--or-pale);
     }
+    /* BOOKING INLINE DANS MODALE */
+    .modal-booking-panel {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      align-items: flex-end; justify-content: center;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+    }
+    .modal-booking-panel.open { display: flex; }
+    .modal-booking-card {
+      background: #0f0f14; border-radius: 16px 16px 0 0;
+      border: 1px solid rgba(201,168,76,0.2); border-bottom: none;
+      padding: 1.5rem; width: 100%; max-width: 500px;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
+    .modal-booking-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.2rem; padding-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+    .modal-booking-title { font-family:'Cinzel',serif; font-size:0.8rem; color:var(--or); letter-spacing:0.15em; text-transform:uppercase; }
+    .modal-booking-slot { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--blanc); font-weight:700; }
+    .modal-booking-close { background:none; border:1px solid rgba(201,168,76,0.2); color:var(--gris); width:28px; height:28px; border-radius:50%; cursor:pointer; font-size:0.8rem; display:flex; align-items:center; justify-content:center; }
+    .modal-booking-field { margin-bottom:0.9rem; }
+    .modal-booking-field label { display:block; font-size:0.68rem; color:var(--gris); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.35rem; }
+    .modal-booking-field input {
+      width:100%; background:rgba(250,248,245,0.04); border:1px solid rgba(201,168,76,0.15);
+      border-radius:6px; padding:0.65rem 0.8rem; color:var(--blanc); font-family:'Inter',sans-serif;
+      font-size:0.9rem; outline:none; transition:border-color 0.2s;
+    }
+    .modal-booking-field input:focus { border-color:rgba(201,168,76,0.5); }
+    .modal-booking-nb {
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .nb-btn {
+      width:38px; height:38px; border-radius:50%; border:2px solid var(--or);
+      background:transparent; color:var(--or); font-size:1.2rem; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; transition:all 0.2s; flex-shrink:0;
+    }
+    .nb-btn:hover { background:var(--or); color:var(--noir); }
+    .nb-value { font-family:'Cinzel',serif; font-size:1.4rem; color:var(--blanc); font-weight:600; min-width:24px; text-align:center; }
+    .nb-label { font-size:0.75rem; color:var(--gris); }
+    .modal-booking-price {
+      background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.15);
+      border-radius:8px; padding:0.8rem 1rem; margin:0.8rem 0;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .modal-booking-price-label { font-size:0.75rem; color:var(--gris); }
+    .modal-booking-price-amount { font-family:'Cinzel',serif; font-size:1.3rem; color:var(--or); font-weight:600; }
+    .modal-booking-prolo {
+      display:flex; align-items:center; gap:0.6rem; margin-bottom:1rem; cursor:pointer;
+      background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.1);
+      border-radius:8px; padding:0.7rem 0.9rem;
+    }
+    .modal-booking-prolo input[type=checkbox] { accent-color:var(--or); width:16px; height:16px; cursor:pointer; }
+    .modal-booking-prolo-text { font-size:0.8rem; color:var(--blanc); }
+    .modal-booking-prolo-text span { font-size:0.7rem; color:var(--gris); display:block; }
+    .modal-booking-submit {
+      width:100%; padding:1rem; background:linear-gradient(135deg,var(--or),var(--or-clair));
+      color:var(--noir); border:none; border-radius:8px; font-family:'Inter',sans-serif;
+      font-size:0.85rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+      cursor:pointer; transition:all 0.3s; margin-top:0.3rem;
+    }
+    .modal-booking-submit:hover { box-shadow:0 6px 20px rgba(201,168,76,0.4); }
+    .modal-booking-submit:disabled { opacity:0.5; cursor:not-allowed; }
+    /* SUCCESS POPUP */
+    .booking-success-overlay {
+      display:none; position:fixed; inset:0; z-index:3000;
+      align-items:center; justify-content:center;
+      background:rgba(0,0,0,0.75); backdrop-filter:blur(6px);
+    }
+    .booking-success-overlay.open { display:flex; }
+    .booking-success-card {
+      background:#0f0f14; border:1px solid rgba(201,168,76,0.25); border-radius:16px;
+      padding:2.5rem 2rem; max-width:380px; width:90%; text-align:center;
+    }
+    .booking-success-icon { font-size:3rem; margin-bottom:1rem; }
+    .booking-success-title { font-family:'Cinzel',serif; font-size:1.2rem; color:var(--or); margin-bottom:0.5rem; }
+    .booking-success-msg { font-size:0.85rem; color:var(--gris); line-height:1.6; margin-bottom:1.5rem; }
+    .booking-success-detail { background:rgba(201,168,76,0.05); border:1px solid rgba(201,168,76,0.12); border-radius:8px; padding:1rem; margin-bottom:1.5rem; text-align:left; }
+    .booking-success-detail div { font-size:0.78rem; color:var(--blanc); margin-bottom:0.3rem; }
+    .booking-success-detail div span { color:var(--or); font-weight:600; }
+    .booking-success-btn { width:100%; padding:0.85rem; background:linear-gradient(135deg,var(--or),var(--or-clair)); color:var(--noir); border:none; border-radius:8px; font-family:'Inter',sans-serif; font-size:0.82rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; }
+
     .modal-btn-resa {
       width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--or), var(--or-clair));
       color: var(--noir); border: none; border-radius: 6px; font-family: 'Inter', sans-serif;
@@ -769,7 +852,6 @@
         <p style="font-size:0.72rem; color:var(--gris); margin-top:0.6rem; font-style:italic;">Cocktails exclusifs réservés à la salle Lagon Bleu · Tarifs sur la carte complète</p>
       </div>
       <a href="carte-lagon.html" style="display:block; text-align:center; font-size:0.75rem; color:var(--lagoon,#00E5FF); letter-spacing:0.1em; margin-bottom:0.8rem; text-decoration:none; opacity:0.8;">🍹 Voir la carte cocktails complète →</a>
-      <button class="modal-btn-resa" onclick="closeRoomModal(); selectSalleEtReserver('lagon')">🎤 Réserver le Lagon Bleu</button>
     </div>
   </div>
 </div>
@@ -820,8 +902,68 @@
         <p style="font-size:0.72rem; color:var(--gris); margin-top:0.6rem; font-style:italic;">Cocktails exclusifs réservés à la salle Neo Tokyo · Tarifs sur la carte complète</p>
       </div>
       <a href="carte-tokyo.html" style="display:block; text-align:center; font-size:0.75rem; color:var(--rose,#FF2D78); letter-spacing:0.1em; margin-bottom:0.8rem; text-decoration:none; opacity:0.8;">🍹 Voir la carte cocktails complète →</a>
-      <button class="modal-btn-resa" onclick="closeRoomModal(); selectSalleEtReserver('tokyo')">🎤 Réserver Neo Tokyo</button>
     </div>
+  </div>
+</div>
+
+<!-- PANNEAU DE RÉSERVATION INLINE -->
+<div class="modal-booking-panel" id="booking-panel">
+  <div class="modal-booking-card">
+    <div class="modal-booking-header">
+      <div>
+        <div class="modal-booking-title" id="bp-salle-label"></div>
+        <div class="modal-booking-slot" id="bp-slot-label"></div>
+      </div>
+      <button class="modal-booking-close" onclick="closeBookingPanel()">✕</button>
+    </div>
+    <div class="modal-booking-field">
+      <label>Prénom</label>
+      <input type="text" id="bp-prenom" placeholder="Votre prénom" />
+    </div>
+    <div class="modal-booking-field">
+      <label>Nom</label>
+      <input type="text" id="bp-nom" placeholder="Votre nom" />
+    </div>
+    <div class="modal-booking-field">
+      <label>Téléphone</label>
+      <input type="tel" id="bp-tel" placeholder="+596 696 00 00 00" />
+    </div>
+    <div class="modal-booking-field">
+      <label>Email <span style="font-size:0.6rem;color:var(--gris);text-transform:none;letter-spacing:0;">(optionnel — pour votre confirmation)</span></label>
+      <input type="email" id="bp-email" placeholder="votre@email.com" />
+    </div>
+    <div class="modal-booking-field">
+      <label>Nombre de personnes</label>
+      <div class="modal-booking-nb">
+        <button class="nb-btn" onclick="changeNb(-1)">−</button>
+        <span class="nb-value" id="bp-nb">4</span>
+        <button class="nb-btn" onclick="changeNb(1)">+</button>
+        <span class="nb-label">personne(s) · min. 4 facturées</span>
+      </div>
+    </div>
+    <label class="modal-booking-prolo">
+      <input type="checkbox" id="bp-prolo" onchange="updateBPPrice()" />
+      <div class="modal-booking-prolo-text">
+        🎉 Prolonger ma session (+2h)
+        <span>+15€/pers · restez encore 2h dans votre salle</span>
+      </div>
+    </label>
+    <div class="modal-booking-price">
+      <span class="modal-booking-price-label">Total estimé</span>
+      <span class="modal-booking-price-amount" id="bp-price">80€</span>
+    </div>
+    <button class="modal-booking-submit" id="bp-submit" onclick="submitBookingPanel()">🎤 Confirmer ma réservation</button>
+  </div>
+</div>
+
+<!-- POPUP SUCCÈS -->
+<div class="booking-success-overlay" id="booking-success">
+  <div class="booking-success-card">
+    <div class="booking-success-icon">✅</div>
+    <div class="booking-success-title">Réservation confirmée !</div>
+    <div class="booking-success-msg">Votre demande a bien été enregistrée. Nous vous contacterons pour confirmer et vous accueillir le jour J.</div>
+    <div class="booking-success-detail" id="success-detail"></div>
+    <button class="booking-success-btn" onclick="closeSuccess()">Parfait, à bientôt !</button>
   </div>
 </div>
 
@@ -1148,21 +1290,112 @@
     }).join('');
   }
 
+  // ===== PANNEAU DE RÉSERVATION INLINE =====
+  let bpData = { salle: '', date: '', heureNum: 0, heureLabel: '' };
+  let bpNb = 4;
+
   function choisirDepuisModal(salle, dateStr, heureNum, heureLabel) {
-    closeRoomModal();
-    const selSalle = document.getElementById('f-salle');
-    selSalle.value = salle;
-    selSalle.dispatchEvent(new Event('change'));
-    document.getElementById('f-date').value = dateStr;
-    selectedHeureNum = heureNum;
-    updateCreneaux().then(() => {
-      document.querySelectorAll('.creneau-btn').forEach(btn => {
-        if (btn.textContent.trim() === heureLabel) btn.classList.add('selected');
-      });
-      document.getElementById('f-heure').value = heureLabel;
-      calcPrice();
+    bpData = { salle, date: dateStr, heureNum, heureLabel };
+    bpNb = 4;
+    document.getElementById('bp-nb').textContent = bpNb;
+    document.getElementById('bp-prolo').checked = false;
+    document.getElementById('bp-prenom').value = '';
+    document.getElementById('bp-nom').value = '';
+    document.getElementById('bp-tel').value = '';
+    document.getElementById('bp-email').value = '';
+    document.getElementById('bp-submit').disabled = false;
+    document.getElementById('bp-submit').textContent = '🎤 Confirmer ma réservation';
+
+    const salleLabels = { lagon: '🌊 Lagon Bleu', tokyo: '⛩️ Neo Tokyo' };
+    const dateObj = new Date(dateStr + 'T00:00:00');
+    const dateFr = dateObj.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+    document.getElementById('bp-salle-label').textContent = salleLabels[salle] || salle;
+    document.getElementById('bp-slot-label').textContent = dateFr + ' · ' + heureLabel;
+
+    updateBPPrice();
+    document.getElementById('booking-panel').classList.add('open');
+  }
+
+  function changeNb(delta) {
+    bpNb = Math.max(1, Math.min(10, bpNb + delta));
+    document.getElementById('bp-nb').textContent = bpNb;
+    updateBPPrice();
+  }
+
+  function updateBPPrice() {
+    const prolo = document.getElementById('bp-prolo').checked;
+    const facture = Math.max(bpNb, 4);
+    const total = facture * 20 + (prolo ? facture * 15 : 0);
+    document.getElementById('bp-price').textContent = total + '€';
+  }
+
+  function closeBookingPanel() {
+    document.getElementById('booking-panel').classList.remove('open');
+  }
+
+  async function submitBookingPanel() {
+    const prenom = document.getElementById('bp-prenom').value.trim();
+    const nom = document.getElementById('bp-nom').value.trim();
+    const tel = document.getElementById('bp-tel').value.trim();
+    const email = document.getElementById('bp-email').value.trim();
+    const prolo = document.getElementById('bp-prolo').checked;
+
+    if (!prenom || !nom || !tel) {
+      alert('Veuillez remplir prénom, nom et téléphone.');
+      return;
+    }
+
+    const btn = document.getElementById('bp-submit');
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+
+    const facture = Math.max(bpNb, 4);
+    const montant = facture * 20 + (prolo ? facture * 15 : 0);
+
+    const { error } = await supabase.from('reservations').insert({
+      nom: prenom + ' ' + nom,
+      tel,
+      email: email || null,
+      salle: bpData.salle,
+      date: bpData.date,
+      heure: bpData.heureLabel,
+      heure_num: bpData.heureNum,
+      nb: bpNb,
+      montant,
+      prolongation: prolo,
+      paiement: 'especes',
+      statut: 'en attente'
     });
-    document.getElementById('reservation').scrollIntoView({ behavior:'smooth', block:'start' });
+
+    if (error) {
+      console.error(error);
+      alert('Une erreur est survenue. Merci de réessayer.');
+      btn.disabled = false;
+      btn.textContent = '🎤 Confirmer ma réservation';
+      return;
+    }
+
+    closeBookingPanel();
+
+    // Rafraîchir le planning de la salle
+    await fetchAndRenderWeek(bpData.salle);
+
+    // Afficher popup succès
+    const salleLabels = { lagon: 'Lagon Bleu', tokyo: 'Neo Tokyo' };
+    const dateObj = new Date(bpData.date + 'T00:00:00');
+    const dateFr = dateObj.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+    document.getElementById('success-detail').innerHTML = `
+      <div>Salle : <span>${salleLabels[bpData.salle] || bpData.salle}</span></div>
+      <div>Date : <span>${dateFr}</span></div>
+      <div>Heure : <span>${bpData.heureLabel}</span></div>
+      <div>Personnes : <span>${bpNb}</span>${prolo ? ' <span style="color:var(--or)">+ Prolongation 2h</span>' : ''}</div>
+      <div>Montant à régler sur place : <span>${montant}€</span></div>
+    `;
+    document.getElementById('booking-success').classList.add('open');
+  }
+
+  function closeSuccess() {
+    document.getElementById('booking-success').classList.remove('open');
   }
 
   // ===== ROOM MODALS =====
