@@ -1463,6 +1463,17 @@
     return hh.toString().padStart(2,'0') + 'h' + mm;
   }
 
+  function computeBlockedAdmin(creneaux, resas) {
+    const blocked = new Set(resas.map(r => r.heure_num));
+    resas.forEach(r => {
+      if (r.prolongation) {
+        const idx = creneaux.indexOf(r.heure_num);
+        if (idx !== -1 && idx + 1 < creneaux.length) blocked.add(creneaux[idx + 1]);
+      }
+    });
+    return blocked;
+  }
+
   let planningWeekOffset = 0;
 
   function getWeekStart(offset) {
@@ -1534,7 +1545,7 @@
         }
 
         const dayResas = resas.filter(r => r.salle === salle && r.date === dStr);
-        const prises = dayResas.map(r => r.heure_num);
+        const prises = computeBlockedAdmin(creneaux, dayResas);
         const fermees = fermetures
           .filter(f => f.salle === salle && f.date === dStr)
           .flatMap(f => creneaux.filter(h => h >= parseFloat(f.debut.replace(':','.')) - 1));
@@ -1544,8 +1555,11 @@
           if (resa) {
             const statut = resa.statut === 'confirmé' ? 'confirme' : 'attente';
             const emoji = resa.statut === 'confirmé' ? '✅' : '⏳';
-            return `<span class="apl-slot ${statut}" title="${resa.nom} · ${resa.nb} pers. · ${resa.statut}" onclick="showResaDetail(${resa.id})">${emoji} ${fmtH(h)}</span>`;
+            const proloTag = resa.prolongation ? ' +2h' : '';
+            return `<span class="apl-slot ${statut}" title="${resa.nom} · ${resa.nb} pers. · ${resa.statut}${proloTag}" onclick="showResaDetail(${resa.id})">${emoji} ${fmtH(h)}${proloTag}</span>`;
           }
+          // Slot bloqué par prolongation d'une résa précédente
+          if (prises.has(h)) return `<span class="apl-slot ferme">🔒 ${fmtH(h)}</span>`;
           if (fermees.includes(h)) return `<span class="apl-slot ferme">🔒 ${fmtH(h)}</span>`;
           return `<span class="apl-slot libre">✓ ${fmtH(h)}</span>`;
         }).join('');

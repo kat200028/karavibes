@@ -855,6 +855,19 @@
     return data;
   }
 
+  // Returns a Set of heure_num values that are unavailable for a given list of slots and reservations.
+  // A reservation with prolongation=true also blocks the NEXT slot in the day's schedule.
+  function computeBlocked(creneaux, resas) {
+    const blocked = new Set(resas.map(r => r.heure_num));
+    resas.forEach(r => {
+      if (r.prolongation) {
+        const idx = creneaux.indexOf(r.heure_num);
+        if (idx !== -1 && idx + 1 < creneaux.length) blocked.add(creneaux[idx + 1]);
+      }
+    });
+    return blocked;
+  }
+
   let selectedHeureNum = null;
 
   async function updateCreneaux() {
@@ -879,12 +892,11 @@
     }
 
     const reservations = await getReservations();
-    const prises = reservations
-      .filter(r => r.salle === salle && r.date === date)
-      .map(r => r.heure_num);
+    const resasDuJour = reservations.filter(r => r.salle === salle && r.date === date);
+    const prises = computeBlocked(creneaux, resasDuJour);
 
     container.innerHTML = creneaux.map(h => {
-      const pris = prises.includes(h);
+      const pris = prises.has(h);
       return `<button class="creneau-btn ${pris ? 'pris' : ''}" onclick="${pris ? '' : `selectCreneau(${h}, this)`}" ${pris ? 'disabled' : ''}>
         ${formatH(h)}
       </button>`;
@@ -940,6 +952,7 @@
       heure_num: selectedHeureNum,
       nb,
       montant,
+      prolongation: prolo,
       paiement: 'especes',
       statut: 'en attente'
     });
@@ -1084,9 +1097,9 @@
     const label = days[0].toLocaleDateString('fr-FR', opts) + ' – ' + days[days.length-1].toLocaleDateString('fr-FR', opts);
     document.getElementById('mplabel-' + salle).textContent = label;
 
-    // Fetch reservations for this week
+    // Fetch reservations for this week (include prolongation to block next slot)
     const { data, error } = await supabase
-      .from('reservations').select('salle,date,heure_num')
+      .from('reservations').select('salle,date,heure_num,prolongation')
       .eq('salle', salle).gte('date', from).lte('date', to);
     modalPlanningResas[salle] = error ? [] : (data || []);
 
@@ -1121,11 +1134,11 @@
         return `<div class="mpday${isToday?' today':''}"><div class="mpday-label">${jourLabel}</div><div class="mpday-slots"><span class="modal-pslot pris" style="font-size:0.58rem;">Fermé</span></div></div>`;
       }
 
-      const prises = (modalPlanningResas[salle] || [])
-        .filter(r => r.date === dateStr).map(r => r.heure_num);
+      const resasDuJour = (modalPlanningResas[salle] || []).filter(r => r.date === dateStr);
+      const prises = computeBlocked(creneaux, resasDuJour);
 
       const slots = creneaux.map(h => {
-        const pris = prises.includes(h) || isPast;
+        const pris = prises.has(h) || isPast;
         const label = formatH(h);
         if (pris) return `<span class="modal-pslot pris">${label}</span>`;
         return `<button class="modal-pslot dispo" onclick="choisirDepuisModal('${salle}','${dateStr}',${h},'${label}')">${label}</button>`;
