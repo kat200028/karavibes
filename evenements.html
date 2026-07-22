@@ -60,7 +60,28 @@
       content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
       width:40px; height:3px; background:var(--or); border-radius:2px 2px 0 0;
     }
-    .occasion-emoji{ font-size:2.2rem; margin-bottom:0.8rem; display:block; }
+    .occasion-visual{
+      height:130px; border-radius:8px; margin-bottom:1rem; position:relative; overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .occasion-visual .ov-emoji{
+      font-size:3.5rem; position:relative; z-index:2;
+      filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+      transition:transform 0.3s;
+    }
+    .occasion-card:hover .ov-emoji{ transform:scale(1.15); }
+    .ov-anniv{ background:linear-gradient(135deg,#2d0a3f 0%,#7b1fa2 50%,#f8bbd0 100%); }
+    .ov-evjf{ background:linear-gradient(135deg,#880e4f 0%,#e91e8c 50%,#f48fb1 100%); }
+    .ov-entreprise{ background:linear-gradient(135deg,#0d2137 0%,#1565c0 50%,#42a5f5 100%); }
+    .ov-diplome{ background:linear-gradient(135deg,#1a0a00 0%,#c9a84c 50%,#fff176 100%); }
+    .ov-valentin{ background:linear-gradient(135deg,#4a0010 0%,#c62828 50%,#ff8a80 100%); }
+    .ov-autre{ background:linear-gradient(135deg,#003333 0%,#00897b 40%,#c9a84c 100%); }
+    /* petites bulles décoratives dans le visuel */
+    .occasion-visual::before, .occasion-visual::after{
+      content:''; position:absolute; border-radius:50%; opacity:0.15;
+    }
+    .occasion-visual::before{ width:80px; height:80px; top:-20px; right:-15px; background:#fff; }
+    .occasion-visual::after{ width:50px; height:50px; bottom:-10px; left:-10px; background:#fff; }
     .occasion-name{ font-family:'Cinzel',serif; font-size:0.8rem; letter-spacing:0.15em; color:var(--or); text-transform:uppercase; margin-bottom:0.4rem; }
     .occasion-desc{ font-size:0.78rem; color:rgba(250,248,245,0.5); line-height:1.5; }
 
@@ -73,8 +94,16 @@
     .detail-panel.open{ display:grid; grid-template-columns:1fr 1.2fr; }
     @keyframes fadeIn{ from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
-    .detail-left{ padding:2.5rem; border-right:1px solid rgba(201,168,76,0.1); }
-    .detail-emoji{ font-size:3rem; margin-bottom:1rem; display:block; }
+    .detail-left{ padding:0; border-right:1px solid rgba(201,168,76,0.1); display:flex; flex-direction:column; }
+    .detail-hero{
+      height:160px; position:relative; overflow:hidden; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .detail-hero .dh-emoji{ font-size:5rem; position:relative; z-index:2; filter:drop-shadow(0 4px 20px rgba(0,0,0,0.5)); }
+    .detail-hero::before{ content:''; position:absolute; inset:0; opacity:0.2; }
+    .detail-hero::after{ content:''; position:absolute; inset:0; background:linear-gradient(to bottom,transparent 40%,rgba(10,10,10,0.8) 100%); z-index:1; }
+    .detail-body{ padding:2rem; flex:1; }
+    .detail-emoji{ display:none; }
     .detail-title{ font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; margin-bottom:0.4rem; }
     .detail-subtitle{ font-size:0.78rem; color:var(--gris); margin-bottom:1.5rem; letter-spacing:0.05em; }
     .detail-includes{ margin-bottom:1.5rem; }
@@ -186,33 +215,33 @@
     <h2 class="section-title">Choisissez votre événement</h2>
 
     <div class="occasions-grid" id="occasions-grid">
-      <div class="occasion-card" onclick="openEvent('anniversaire')">
-        <span class="occasion-emoji">🎂</span>
+      <div class="occasion-card" onclick="openEvent('anniversaire', this)">
+        <div class="occasion-visual ov-anniv"><span class="ov-emoji">🎂</span></div>
         <div class="occasion-name">Anniversaire</div>
         <div class="occasion-desc">Fêtez en musique avec déco, cocktails et ambiance festive</div>
       </div>
-      <div class="occasion-card" onclick="openEvent('evjf')">
-        <span class="occasion-emoji">👰</span>
+      <div class="occasion-card" onclick="openEvent('evjf', this)">
+        <div class="occasion-visual ov-evjf"><span class="ov-emoji">👰</span></div>
         <div class="occasion-name">EVJF / EVG</div>
         <div class="occasion-desc">La soirée parfaite avant le grand jour</div>
       </div>
-      <div class="occasion-card" onclick="openEvent('entreprise')">
-        <span class="occasion-emoji">🏢</span>
+      <div class="occasion-card" onclick="openEvent('entreprise', this)">
+        <div class="occasion-visual ov-entreprise"><span class="ov-emoji">🏢</span></div>
         <div class="occasion-name">Entreprise</div>
         <div class="occasion-desc">Team building, soirée de fin d'année, incentive</div>
       </div>
-      <div class="occasion-card" onclick="openEvent('diplome')">
-        <span class="occasion-emoji">🎓</span>
+      <div class="occasion-card" onclick="openEvent('diplome', this)">
+        <div class="occasion-visual ov-diplome"><span class="ov-emoji">🎓</span></div>
         <div class="occasion-name">Diplôme</div>
         <div class="occasion-desc">Célébrez votre réussite en grand</div>
       </div>
-      <div class="occasion-card" onclick="openEvent('saint-valentin')">
-        <span class="occasion-emoji">💝</span>
+      <div class="occasion-card" onclick="openEvent('saint-valentin', this)">
+        <div class="occasion-visual ov-valentin"><span class="ov-emoji">💝</span></div>
         <div class="occasion-name">Saint-Valentin</div>
         <div class="occasion-desc">Une soirée romantique hors du commun</div>
       </div>
-      <div class="occasion-card" onclick="openEvent('autre')">
-        <span class="occasion-emoji">🎉</span>
+      <div class="occasion-card" onclick="openEvent('autre', this)">
+        <div class="occasion-visual ov-autre"><span class="ov-emoji">🎉</span></div>
         <div class="occasion-name">Autre événement</div>
         <div class="occasion-desc">Réunion famille, soirée entre amis, fête départ…</div>
       </div>
@@ -221,19 +250,23 @@
     <!-- PANNEAU DÉTAIL -->
     <div class="detail-panel" id="detail-panel">
       <div class="detail-left">
-        <span class="detail-emoji" id="det-emoji"></span>
-        <div class="detail-title" id="det-title"></div>
-        <div class="detail-subtitle" id="det-subtitle"></div>
-        <div class="detail-includes">
-          <div class="detail-includes-title">Ce qui est inclus</div>
-          <div id="det-includes"></div>
+        <div class="detail-hero" id="det-hero">
+          <span class="dh-emoji" id="det-emoji"></span>
         </div>
-        <div class="detail-price-box">
-          <div>
-            <div class="detail-price-label" id="det-price-label"></div>
-            <div style="font-size:0.65rem;color:var(--gris);margin-top:0.2rem;">Minimum 4 personnes</div>
+        <div class="detail-body">
+          <div class="detail-title" id="det-title"></div>
+          <div class="detail-subtitle" id="det-subtitle"></div>
+          <div class="detail-includes">
+            <div class="detail-includes-title">Ce qui est inclus</div>
+            <div id="det-includes"></div>
           </div>
-          <div class="detail-price-amount" id="det-price"></div>
+          <div class="detail-price-box">
+            <div>
+              <div class="detail-price-label" id="det-price-label"></div>
+              <div style="font-size:0.65rem;color:var(--gris);margin-top:0.2rem;">Minimum 4 personnes</div>
+            </div>
+            <div class="detail-price-amount" id="det-price"></div>
+          </div>
         </div>
       </div>
       <div class="detail-right">
@@ -362,6 +395,15 @@
 <script>
   document.getElementById('d-date').min = new Date().toISOString().split('T')[0];
 
+  const EVENT_GRADIENTS = {
+    anniversaire:    'linear-gradient(135deg,#2d0a3f 0%,#7b1fa2 50%,#f8bbd0 100%)',
+    evjf:            'linear-gradient(135deg,#880e4f 0%,#e91e8c 50%,#f48fb1 100%)',
+    entreprise:      'linear-gradient(135deg,#0d2137 0%,#1565c0 50%,#42a5f5 100%)',
+    diplome:         'linear-gradient(135deg,#1a0a00 0%,#8B6914 50%,#c9a84c 100%)',
+    'saint-valentin':'linear-gradient(135deg,#4a0010 0%,#c62828 50%,#ff8a80 100%)',
+    autre:           'linear-gradient(135deg,#003333 0%,#00897b 40%,#c9a84c 100%)',
+  };
+
   const EVENTS = {
     anniversaire: {
       emoji: '🎂',
@@ -463,15 +505,16 @@
 
   let currentEvent = null;
 
-  function openEvent(key) {
+  function openEvent(key, el) {
     // Activer la carte
     document.querySelectorAll('.occasion-card').forEach(c => c.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+    el.classList.add('active');
 
     const ev = EVENTS[key];
     currentEvent = key;
 
     document.getElementById('det-emoji').textContent = ev.emoji;
+    document.getElementById('det-hero').style.background = EVENT_GRADIENTS[key] || EVENT_GRADIENTS.autre;
     document.getElementById('det-title').textContent = ev.title;
     document.getElementById('det-subtitle').textContent = ev.subtitle;
     document.getElementById('det-price-label').textContent = ev.priceLabel;
