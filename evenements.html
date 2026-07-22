@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Événements Privés — KaraVibes · Martinique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --noir:#0a0a0a; --noir-doux:#111118;
+      --or:#C9A84C; --or-clair:#E8C97A; --or-pale:#F5E4B0;
+      --cyan:#00E5FF; --rose:#FF2D78;
+      --blanc:#FAF8F5; --gris:#8A8A9A;
+    }
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{ font-family:'Inter',sans-serif; background:var(--noir); color:var(--blanc); overflow-x:hidden; }
+
+    nav{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:1rem 3rem; background:rgba(10,10,10,0.92); backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(201,168,76,0.15);
+    }
+    .nav-logo{ font-family:'Cinzel',serif; color:var(--or); font-size:1.2rem; letter-spacing:0.1em; text-decoration:none; }
+    .nav-logo span{ color:var(--blanc); }
+    .nav-back{ color:var(--gris); font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; transition:color 0.2s; }
+    .nav-back:hover{ color:var(--or); }
+
+    /* HERO */
+    .hero{
+      min-height:55vh; display:flex; align-items:center; justify-content:center;
+      text-align:center; padding:8rem 2rem 4rem; position:relative; overflow:hidden;
+      background:radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%);
+    }
+    .hero-content{ position:relative; z-index:2; max-width:680px; }
+    .hero-eyebrow{ font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.3em; color:var(--or); text-transform:uppercase; margin-bottom:1rem; display:block; }
+    .hero-title{ font-family:'Playfair Display',serif; font-size:clamp(2.2rem,5vw,4rem); font-weight:700; line-height:1.1; margin-bottom:1rem; }
+    .hero-title .gold{ background:linear-gradient(135deg,#E8C97A,#C9A84C,#F5E4B0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hero-desc{ font-size:0.95rem; color:rgba(250,248,245,0.55); line-height:1.8; }
+    .neon-div{ height:1px; background:linear-gradient(90deg,transparent,var(--or),transparent); }
+
+    /* OCCASIONS GRID */
+    .section{ padding:5rem 2rem; }
+    .container{ max-width:1100px; margin:0 auto; }
+    .section-label{ font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--or); margin-bottom:0.8rem; display:block; }
+    .section-title{ font-family:'Playfair Display',serif; font-size:clamp(1.6rem,3vw,2.5rem); font-weight:700; margin-bottom:2rem; line-height:1.2; }
+
+    .occasions-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
+    .occasion-card{
+      background:rgba(250,248,245,0.03); border:1px solid rgba(201,168,76,0.12);
+      border-radius:12px; padding:1.8rem 1.4rem; text-align:center;
+      cursor:pointer; transition:all 0.3s; position:relative; overflow:hidden;
+    }
+    .occasion-card:hover, .occasion-card.active{
+      border-color:rgba(201,168,76,0.45); background:rgba(201,168,76,0.07);
+      transform:translateY(-3px); box-shadow:0 8px 30px rgba(201,168,76,0.12);
+    }
+    .occasion-card.active::after{
+      content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+      width:40px; height:3px; background:var(--or); border-radius:2px 2px 0 0;
+    }
+    .occasion-emoji{ font-size:2.2rem; margin-bottom:0.8rem; display:block; }
+    .occasion-name{ font-family:'Cinzel',serif; font-size:0.8rem; letter-spacing:0.15em; color:var(--or); text-transform:uppercase; margin-bottom:0.4rem; }
+    .occasion-desc{ font-size:0.78rem; color:rgba(250,248,245,0.5); line-height:1.5; }
+
+    /* DETAIL PANEL */
+    .detail-panel{
+      display:none; margin-top:2rem;
+      background:rgba(250,248,245,0.03); border:1px solid rgba(201,168,76,0.2);
+      border-radius:16px; overflow:hidden; animation:fadeIn 0.3s ease;
+    }
+    .detail-panel.open{ display:grid; grid-template-columns:1fr 1.2fr; }
+    @keyframes fadeIn{ from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+    .detail-left{ padding:2.5rem; border-right:1px solid rgba(201,168,76,0.1); }
+    .detail-emoji{ font-size:3rem; margin-bottom:1rem; display:block; }
+    .detail-title{ font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; margin-bottom:0.4rem; }
+    .detail-subtitle{ font-size:0.78rem; color:var(--gris); margin-bottom:1.5rem; letter-spacing:0.05em; }
+    .detail-includes{ margin-bottom:1.5rem; }
+    .detail-includes-title{ font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.2em; color:var(--or); text-transform:uppercase; margin-bottom:0.8rem; }
+    .detail-include-item{
+      display:flex; align-items:flex-start; gap:0.6rem; margin-bottom:0.6rem;
+      font-size:0.82rem; color:rgba(250,248,245,0.75); line-height:1.4;
+    }
+    .detail-include-item .check{ color:var(--or); font-weight:700; flex-shrink:0; }
+    .detail-price-box{
+      background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.18);
+      border-radius:8px; padding:1rem 1.2rem;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .detail-price-label{ font-size:0.75rem; color:var(--gris); }
+    .detail-price-amount{ font-family:'Cinzel',serif; font-size:1.3rem; color:var(--or); font-weight:600; }
+
+    /* FORMULAIRE DEVIS DANS LE PANNEAU */
+    .detail-right{ padding:2.5rem; }
+    .detail-right h3{ font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:0.2em; color:var(--or); text-transform:uppercase; margin-bottom:1.5rem; }
+    .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; }
+    .form-group{ margin-bottom:1rem; }
+    .form-group label{ display:block; font-size:0.65rem; color:var(--gris); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.35rem; }
+    .form-group input, .form-group select, .form-group textarea{
+      width:100%; background:rgba(250,248,245,0.05); border:1px solid rgba(201,168,76,0.15);
+      border-radius:8px; padding:0.65rem 0.8rem; color:var(--blanc);
+      font-family:'Inter',sans-serif; font-size:0.85rem; outline:none; transition:border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus{ border-color:rgba(201,168,76,0.5); }
+    .form-group select option{ background:#1a1a24; }
+    .form-group textarea{ resize:vertical; min-height:80px; }
+    .form-submit{
+      width:100%; padding:0.9rem; background:linear-gradient(135deg,var(--or),var(--or-clair));
+      color:var(--noir); border:none; border-radius:8px; font-family:'Inter',sans-serif;
+      font-size:0.82rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+      cursor:pointer; transition:all 0.3s;
+    }
+    .form-submit:hover{ box-shadow:0 6px 20px rgba(201,168,76,0.4); }
+    .form-submit:disabled{ opacity:0.5; cursor:not-allowed; }
+    .form-note{ font-size:0.65rem; color:rgba(138,138,154,0.6); text-align:center; margin-top:0.6rem; }
+
+    /* SUCCESS */
+    .devis-success{ display:none; text-align:center; padding:2rem 1rem; }
+    .devis-success.show{ display:block; }
+    .devis-success-icon{ font-size:3rem; margin-bottom:1rem; }
+    .devis-success-title{ font-family:'Cinzel',serif; font-size:1rem; color:var(--or); margin-bottom:0.5rem; letter-spacing:0.1em; }
+    .devis-success-msg{ font-size:0.82rem; color:var(--gris); line-height:1.7; }
+
+    /* FORMULES */
+    .formules-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+    .formule-card{
+      background:rgba(250,248,245,0.03); border:1px solid rgba(201,168,76,0.12);
+      border-radius:12px; padding:2rem; position:relative;
+    }
+    .formule-card.featured{ border-color:rgba(201,168,76,0.4); background:rgba(201,168,76,0.05); }
+    .formule-badge{
+      position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+      background:linear-gradient(135deg,var(--or),var(--or-clair)); color:var(--noir);
+      font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase;
+      padding:0.3rem 1rem; border-radius:20px; white-space:nowrap;
+    }
+    .formule-name{ font-family:'Cinzel',serif; font-size:0.78rem; letter-spacing:0.18em; color:var(--or); text-transform:uppercase; margin-bottom:0.5rem; }
+    .formule-price{ font-family:'Playfair Display',serif; font-size:2rem; color:var(--blanc); font-weight:700; margin-bottom:0.2rem; }
+    .formule-price span{ font-size:0.85rem; color:var(--gris); font-family:'Inter',sans-serif; font-weight:400; }
+    .formule-sub{ font-size:0.7rem; color:var(--gris); margin-bottom:1.2rem; }
+    .formule-features{ list-style:none; display:flex; flex-direction:column; gap:0.5rem; }
+    .formule-features li{ font-size:0.8rem; color:rgba(250,248,245,0.7); display:flex; align-items:flex-start; gap:0.5rem; }
+    .formule-features li::before{ content:'✓'; color:var(--or); font-weight:700; flex-shrink:0; }
+
+    .footer-mini{ text-align:center; padding:2rem; border-top:1px solid rgba(201,168,76,0.1); font-size:0.75rem; color:var(--gris); }
+    .footer-mini a{ color:var(--or); text-decoration:none; }
+
+    @media(max-width:768px){
+      nav{ padding:0.8rem 1.2rem; }
+      .occasions-grid{ grid-template-columns:1fr 1fr; }
+      .detail-panel.open{ grid-template-columns:1fr; }
+      .detail-left{ border-right:none; border-bottom:1px solid rgba(201,168,76,0.1); padding:1.5rem; }
+      .detail-right{ padding:1.5rem; }
+      .form-row{ grid-template-columns:1fr; }
+      .formules-grid{ grid-template-columns:1fr; }
+    }
+    @media(max-width:480px){
+      .occasions-grid{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Kara<span>Vibes</span></a>
+  <a href="index.html" class="nav-back">← Retour</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-eyebrow">KaraVibes · Trois-Îlets · Martinique</span>
+    <h1 class="hero-title">Vos moments<br><span class="gold">inoubliables</span><br>commencent ici</h1>
+    <p class="hero-desc">Privatisez nos salles pour votre événement. Cliquez sur votre occasion pour découvrir ce qu'on propose.</p>
+  </div>
+</section>
+
+<div class="neon-div"></div>
+
+<!-- OCCASIONS -->
+<section class="section">
+  <div class="container">
+    <span class="section-label">Pour quelle occasion ?</span>
+    <h2 class="section-title">Choisissez votre événement</h2>
+
+    <div class="occasions-grid" id="occasions-grid">
+      <div class="occasion-card" onclick="openEvent('anniversaire')">
+        <span class="occasion-emoji">🎂</span>
+        <div class="occasion-name">Anniversaire</div>
+        <div class="occasion-desc">Fêtez en musique avec déco, cocktails et ambiance festive</div>
+      </div>
+      <div class="occasion-card" onclick="openEvent('evjf')">
+        <span class="occasion-emoji">👰</span>
+        <div class="occasion-name">EVJF / EVG</div>
+        <div class="occasion-desc">La soirée parfaite avant le grand jour</div>
+      </div>
+      <div class="occasion-card" onclick="openEvent('entreprise')">
+        <span class="occasion-emoji">🏢</span>
+        <div class="occasion-name">Entreprise</div>
+        <div class="occasion-desc">Team building, soirée de fin d'année, incentive</div>
+      </div>
+      <div class="occasion-card" onclick="openEvent('diplome')">
+        <span class="occasion-emoji">🎓</span>
+        <div class="occasion-name">Diplôme</div>
+        <div class="occasion-desc">Célébrez votre réussite en grand</div>
+      </div>
+      <div class="occasion-card" onclick="openEvent('saint-valentin')">
+        <span class="occasion-emoji">💝</span>
+        <div class="occasion-name">Saint-Valentin</div>
+        <div class="occasion-desc">Une soirée romantique hors du commun</div>
+      </div>
+      <div class="occasion-card" onclick="openEvent('autre')">
+        <span class="occasion-emoji">🎉</span>
+        <div class="occasion-name">Autre événement</div>
+        <div class="occasion-desc">Réunion famille, soirée entre amis, fête départ…</div>
+      </div>
+    </div>
+
+    <!-- PANNEAU DÉTAIL -->
+    <div class="detail-panel" id="detail-panel">
+      <div class="detail-left">
+        <span class="detail-emoji" id="det-emoji"></span>
+        <div class="detail-title" id="det-title"></div>
+        <div class="detail-subtitle" id="det-subtitle"></div>
+        <div class="detail-includes">
+          <div class="detail-includes-title">Ce qui est inclus</div>
+          <div id="det-includes"></div>
+        </div>
+        <div class="detail-price-box">
+          <div>
+            <div class="detail-price-label" id="det-price-label"></div>
+            <div style="font-size:0.65rem;color:var(--gris);margin-top:0.2rem;">Minimum 4 personnes</div>
+          </div>
+          <div class="detail-price-amount" id="det-price"></div>
+        </div>
+      </div>
+      <div class="detail-right">
+        <div id="devis-form-wrap">
+          <h3>Demande de devis gratuit</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Prénom *</label>
+              <input type="text" id="d-prenom" placeholder="Prénom" />
+            </div>
+            <div class="form-group">
+              <label>Nom *</label>
+              <input type="text" id="d-nom" placeholder="Nom" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Téléphone *</label>
+              <input type="tel" id="d-tel" placeholder="+596 696 00 00 00" />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="d-email" placeholder="votre@email.com" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Date souhaitée *</label>
+              <input type="date" id="d-date" />
+            </div>
+            <div class="form-group">
+              <label>Nombre de personnes *</label>
+              <select id="d-nb">
+                <option value="">Choisir…</option>
+                <option value="4-6">4 à 6 personnes</option>
+                <option value="7-10">7 à 10 personnes</option>
+                <option value="11-20">11 à 20 personnes</option>
+                <option value="20+">Plus de 20 personnes</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Formule souhaitée</label>
+            <select id="d-formule">
+              <option value="">Pas encore décidé</option>
+              <option value="essentielle">Essentielle — 20€/pers.</option>
+              <option value="premium">Premium — 35€/pers.</option>
+              <option value="sur-mesure">Sur mesure</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Vos souhaits / thème</label>
+            <textarea id="d-notes" placeholder="Décrivez votre événement, thème, attentes particulières…"></textarea>
+          </div>
+          <input type="hidden" id="d-type" value="" />
+          <button class="form-submit" id="d-submit" onclick="submitDevis()">✨ Envoyer ma demande</button>
+          <p class="form-note">Réponse sous 24h · Sans engagement · Gratuit</p>
+        </div>
+        <div class="devis-success" id="devis-success">
+          <div class="devis-success-icon">🎉</div>
+          <div class="devis-success-title">Demande envoyée !</div>
+          <div class="devis-success-msg">
+            Merci ! Nous vous recontactons dans les 24h pour organiser votre événement.<br><br>
+            <a href="index.html" style="color:var(--or);text-decoration:none;">← Retour à l'accueil</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-div"></div>
+
+<!-- FORMULES -->
+<section class="section">
+  <div class="container">
+    <span class="section-label">Tarifs événements</span>
+    <h2 class="section-title">Nos formules</h2>
+    <div class="formules-grid">
+      <div class="formule-card">
+        <div class="formule-name">Essentielle</div>
+        <div class="formule-price">20€ <span>/ pers.</span></div>
+        <div class="formule-sub">Min. 4 personnes · 2h de session</div>
+        <ul class="formule-features">
+          <li>Salle privatisée 2h</li>
+          <li>Catalogue karaoké illimité</li>
+          <li>Sono & écran professionnel</li>
+          <li>Micros haute qualité</li>
+        </ul>
+      </div>
+      <div class="formule-card featured">
+        <div class="formule-badge">⭐ La plus choisie</div>
+        <div class="formule-name">Premium</div>
+        <div class="formule-price">35€ <span>/ pers.</span></div>
+        <div class="formule-sub">Min. 4 personnes · 4h (2h + prolongation)</div>
+        <ul class="formule-features">
+          <li>Salle privatisée 4h</li>
+          <li>Catalogue karaoké illimité</li>
+          <li>1 cocktail de bienvenue / pers.</li>
+          <li>Décoration thématique offerte</li>
+          <li>Photos souvenir</li>
+        </ul>
+      </div>
+      <div class="formule-card">
+        <div class="formule-name">Sur mesure</div>
+        <div class="formule-price">Sur <span>devis</span></div>
+        <div class="formule-sub">Groupes 10+ · Durée à définir</div>
+        <ul class="formule-features">
+          <li>Les 2 salles privatisées</li>
+          <li>Animation personnalisée</li>
+          <li>Menu cocktails dédié</li>
+          <li>Décoration thématique</li>
+          <li>Offre entièrement personnalisée</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer-mini">
+  <p>© 2025 KaraVibes · Studio Lounge Privé · Trois-Îlets, Martinique · <a href="reglement.html">Conditions</a></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase-config.js"></script>
+<script>
+  document.getElementById('d-date').min = new Date().toISOString().split('T')[0];
+
+  const EVENTS = {
+    anniversaire: {
+      emoji: '🎂',
+      title: 'Anniversaire',
+      subtitle: 'Célébrez votre journée spéciale en musique et en couleurs',
+      includes: [
+        'Salle privatisée décorée aux couleurs de votre choix',
+        'Ballons & guirlandes offerts',
+        'Playlist personnalisée avec vos chansons préférées',
+        'Cocktail de bienvenue pour chaque invité',
+        'Option gâteau d\'anniversaire surprise',
+        'Photos souvenir de la soirée',
+        'Catalogue karaoké illimité',
+      ],
+      priceLabel: 'À partir de',
+      price: '20€ / pers.',
+    },
+    evjf: {
+      emoji: '👰',
+      title: 'EVJF / EVG',
+      subtitle: 'La soirée inoubliable avant le grand jour',
+      includes: [
+        'Salle privatisée avec déco mariée / marié',
+        'Sash & accessoires pour la future mariée',
+        'Défis karaoké & jeux en groupe',
+        'Cocktails signature de la soirée',
+        'Ambiance festive et animée',
+        'Photos & souvenirs de la nuit',
+        'Playlist romantique & festive',
+      ],
+      priceLabel: 'À partir de',
+      price: '20€ / pers.',
+    },
+    entreprise: {
+      emoji: '🏢',
+      title: 'Entreprise & Team Building',
+      subtitle: 'Renforcez la cohésion de votre équipe autrement',
+      includes: [
+        'Les 2 salles disponibles selon la taille du groupe',
+        'Animation et classement en live entre équipes',
+        'Cocktails d\'entreprise et boissons',
+        'Matériel professionnel haut de gamme',
+        'Devis sur mesure pour groupes +10 personnes',
+        'Facturation entreprise disponible',
+        'Organisation clé en main',
+      ],
+      priceLabel: 'Sur devis à partir de',
+      price: '20€ / pers.',
+    },
+    diplome: {
+      emoji: '🎓',
+      title: 'Diplôme & Remise de Prix',
+      subtitle: 'Célébrez votre réussite comme elle le mérite',
+      includes: [
+        'Salle privatisée décorée pour la célébration',
+        'Ambiance festive et chaleureuse',
+        'Cocktails et boissons de fête',
+        'Playlist personnalisée selon vos goûts',
+        'Photos souvenir de la soirée',
+        'Catalogue karaoké illimité',
+        'Accueil VIP de la personne diplômée',
+      ],
+      priceLabel: 'À partir de',
+      price: '20€ / pers.',
+    },
+    'saint-valentin': {
+      emoji: '💝',
+      title: 'Saint-Valentin & Romantique',
+      subtitle: 'Une soirée en amoureux hors du commun',
+      includes: [
+        'Salle privatisée avec déco romantique',
+        'Bougies & pétales de roses',
+        'Cocktails romantiques signature',
+        'Playlist chansons d\'amour personnalisée',
+        'Ambiance intime et tamisée',
+        'Surprise possible sur demande',
+        'Moment unique à deux',
+      ],
+      priceLabel: 'À partir de',
+      price: '40€ / couple',
+    },
+    autre: {
+      emoji: '🎉',
+      title: 'Autre Événement',
+      subtitle: 'Toute occasion mérite d\'être célébrée',
+      includes: [
+        'Salle privatisée selon votre groupe',
+        'Décoration adaptée à votre thème',
+        'Cocktails et boissons',
+        'Playlist personnalisée',
+        'Catalogue karaoké illimité',
+        'Organisation sur mesure',
+        'Devis personnalisé gratuit',
+      ],
+      priceLabel: 'À partir de',
+      price: '20€ / pers.',
+    },
+  };
+
+  let currentEvent = null;
+
+  function openEvent(key) {
+    // Activer la carte
+    document.querySelectorAll('.occasion-card').forEach(c => c.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    const ev = EVENTS[key];
+    currentEvent = key;
+
+    document.getElementById('det-emoji').textContent = ev.emoji;
+    document.getElementById('det-title').textContent = ev.title;
+    document.getElementById('det-subtitle').textContent = ev.subtitle;
+    document.getElementById('det-price-label').textContent = ev.priceLabel;
+    document.getElementById('det-price').textContent = ev.price;
+    document.getElementById('d-type').value = key;
+
+    document.getElementById('det-includes').innerHTML = ev.includes
+      .map(i => `<div class="detail-include-item"><span class="check">✓</span>${i}</div>`)
+      .join('');
+
+    // Réinitialiser le formulaire
+    document.getElementById('devis-form-wrap').style.display = '';
+    document.getElementById('devis-success').classList.remove('show');
+    document.getElementById('d-submit').disabled = false;
+    document.getElementById('d-submit').textContent = '✨ Envoyer ma demande';
+
+    // Ouvrir le panneau
+    const panel = document.getElementById('detail-panel');
+    panel.classList.add('open');
+    setTimeout(() => panel.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+  }
+
+  async function submitDevis() {
+    const prenom = document.getElementById('d-prenom').value.trim();
+    const nom    = document.getElementById('d-nom').value.trim();
+    const tel    = document.getElementById('d-tel').value.trim();
+    const email  = document.getElementById('d-email').value.trim();
+    const date   = document.getElementById('d-date').value;
+    const nb     = document.getElementById('d-nb').value;
+    const formule = document.getElementById('d-formule').value;
+    const notes  = document.getElementById('d-notes').value.trim();
+    const type   = document.getElementById('d-type').value;
+
+    if (!prenom || !nom || !tel || !date || !nb) {
+      alert('Veuillez remplir les champs obligatoires (prénom, nom, téléphone, date, nombre de personnes).');
+      return;
+    }
+
+    const btn = document.getElementById('d-submit');
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+
+    const { error } = await supabase.from('devis').insert({
+      nom: prenom + ' ' + nom,
+      tel,
+      email: email || null,
+      type_evenement: type,
+      nb_personnes: nb,
+      date_souhaitee: date,
+      formule: formule || null,
+      notes: notes || null,
+      statut: 'en attente'
+    });
+
+    if (error) {
+      console.error(error);
+      btn.disabled = false;
+      btn.textContent = '✨ Envoyer ma demande';
+      alert('Une erreur est survenue. Merci de réessayer ou de nous appeler.');
+      return;
+    }
+
+    document.getElementById('devis-form-wrap').style.display = 'none';
+    document.getElementById('devis-success').classList.add('show');
+  }
+</script>
+</body>
+</html>
