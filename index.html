@@ -176,6 +176,19 @@
     .creneau-btn.pris { background: rgba(231,76,60,0.1); color: rgba(231,76,60,0.5); border-color: rgba(231,76,60,0.2); cursor: not-allowed; text-decoration: line-through; }
     .creneau-label { font-size: 0.68rem; color: var(--gris); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
 
+    /* PLANNING MODAL */
+    .modal-planning-tabs { display:flex; gap:0.4rem; overflow-x:auto; padding-bottom:0.6rem; margin-bottom:0.8rem; scrollbar-width:thin; scrollbar-color:rgba(201,168,76,0.2) transparent; }
+    .modal-planning-tabs::-webkit-scrollbar { height:3px; }
+    .modal-planning-tabs::-webkit-scrollbar-thumb { background:rgba(201,168,76,0.3); border-radius:2px; }
+    .modal-ptab { flex-shrink:0; padding:0.35rem 0.9rem; border-radius:20px; border:1px solid rgba(201,168,76,0.18); background:none; color:var(--gris); font-family:'Inter',sans-serif; font-size:0.72rem; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+    .modal-ptab:hover { border-color:var(--or); color:var(--or); }
+    .modal-ptab.active { background:rgba(201,168,76,0.12); border-color:var(--or); color:var(--or); }
+    .modal-planning-slots { display:flex; flex-wrap:wrap; gap:0.5rem; min-height:36px; }
+    .modal-pslot { padding:0.4rem 0.9rem; border-radius:6px; font-size:0.8rem; font-weight:600; border:1px solid; cursor:pointer; transition:all 0.2s; font-family:'Inter',sans-serif; }
+    .modal-pslot.dispo { border-color:rgba(201,168,76,0.45); color:var(--or); background:rgba(201,168,76,0.08); }
+    .modal-pslot.dispo:hover { background:rgba(201,168,76,0.2); transform:translateY(-1px); }
+    .modal-pslot.pris { border-color:rgba(231,76,60,0.2); color:rgba(231,76,60,0.4); background:rgba(231,76,60,0.03); cursor:not-allowed; text-decoration:line-through; font-weight:400; }
+
     /* PLANNING */
     .planning-section { background: #0a0a12; position: relative; overflow: hidden; }
     .planning-section::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(0,229,255,0.03) 0%, transparent 70%); pointer-events:none; }
@@ -366,7 +379,6 @@
   <ul class="nav-links" id="navLinks">
     <li><a href="#concept">Le Concept</a></li>
     <li><a href="#tarifs">Tarifs</a></li>
-    <li><a href="#planning">Planning</a></li>
     <li><a href="#reservation">Réserver</a></li>
     <li><a href="menu.html">La Carte</a></li>
     <li><a href="https://www.karafun.fr" target="_blank">Catalogue</a></li>
@@ -480,21 +492,6 @@
           <li>À ajouter lors de la réservation</li>
         </ul>
       </div>
-    </div>
-  </div>
-</section>
-
-<div class="neon-divider"></div>
-
-<!-- PLANNING -->
-<section class="planning-section" id="planning">
-  <div class="container">
-    <span class="section-label">Disponibilités en temps réel</span>
-    <h2 class="section-title light" style="margin-bottom:0.5rem;">Choisissez votre créneau</h2>
-    <p style="font-size:0.88rem; color:var(--gris); margin-bottom:2rem;">Sélectionnez un jour puis cliquez sur un créneau pour réserver directement.</p>
-    <div class="planning-scroll" id="planning-tabs"></div>
-    <div id="planning-content" class="planning-cards">
-      <p style="color:var(--gris);font-size:0.85rem;">Chargement des disponibilités…</p>
     </div>
   </div>
 </section>
@@ -730,12 +727,10 @@
         <div class="modal-capacity-badge">👥 1 à 10 personnes · Karaoké privatisé</div>
       </div>
       <div class="room-modal-section">
-        <h4>🕐 Horaires & Disponibilités</h4>
-        <div class="modal-horaires">
-          <div class="modal-horaire-row"><span class="modal-horaire-day">Lundi – Mardi</span><span class="modal-horaire-ferme">Fermé</span></div>
-          <div class="modal-horaire-row"><span class="modal-horaire-day">Mercredi – Jeudi</span><span class="modal-horaire-time">17h00 – 00h00</span></div>
-          <div class="modal-horaire-row"><span class="modal-horaire-day">Vendredi – Samedi</span><span class="modal-horaire-time">15h00 – 00h00</span></div>
-          <div class="modal-horaire-row"><span class="modal-horaire-day">Dimanche</span><span class="modal-horaire-time">11h00 – 20h00</span></div>
+        <h4>📅 Disponibilités — Lagon Bleu</h4>
+        <div class="modal-planning-tabs" id="mptabs-lagon"></div>
+        <div id="mpcontent-lagon" class="modal-planning-slots">
+          <span style="font-size:0.78rem;color:var(--gris);">Chargement…</span>
         </div>
       </div>
       <div class="room-modal-section">
@@ -782,12 +777,10 @@
         <div class="modal-capacity-badge">👥 1 à 10 personnes · Karaoké privatisé</div>
       </div>
       <div class="room-modal-section">
-        <h4>🕐 Horaires & Disponibilités</h4>
-        <div class="modal-horaires">
-          <div class="modal-horaire-row"><span class="modal-horaire-day">Lundi – Mardi</span><span class="modal-horaire-ferme">Fermé</span></div>
-          <div class="modal-horaire-row"><span class="modal-horaire-day">Mercredi – Jeudi</span><span class="modal-horaire-time">17h00 – 00h00</span></div>
-          <div class="modal-horaire-row"><span class="modal-horaire-day">Vendredi – Samedi</span><span class="modal-horaire-time">15h00 – 00h00</span></div>
-          <div class="modal-horaire-row"><span class="modal-horaire-day">Dimanche</span><span class="modal-horaire-time">11h00 – 20h00</span></div>
+        <h4>📅 Disponibilités — Neo Tokyo</h4>
+        <div class="modal-planning-tabs" id="mptabs-tokyo"></div>
+        <div id="mpcontent-tokyo" class="modal-planning-slots">
+          <span style="font-size:0.78rem;color:var(--gris);">Chargement…</span>
         </div>
       </div>
       <div class="room-modal-section">
@@ -1012,137 +1005,95 @@
 
   loadAvis();
 
-  // ===== PLANNING =====
-  let planningReservations = [];
-  let planningJourActif = null;
+  // ===== PLANNING DANS MODALS =====
+  let modalPlanningResas = {};
+
+  function fmtDate(d) { return d.toISOString().split('T')[0]; }
+
+  function fmtTabLabel(d) {
+    return d.toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
+  }
 
   function getOpenDays(n) {
     const days = [];
-    const d = new Date();
-    d.setHours(0,0,0,0);
+    const d = new Date(); d.setHours(0,0,0,0);
     while (days.length < n) {
-      const dow = d.getDay(); // 0=dim JS, mais notre index: 0=lun
-      const idx = (dow + 6) % 7;
+      const idx = (d.getDay() + 6) % 7;
       if (CRENEAUX_JOUR[idx]) days.push(new Date(d));
       d.setDate(d.getDate() + 1);
     }
     return days;
   }
 
-  function fmtDate(d) {
-    return d.toISOString().split('T')[0];
-  }
-
-  function fmtTabLabel(d) {
-    const j = d.toLocaleDateString('fr-FR', { weekday:'short' });
-    const n = d.getDate();
-    const m = d.toLocaleDateString('fr-FR', { month:'short' });
-    return `${j} ${n} ${m}`;
-  }
-
-  async function initPlanning() {
+  async function loadModalPlanning(salle) {
     const days = getOpenDays(14);
     const from = fmtDate(days[0]);
-    const to = fmtDate(days[days.length - 1]);
-    const { data, error } = await supabase.from('reservations').select('salle,date,heure_num').gte('date', from).lte('date', to);
-    if (!error && data) planningReservations = data;
-    renderPlanningTabs(days);
-    renderPlanningDay(days[0]);
-    planningJourActif = fmtDate(days[0]);
-  }
+    const to   = fmtDate(days[days.length - 1]);
+    const { data, error } = await supabase
+      .from('reservations').select('salle,date,heure_num')
+      .eq('salle', salle).gte('date', from).lte('date', to);
+    modalPlanningResas[salle] = error ? [] : (data || []);
 
-  function renderPlanningTabs(days) {
-    const tabs = document.getElementById('planning-tabs');
+    // Render tabs
+    const tabs = document.getElementById('mptabs-' + salle);
     tabs.innerHTML = days.map((d, i) => {
-      const dateStr = fmtDate(d);
-      return `<button class="planning-day-tab${i===0?' active':''}" id="ptab-${dateStr}" onclick="switchPlanningDay('${dateStr}', this)">${fmtTabLabel(d)}</button>`;
+      const ds = fmtDate(d);
+      return `<button class="modal-ptab${i===0?' active':''}" onclick="switchModalDay('${salle}','${ds}',this)">${fmtTabLabel(d)}</button>`;
     }).join('');
+
+    renderModalDay(salle, days[0]);
   }
 
-  function switchPlanningDay(dateStr, btn) {
-    document.querySelectorAll('.planning-day-tab').forEach(t => t.classList.remove('active'));
+  function switchModalDay(salle, dateStr, btn) {
+    document.querySelectorAll(`#mptabs-${salle} .modal-ptab`).forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
-    const d = new Date(dateStr + 'T00:00:00');
-    renderPlanningDay(d);
-    planningJourActif = dateStr;
+    renderModalDay(salle, new Date(dateStr + 'T00:00:00'));
   }
 
-  function renderPlanningDay(d) {
+  function renderModalDay(salle, d) {
     const dateStr = fmtDate(d);
     const dow = (d.getDay() + 6) % 7;
     const creneaux = getCreneaux(dow);
-    const content = document.getElementById('planning-content');
-
-    const salles = [
-      { key: 'lagon', label: 'Lagon Bleu', cls: 'lagon', photo: 'salle-lagon.jpeg', cap: '1 à 10 chanteurs', duree: '2h par session' },
-      { key: 'tokyo', label: 'Neo Tokyo',  cls: 'tokyo', photo: 'salle-tokyo.jpeg', cap: '1 à 10 chanteurs', duree: '2h par session' }
-    ];
+    const container = document.getElementById('mpcontent-' + salle);
 
     if (!creneaux.length) {
-      content.innerHTML = '<p style="color:var(--gris);font-size:0.88rem;text-align:center;padding:2rem 0;">Fermé ce jour — nous vous attendons mercredi !</p>';
+      container.innerHTML = '<span style="font-size:0.78rem;color:rgba(138,138,154,0.5);font-style:italic;">Fermé ce jour.</span>';
       return;
     }
 
-    content.innerHTML = salles.map(s => {
-      const prises = planningReservations
-        .filter(r => r.salle === s.key && r.date === dateStr)
-        .map(r => r.heure_num);
+    const prises = (modalPlanningResas[salle] || [])
+      .filter(r => r.date === dateStr).map(r => r.heure_num);
 
-      const slots = creneaux.map(h => {
-        const pris = prises.includes(h);
-        const label = formatH(h);
-        if (pris) return `<span class="planning-slot pris">🔴 ${label} — Complet</span>`;
-        return `<button class="planning-slot dispo" onclick="choisirCreneau('${s.key}','${dateStr}',${h},'${label}')">${label}</button>`;
-      }).join('');
-
-      return `<div class="planning-card">
-        <div class="planning-card-photo">
-          <img src="${s.photo}" alt="${s.label}" />
-          <div class="planning-card-photo-overlay"></div>
-          <span class="planning-card-photo-label ${s.cls}">${s.cls === 'lagon' ? '🌊' : '🌸'} ${s.label}</span>
-        </div>
-        <div class="planning-card-body">
-          <div class="planning-card-top">
-            <div>
-              <div class="planning-card-name">${s.label}</div>
-              <div class="planning-card-infos">Salle pour ${s.cap}<br>Durée de la session : ${s.duree}</div>
-            </div>
-            <button class="planning-card-savoir" onclick="openRoomModal('${s.key}')">En savoir plus</button>
-          </div>
-          <div class="planning-slots">${slots}</div>
-        </div>
-      </div>`;
+    container.innerHTML = creneaux.map(h => {
+      const pris = prises.includes(h);
+      const label = formatH(h);
+      if (pris) return `<span class="modal-pslot pris">🔴 ${label}</span>`;
+      return `<button class="modal-pslot dispo" onclick="choisirDepuisModal('${salle}','${dateStr}',${h},'${label}')">${label}</button>`;
     }).join('');
   }
 
-  function choisirCreneau(salle, dateStr, heureNum, heureLabel) {
-    // Pre-fill form
+  function choisirDepuisModal(salle, dateStr, heureNum, heureLabel) {
+    closeRoomModal();
     const selSalle = document.getElementById('f-salle');
     selSalle.value = salle;
     selSalle.dispatchEvent(new Event('change'));
     document.getElementById('f-date').value = dateStr;
-    document.getElementById('f-heure').value = heureLabel;
-    // Mark selected in form creneaux (will re-render after updateCreneaux)
+    selectedHeureNum = heureNum;
     updateCreneaux().then(() => {
       document.querySelectorAll('.creneau-btn').forEach(btn => {
-        if (btn.textContent.trim() === heureLabel) {
-          btn.classList.add('selected');
-        }
+        if (btn.textContent.trim() === heureLabel) btn.classList.add('selected');
       });
+      document.getElementById('f-heure').value = heureLabel;
+      calcPrice();
     });
-    // Store heure_num
-    selectedHeureNum = heureNum;
-    calcPrice();
-    // Scroll to reservation form
-    document.getElementById('reservation').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('reservation').scrollIntoView({ behavior:'smooth', block:'start' });
   }
-
-  initPlanning();
 
   // ===== ROOM MODALS =====
   function openRoomModal(salle) {
     document.getElementById('modal-' + salle).classList.add('open');
     document.body.style.overflow = 'hidden';
+    loadModalPlanning(salle);
   }
   function closeRoomModal() {
     document.querySelectorAll('.room-modal-overlay').forEach(m => m.classList.remove('open'));
