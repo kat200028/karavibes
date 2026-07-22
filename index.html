@@ -472,20 +472,20 @@
     <span style="font-family:'Cinzel',serif; font-size:1.1rem; letter-spacing:0.1em;"><span style="color:var(--or)">KARA</span><span style="color:var(--or-clair)">VIBES</span></span>
   </a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#concept">Le Concept</a></li>
-    <li><a href="#lounge">Le Lounge</a></li>
-    <li><a href="#tarifs">Tarifs</a></li>
-    <li><a href="#reservation">Réserver</a></li>
-    <li><a href="menu.html">La Carte</a></li>
-    <li><a href="evenements.html">Événements</a></li>
-    <li><a href="https://www.karafun.fr" target="_blank">Catalogue</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#concept" data-i18n="nav-concept">Le Concept</a></li>
+    <li><a href="#lounge" data-i18n="nav-lounge">Le Lounge</a></li>
+    <li><a href="#tarifs" data-i18n="nav-tarifs">Tarifs</a></li>
+    <li><a href="#reservation" data-i18n="nav-reserver">Réserver</a></li>
+    <li><a href="menu.html" data-i18n="nav-carte">La Carte</a></li>
+    <li><a href="evenements.html" data-i18n="nav-evenements">Événements</a></li>
+    <li><a href="https://www.karafun.fr" target="_blank" data-i18n="nav-catalogue">Catalogue</a></li>
+    <li><a href="#contact" data-i18n="nav-contact">Contact</a></li>
   </ul>
   <div style="display:flex; align-items:center; gap:1rem;">
     <div class="lang-switcher">
-      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
-      <button class="lang-btn" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" onclick="setLang('es')">ES</button>
+      <button class="lang-btn active" onclick="setLang('fr',this)">FR</button>
+      <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+      <button class="lang-btn" onclick="setLang('es',this)">ES</button>
     </div>
     <button class="hamburger" id="hamburger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
@@ -499,11 +499,11 @@
   <div class="hero-content">
     <img src="logo-karavibes-icon.png" alt="KaraVibes" class="hero-logo" onerror="this.style.display='none'" />
     <h1 class="hero-title">KaraVibes</h1>
-    <p class="hero-subtitle">Lounge Bar · Karaoké Privé</p>
-    <p class="hero-desc">Deux univers immersifs, une liberté totale. Chantez, vibrez, célébrez — dans votre salle rien qu'à vous.</p>
+    <p class="hero-subtitle" data-i18n="hero-subtitle">Lounge Bar · Karaoké Privé</p>
+    <p class="hero-desc" data-i18n="hero-desc">Deux univers immersifs, une liberté totale. Chantez, vibrez, célébrez — dans votre salle rien qu'à vous.</p>
     <div class="hero-cta">
-      <a href="#reservation" class="btn-primary">Réserver ma salle</a>
-      <a href="#concept" class="btn-outline">Découvrir</a>
+      <a href="#reservation" class="btn-primary" data-i18n="hero-cta1">Réserver ma salle</a>
+      <a href="#concept" class="btn-outline" data-i18n="hero-cta2">Découvrir</a>
     </div>
   </div>
   <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
@@ -516,15 +516,15 @@
   <div class="container">
     <div class="concept-grid">
       <div class="concept-text">
-        <span class="section-label">Notre univers</span>
-        <h2 class="section-title light">Un lounge, deux mondes à explorer</h2>
-        <p>KaraVibes c'est l'endroit où tout le monde peut se lâcher. Deux salles privées aux ambiances radicalement différentes, réservées rien que pour vous et votre groupe.</p>
-        <p>Pas de spectateurs, pas de jugement — juste vous, votre playlist et l'ambiance qui va avec. Que vous soyez en famille, entre amis ou en team building.</p>
+        <span class="section-label" data-i18n="concept-label">Notre univers</span>
+        <h2 class="section-title light" data-i18n="concept-title">Un lounge, deux mondes à explorer</h2>
+        <p data-i18n="concept-p1">KaraVibes c'est l'endroit où tout le monde peut se lâcher. Deux salles privées aux ambiances radicalement différentes, réservées rien que pour vous et votre groupe.</p>
+        <p data-i18n="concept-p2">Pas de spectateurs, pas de jugement — juste vous, votre playlist et l'ambiance qui va avec. Que vous soyez en famille, entre amis ou en team building.</p>
         <div class="concept-stats">
-          <div class="stat-card"><span class="stat-number" style="color:var(--cyan)">2</span><span class="stat-label">Salles privées</span></div>
-          <div class="stat-card"><span class="stat-number" style="color:var(--rose)">10</span><span class="stat-label">Pers. max / salle</span></div>
-          <div class="stat-card"><span class="stat-number">32</span><span class="stat-label">Places lounge</span></div>
-          <div class="stat-card"><span class="stat-number">∞</span><span class="stat-label">Chansons dispo</span></div>
+          <div class="stat-card"><span class="stat-number" style="color:var(--cyan)">2</span><span class="stat-label" data-i18n="stat-salles">Salles privées</span></div>
+          <div class="stat-card"><span class="stat-number" style="color:var(--rose)">10</span><span class="stat-label" data-i18n="stat-pers">Pers. max / salle</span></div>
+          <div class="stat-card"><span class="stat-number">32</span><span class="stat-label" data-i18n="stat-lounge">Places lounge</span></div>
+          <div class="stat-card"><span class="stat-number">∞</span><span class="stat-label" data-i18n="stat-chansons">Chansons dispo</span></div>
         </div>
       </div>
       <div class="concept-rooms">
@@ -532,22 +532,22 @@
           <img src="salle-lagon.jpeg" alt="Lagon Bleu" class="room-img" />
           <div class="room-details"><div class="room-led"></div></div>
           <div class="room-overlay">
-            <p class="room-tag">Salle Privée</p>
+            <p class="room-tag" data-i18n="room-tag">Salle Privée</p>
             <h3 class="room-name">Lagon Bleu</h3>
-            <p class="room-desc">Un univers aquatique envoûtant. LEDs bleues, ambiance sous-marine, lumières tamisées.</p>
-            <p class="room-capacity">👥 1 à 10 personnes</p>
-            <p class="room-cta-hint">Voir la salle →</p>
+            <p class="room-desc" data-i18n="lagon-desc">Un univers aquatique envoûtant. LEDs bleues, ambiance sous-marine, lumières tamisées.</p>
+            <p class="room-capacity" data-i18n="lagon-capacity">👥 1 à 10 personnes</p>
+            <p class="room-cta-hint" data-i18n="room-cta">Voir la salle →</p>
           </div>
         </div>
         <div class="room-card tokyo" onclick="openRoomModal('tokyo')">
           <img src="salle-tokyo.jpeg" alt="Neo Tokyo" class="room-img" />
           <div class="room-details"><div class="room-led"></div></div>
           <div class="room-overlay">
-            <p class="room-tag">Salle Privée</p>
+            <p class="room-tag" data-i18n="room-tag">Salle Privée</p>
             <h3 class="room-name">Neo Tokyo</h3>
-            <p class="room-desc">Plongez dans l'énergie de Tokyo by night. Néons, esthétique futuriste, ambiance électrique.</p>
-            <p class="room-capacity">👥 1 à 10 personnes</p>
-            <p class="room-cta-hint">Voir la salle →</p>
+            <p class="room-desc" data-i18n="tokyo-desc">Plongez dans l'énergie de Tokyo by night. Néons, esthétique futuriste, ambiance électrique.</p>
+            <p class="room-capacity" data-i18n="tokyo-capacity">👥 1 à 10 personnes</p>
+            <p class="room-cta-hint" data-i18n="room-cta">Voir la salle →</p>
           </div>
         </div>
       </div>
@@ -602,35 +602,39 @@
 
       <!-- TEXTE -->
       <div>
-        <span class="section-label">L'espace libre</span>
-        <h2 class="section-title light">Espace Lounge & Scène</h2>
-        <p style="font-size:0.95rem;color:rgba(250,248,245,0.6);line-height:1.9;margin-bottom:1.5rem;">
+        <span class="section-label" data-i18n="lounge-label">L'espace libre</span>
+        <h2 class="section-title light" data-i18n="lounge-title">Espace Lounge & Scène</h2>
+        <p style="font-size:0.95rem;color:rgba(250,248,245,0.6);line-height:1.9;margin-bottom:1.5rem;" data-i18n="lounge-p1">
           Pas envie d'une salle privée ? Rejoignez l'ambiance du lounge. Installez-vous à une table, commandez vos cocktails — et quand vous vous sentez prêts, montez sur scène chanter devant tout le monde.
         </p>
-        <p style="font-size:0.95rem;color:rgba(250,248,245,0.6);line-height:1.9;margin-bottom:2rem;">
+        <p style="font-size:0.95rem;color:rgba(250,248,245,0.6);line-height:1.9;margin-bottom:2rem;" data-i18n="lounge-p2">
           C'est le cœur de KaraVibes : un bar lounge vivant, des soirées spontanées, et une scène ouverte à tous ceux qui osent.
         </p>
         <div style="display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2rem;">
           <div style="display:flex;align-items:center;gap:0.8rem;font-size:0.85rem;color:rgba(250,248,245,0.75);">
             <span style="width:32px;height:32px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">🎤</span>
-            Scène ouverte — montez chanter quand vous voulez
+            <span data-i18n="lounge-feat1">Scène ouverte — montez chanter quand vous voulez</span>
           </div>
           <div style="display:flex;align-items:center;gap:0.8rem;font-size:0.85rem;color:rgba(250,248,245,0.75);">
             <span style="width:32px;height:32px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">🍹</span>
-            Cocktails, boissons et menu disponibles
+            <span data-i18n="lounge-feat2">Cocktails, boissons et menu disponibles</span>
           </div>
           <div style="display:flex;align-items:center;gap:0.8rem;font-size:0.85rem;color:rgba(250,248,245,0.75);">
             <span style="width:32px;height:32px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">👥</span>
-            Tables de 4 et de 8 personnes
+            <span data-i18n="lounge-feat3">Tables de 4 et de 8 personnes</span>
           </div>
           <div style="display:flex;align-items:center;gap:0.8rem;font-size:0.85rem;color:rgba(250,248,245,0.75);">
             <span style="width:32px;height:32px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">🚶</span>
-            Accès direct — pas de réservation nécessaire
+            <span data-i18n="lounge-feat4">Accès direct — pas de réservation nécessaire</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.8rem;font-size:0.85rem;color:rgba(250,248,245,0.75);">
+            <span style="width:32px;height:32px;border-radius:50%;background:rgba(255,45,120,0.08);border:1px solid rgba(255,45,120,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">🍹</span>
+            <span data-i18n="lounge-feat5">Une consommation minimum est requise pour accéder à la scène</span>
           </div>
         </div>
         <div style="display:inline-flex;align-items:center;gap:0.6rem;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:0.8rem 1.2rem;">
           <span style="font-size:1rem;">✨</span>
-          <span style="font-size:0.8rem;color:var(--or-pale);font-style:italic;">Venez comme vous êtes — la scène vous attend.</span>
+          <span style="font-size:0.8rem;color:var(--or-pale);font-style:italic;" data-i18n="lounge-tagline">Venez comme vous êtes — la scène vous attend.</span>
         </div>
       </div>
 
@@ -644,31 +648,31 @@
 <section class="tarifs" id="tarifs">
   <div class="container">
     <div class="tarifs-header">
-      <span class="section-label">Nos formules</span>
-      <h2 class="section-title light">Tarifs simples, plaisir maximum</h2>
+      <span class="section-label" data-i18n="tarifs-label">Nos formules</span>
+      <h2 class="section-title light" data-i18n="tarifs-title">Tarifs simples, plaisir maximum</h2>
     </div>
     <div class="tarifs-grid">
       <div class="tarif-card">
-        <p class="tarif-name">Séance Standard</p>
+        <p class="tarif-name" data-i18n="tarif1-name">Séance Standard</p>
         <div class="tarif-price">20€</div>
-        <p class="tarif-unit">par personne · minimum 4 personnes</p>
+        <p class="tarif-unit" data-i18n="tarif1-unit">par personne · minimum 4 personnes</p>
         <ul class="tarif-features">
-          <li>Salle privée au choix</li>
-          <li>Équipement karaoké inclus</li>
-          <li>Catalogue illimité</li>
-          <li>Maximum 10 personnes</li>
+          <li data-i18n="tarif1-f1">Salle privée au choix</li>
+          <li data-i18n="tarif1-f2">Équipement karaoké inclus</li>
+          <li data-i18n="tarif1-f3">Catalogue illimité</li>
+          <li data-i18n="tarif1-f4">Maximum 10 personnes</li>
         </ul>
       </div>
       <div class="tarif-card featured">
-        <div class="tarif-badge">⭐ Populaire</div>
-        <p class="tarif-name">Prolongation</p>
+        <div class="tarif-badge" data-i18n="tarif2-badge">⭐ Populaire</div>
+        <p class="tarif-name" data-i18n="tarif2-name">Prolongation</p>
         <div class="tarif-price">15€</div>
-        <p class="tarif-unit">par personne · 30 min offertes incluses</p>
+        <p class="tarif-unit" data-i18n="tarif2-unit">par personne · 30 min offertes incluses</p>
         <ul class="tarif-features">
-          <li>2h supplémentaires en salle</li>
-          <li>30 minutes OFFERTES</li>
-          <li>Même salle, même ambiance</li>
-          <li>À ajouter lors de la réservation</li>
+          <li data-i18n="tarif2-f1">2h supplémentaires en salle</li>
+          <li data-i18n="tarif2-f2">30 minutes OFFERTES</li>
+          <li data-i18n="tarif2-f3">Même salle, même ambiance</li>
+          <li data-i18n="tarif2-f4">À ajouter lors de la réservation</li>
         </ul>
       </div>
     </div>
@@ -682,39 +686,39 @@
   <div class="container">
     <div class="reservation-content">
       <div class="reservation-info">
-        <span class="section-label">Réservation</span>
-        <h2 class="section-title light">Réservez votre salle</h2>
-        <p>Choisissez votre salle, votre créneau et réglez en ligne. Votre place est confirmée instantanément.</p>
+        <span class="section-label" data-i18n="resa-label">Réservation</span>
+        <h2 class="section-title light" data-i18n="resa-title">Réservez votre salle</h2>
+        <p data-i18n="resa-p">Choisissez votre salle, votre créneau et réglez en ligne. Votre place est confirmée instantanément.</p>
         <div class="horaires">
-          <div class="horaire-row"><span class="horaire-day">Lundi</span><span class="horaire-ferme">Fermé</span></div>
-          <div class="horaire-row"><span class="horaire-day">Mardi</span><span class="horaire-ferme">Fermé</span></div>
-          <div class="horaire-row"><span class="horaire-day">Mercredi</span><span class="horaire-time">17h00 – 00h00</span></div>
-          <div class="horaire-row"><span class="horaire-day">Jeudi</span><span class="horaire-time">17h00 – 00h00</span></div>
-          <div class="horaire-row"><span class="horaire-day">Vendredi</span><span class="horaire-time">15h00 – 00h00</span></div>
-          <div class="horaire-row"><span class="horaire-day">Samedi</span><span class="horaire-time">15h00 – 00h00</span></div>
-          <div class="horaire-row"><span class="horaire-day">Dimanche</span><span class="horaire-time">11h00 – 20h00</span></div>
+          <div class="horaire-row"><span class="horaire-day" data-i18n="hor-lundi">Lundi</span><span class="horaire-ferme" data-i18n="hor-ferme">Fermé</span></div>
+          <div class="horaire-row"><span class="horaire-day" data-i18n="hor-mardi">Mardi</span><span class="horaire-ferme" data-i18n="hor-ferme">Fermé</span></div>
+          <div class="horaire-row"><span class="horaire-day" data-i18n="hor-mercredi">Mercredi</span><span class="horaire-time">17h00 – 00h00</span></div>
+          <div class="horaire-row"><span class="horaire-day" data-i18n="hor-jeudi">Jeudi</span><span class="horaire-time">17h00 – 00h00</span></div>
+          <div class="horaire-row"><span class="horaire-day" data-i18n="hor-vendredi">Vendredi</span><span class="horaire-time">15h00 – 00h00</span></div>
+          <div class="horaire-row"><span class="horaire-day" data-i18n="hor-samedi">Samedi</span><span class="horaire-time">15h00 – 00h00</span></div>
+          <div class="horaire-row"><span class="horaire-day" data-i18n="hor-dimanche">Dimanche</span><span class="horaire-time">11h00 – 20h00</span></div>
         </div>
       </div>
 
       <div class="resa-form">
-        <h3>Votre réservation</h3>
+        <h3 data-i18n="form-h3">Votre réservation</h3>
         <div class="form-grid">
-          <div class="form-group"><label>Prénom</label><input type="text" id="f-prenom" placeholder="Marie" /></div>
-          <div class="form-group"><label>Nom</label><input type="text" id="f-nom" placeholder="Dupont" /></div>
+          <div class="form-group"><label data-i18n="form-prenom">Prénom</label><input type="text" id="f-prenom" placeholder="Marie" /></div>
+          <div class="form-group"><label data-i18n="form-nom">Nom</label><input type="text" id="f-nom" placeholder="Dupont" /></div>
         </div>
-        <div class="form-group"><label>Email</label><input type="email" id="f-email" placeholder="votre@email.com" /></div>
-        <div class="form-group"><label>Téléphone</label><input type="tel" id="f-tel" placeholder="+596 XXX XXX XXX" /></div>
+        <div class="form-group"><label data-i18n="form-email">Email</label><input type="email" id="f-email" placeholder="votre@email.com" /></div>
+        <div class="form-group"><label data-i18n="form-tel">Téléphone</label><input type="tel" id="f-tel" placeholder="+596 XXX XXX XXX" /></div>
         <div class="form-grid">
           <div class="form-group">
-            <label>Salle</label>
+            <label data-i18n="form-salle">Salle</label>
             <select id="f-salle" onchange="updateCreneaux()">
-              <option value="">Choisir...</option>
-              <option value="lagon">🌊 Lagon Bleu</option>
-              <option value="tokyo">🌸 Neo Tokyo</option>
+              <option value="" data-i18n="form-salle-opt0">Choisir...</option>
+              <option value="lagon" data-i18n="form-salle-opt1">🌊 Lagon Bleu</option>
+              <option value="tokyo" data-i18n="form-salle-opt2">🌸 Neo Tokyo</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Nombre de personnes</label>
+            <label data-i18n="form-nb">Nombre de personnes</label>
             <select id="f-nb" onchange="calcPrice()">
               <option value="">Choisir...</option>
               <option value="1">1</option><option value="2">2</option><option value="3">3</option>
@@ -725,13 +729,13 @@
           </div>
         </div>
         <div class="form-group">
-          <label>Date</label>
+          <label data-i18n="form-date">Date</label>
           <input type="date" id="f-date" onchange="updateCreneaux()" />
         </div>
         <div class="form-group">
-          <span class="creneau-label">Choisissez votre créneau</span>
+          <span class="creneau-label" data-i18n="form-creneau">Choisissez votre créneau</span>
           <div class="creneaux-dispo" id="creneaux-container">
-            <span style="font-size:0.8rem; color:var(--gris);">Sélectionnez d'abord une salle et une date.</span>
+            <span id="creneau-hint" style="font-size:0.8rem; color:var(--gris);" data-i18n="form-creneau-hint">Sélectionnez d'abord une salle et une date.</span>
           </div>
           <input type="hidden" id="f-heure" />
         </div>
@@ -739,23 +743,23 @@
         <label class="promo-check">
           <input type="checkbox" id="f-prolo" onchange="calcPrice()" />
           <div class="promo-check-text">
-            <strong>🎉 Prolonger — 30 min OFFERTES !</strong>
-            <span>Ajoutez 15€/personne et restez 2h de plus dans votre salle.</span>
+            <strong data-i18n="form-prolo-title">🎉 Prolonger — 30 min OFFERTES !</strong>
+            <span data-i18n="form-prolo-sub">Ajoutez 15€/personne et restez 2h de plus dans votre salle.</span>
           </div>
         </label>
 
         <div class="price-preview">
-          <span class="price-preview-label">Total estimé</span>
+          <span class="price-preview-label" data-i18n="form-price-label">Total estimé</span>
           <span class="price-preview-amount" id="priceDisplay">—</span>
         </div>
 
         <label style="display:flex; align-items:flex-start; gap:0.6rem; margin-bottom:1rem; cursor:pointer;">
           <input type="checkbox" id="accept-reglement" style="margin-top:3px; accent-color:var(--or);" />
-          <span style="font-size:0.78rem; color:var(--gris); line-height:1.5;">J'ai lu et j'accepte le <a href="reglement.html" target="_blank" style="color:var(--or); text-decoration:underline;">règlement intérieur et la politique d'annulation</a></span>
+          <span style="font-size:0.78rem; color:var(--gris); line-height:1.5;"><span data-i18n="form-reglement">J'ai lu et j'accepte le</span> <a href="reglement.html" target="_blank" style="color:var(--or); text-decoration:underline;" data-i18n="footer-reglement">règlement intérieur et la politique d'annulation</a></span>
         </label>
-        <button class="btn-primary" style="width:100%;" onclick="submitResa()">Confirmer & Payer</button>
+        <button class="btn-primary" style="width:100%;" onclick="submitResa()" data-i18n="form-confirm">Confirmer & Payer</button>
         <div class="tel-resa" style="margin-top:1rem;">
-          Vous préférez réserver par téléphone ?
+          <span data-i18n="form-tel-resa">Vous préférez réserver par téléphone ?</span>
           <a href="tel:+596XXXXXXXXX"> 📞 Appelez-nous</a>
         </div>
       </div>
@@ -769,16 +773,16 @@
 <section class="avis-section" id="avis">
   <div class="container">
     <div class="avis-header">
-      <span class="section-label">Témoignages</span>
-      <h2 class="section-title light">Ce qu'ils en disent</h2>
+      <span class="section-label" data-i18n="avis-label">Témoignages</span>
+      <h2 class="section-title light" data-i18n="avis-title">Ce qu'ils en disent</h2>
     </div>
     <div class="avis-grid" id="avis-grid">
-      <div style="grid-column:1/-1; text-align:center; padding:2rem; color:var(--gris); font-size:0.85rem;">
+      <div style="grid-column:1/-1; text-align:center; padding:2rem; color:var(--gris); font-size:0.85rem;" data-i18n="avis-placeholder">
         Les premiers avis apparaîtront ici après l'ouverture. 🎤
       </div>
     </div>
     <div class="avis-form-card">
-      <h3>Laissez votre avis</h3>
+      <h3 data-i18n="avis-h3">Laissez votre avis</h3>
       <div class="stars-select" id="starsSelect">
         <button class="star-btn" onclick="setStar(1)">⭐</button>
         <button class="star-btn" onclick="setStar(2)">⭐</button>
@@ -789,8 +793,8 @@
       <input type="hidden" id="avis-note" value="0" />
       <input class="avis-input" type="text" id="avis-prenom" placeholder="Votre prénom" />
       <textarea class="avis-input" id="avis-commentaire" placeholder="Partagez votre expérience KaraVibes..."></textarea>
-      <button class="btn-primary" style="width:100%;" onclick="submitAvis()">Envoyer mon avis</button>
-      <p class="avis-note">Votre avis sera publié après validation. Merci ! 🙏</p>
+      <button class="btn-primary" style="width:100%;" onclick="submitAvis()" data-i18n="avis-submit">Envoyer mon avis</button>
+      <p class="avis-note" data-i18n="avis-note">Votre avis sera publié après validation. Merci ! 🙏</p>
     </div>
   </div>
 </section>
@@ -801,9 +805,9 @@
 <section class="catalogue" id="catalogue">
   <div class="container">
     <div class="catalogue-content">
-      <span class="section-label">Des milliers de titres</span>
-      <h2 class="section-title light">Le catalogue</h2>
-      <p>Chansons françaises, hits internationaux, zouk, reggaeton, R&B, antillais... Préparez votre playlist avant d'arriver !</p>
+      <span class="section-label" data-i18n="cat-label">Des milliers de titres</span>
+      <h2 class="section-title light" data-i18n="cat-title">Le catalogue</h2>
+      <p data-i18n="cat-desc">Chansons françaises, hits internationaux, zouk, reggaeton, R&B, antillais... Préparez votre playlist avant d'arriver !</p>
       <div class="catalogue-platforms">
         <span class="platform-badge c">🎵 Français</span>
         <span class="platform-badge r">🎵 Anglais</span>
@@ -812,7 +816,7 @@
         <span class="platform-badge c">🎵 R&B</span>
         <span class="platform-badge r">🎵 Antillais</span>
       </div>
-      <a href="https://www.karafun.fr" target="_blank" class="btn-primary">Voir le catalogue complet</a>
+      <a href="https://www.karafun.fr" target="_blank" class="btn-primary" data-i18n="cat-btn">Voir le catalogue complet</a>
     </div>
   </div>
 </section>
@@ -824,33 +828,33 @@
   <div class="container">
     <div class="contact-grid">
       <div>
-        <span class="section-label">Nous trouver</span>
-        <h2 class="section-title dark">Contact & Accès</h2>
+        <span class="section-label" data-i18n="contact-label">Nous trouver</span>
+        <h2 class="section-title dark" data-i18n="contact-title">Contact & Accès</h2>
         <div class="contact-item">
           <div class="contact-icon">📍</div>
-          <div class="contact-item-text"><h4>Adresse</h4><p>Martinique — adresse communiquée à la confirmation</p></div>
+          <div class="contact-item-text"><h4 data-i18n="contact-adresse-h">Adresse</h4><p data-i18n="contact-adresse-p">Martinique — adresse communiquée à la confirmation</p></div>
         </div>
 <div class="contact-item">
           <div class="contact-icon">📸</div>
-          <div class="contact-item-text"><h4>Instagram</h4><a href="#" target="_blank">@karavibes.martinique</a></div>
+          <div class="contact-item-text"><h4 data-i18n="contact-insta-h">Instagram</h4><a href="#" target="_blank">@karavibes.martinique</a></div>
         </div>
         <div class="contact-item">
           <div class="contact-icon">🕐</div>
-          <div class="contact-item-text"><h4>Horaires</h4>
+          <div class="contact-item-text"><h4 data-i18n="contact-hor-h">Horaires</h4>
             <p>Mer–Jeu 17h–00h<br>Ven–Sam 15h–00h<br>Dim 11h–20h</p>
           </div>
         </div>
-        <div class="map-placeholder">🗺️ Plan disponible à l'ouverture</div>
+        <div class="map-placeholder" data-i18n="map-placeholder">🗺️ Plan disponible à l'ouverture</div>
       </div>
       <div>
-        <span class="section-label">Une question ?</span>
-        <h3 style="font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:1.5rem; color:var(--noir)">Écrivez-nous</h3>
+        <span class="section-label" data-i18n="contact-question">Une question ?</span>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:1.5rem; color:var(--noir)" data-i18n="contact-ecrivez">Écrivez-nous</h3>
         <div class="contact-form">
-          <input type="text" placeholder="Votre nom" />
-          <input type="email" placeholder="Votre email" />
-          <input type="text" placeholder="Objet" />
-          <textarea placeholder="Votre message..."></textarea>
-          <button class="btn-primary-dark" onclick="alert('Message envoyé !')">Envoyer</button>
+          <input type="text" data-i18n-ph="contact-nom-ph" placeholder="Votre nom" />
+          <input type="email" data-i18n-ph="contact-email-ph" placeholder="Votre email" />
+          <input type="text" data-i18n-ph="contact-objet-ph" placeholder="Objet" />
+          <textarea data-i18n-ph="contact-msg-ph" placeholder="Votre message..."></textarea>
+          <button class="btn-primary-dark" onclick="alert('Message envoyé !')" data-i18n="contact-envoyer">Envoyer</button>
         </div>
       </div>
     </div>
@@ -867,12 +871,12 @@
       </div>
     </div>
     <ul class="footer-links">
-      <li><a href="#concept">Le Concept</a></li>
-      <li><a href="#tarifs">Tarifs</a></li>
-      <li><a href="#reservation">Réserver</a></li>
-      <li><a href="menu.html">La Carte</a></li>
-      <li><a href="https://www.karafun.fr" target="_blank">Catalogue</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#concept" data-i18n="nav-concept">Le Concept</a></li>
+      <li><a href="#tarifs" data-i18n="nav-tarifs">Tarifs</a></li>
+      <li><a href="#reservation" data-i18n="nav-reserver">Réserver</a></li>
+      <li><a href="menu.html" data-i18n="nav-carte">La Carte</a></li>
+      <li><a href="https://www.karafun.fr" target="_blank" data-i18n="nav-catalogue">Catalogue</a></li>
+      <li><a href="#contact" data-i18n="nav-contact">Contact</a></li>
     </ul>
     <div class="footer-social">
       <a href="#" class="social-link">IG</a>
@@ -880,10 +884,10 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy">© 2025 KaraVibes · Studio Lounge Privé · Martinique</p>
+    <p class="footer-copy" data-i18n="footer-copy">© 2025 KaraVibes · Studio Lounge Privé · Martinique</p>
     <div class="footer-legal">
-      <a href="#">Mentions légales</a>
-      <a href="reglement.html">Règlement & Conditions</a>
+      <a href="#" data-i18n="footer-mentions">Mentions légales</a>
+      <a href="reglement.html" data-i18n="footer-reglement">Règlement & Conditions</a>
     </div>
     <a href="admin_5.html" class="spider-link" title="">🕷️</a>
   </div>
@@ -897,16 +901,16 @@
       <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,10,30,0.9) 0%,rgba(0,30,80,0.5) 60%,rgba(0,20,60,0.6) 100%);z-index:1;"></div>
       <button class="room-modal-close" onclick="closeRoomModal()">✕</button>
       <div>
-        <span class="room-modal-tag" style="color:#00E5FF">Salle Privée · Univers Aquatique</span>
+        <span class="room-modal-tag" style="color:#00E5FF" data-i18n="modal-lagon-tag">Salle Privée · Univers Aquatique</span>
         <div class="room-modal-title">Lagon Bleu</div>
       </div>
     </div>
     <div class="room-modal-body">
       <div class="room-modal-section">
-        <div class="modal-capacity-badge">👥 1 à 10 personnes · Karaoké privatisé</div>
+        <div class="modal-capacity-badge" data-i18n="modal-lagon-cap">👥 1 à 10 personnes · Karaoké privatisé</div>
       </div>
       <div class="room-modal-section">
-        <h4>📅 Disponibilités — Lagon Bleu</h4>
+        <h4 data-i18n="modal-lagon-dispo">📅 Disponibilités — Lagon Bleu</h4>
         <div class="modal-planning-week">
           <button class="modal-week-btn" onclick="modalWeekPrev('lagon')">&#8592;</button>
           <span class="modal-planning-week-label" id="mplabel-lagon"></span>
@@ -915,8 +919,8 @@
         <div class="modal-planning-grid" id="mpgrid-lagon"><span style="font-size:0.78rem;color:var(--gris);">Chargement…</span></div>
       </div>
       <div class="room-modal-section">
-        <h4>🍹 Cocktails Exclusifs — Lagon Bleu</h4>
-        <p style="font-size:0.7rem; color:var(--or); letter-spacing:0.08em; margin-bottom:0.6rem; text-transform:uppercase;">Alcoolisés</p>
+        <h4 data-i18n="modal-lagon-cocktails">🍹 Cocktails Exclusifs — Lagon Bleu</h4>
+        <p style="font-size:0.7rem; color:var(--or); letter-spacing:0.08em; margin-bottom:0.6rem; text-transform:uppercase;" data-i18n="modal-alco">Alcoolisés</p>
         <div class="modal-cocktails">
           <div class="modal-cocktail"><div class="modal-cocktail-name">Bahama Breeze</div><div style="font-size:0.7rem;color:var(--gris);">Rhum · Ananas · Curaçao bleu · Citron</div></div>
           <div class="modal-cocktail"><div class="modal-cocktail-name">Coral Reef</div><div style="font-size:0.7rem;color:var(--gris);">Vodka · Pêche · Orange · Grenadine</div></div>
@@ -925,7 +929,7 @@
           <div class="modal-cocktail"><div class="modal-cocktail-name">Turquoise Tide</div><div style="font-size:0.7rem;color:var(--gris);">Gin · Curaçao bleu · Citron · Gazeuse</div></div>
           <div class="modal-cocktail"><div class="modal-cocktail-name">Castaway Rum</div><div style="font-size:0.7rem;color:var(--gris);">Rhum vieux · Passion · Miel · Citron</div></div>
         </div>
-        <p style="font-size:0.7rem; color:var(--or); letter-spacing:0.08em; margin:0.8rem 0 0.5rem; text-transform:uppercase;">Sans Alcool</p>
+        <p style="font-size:0.7rem; color:var(--or); letter-spacing:0.08em; margin:0.8rem 0 0.5rem; text-transform:uppercase;" data-i18n="modal-sans-alco">Sans Alcool</p>
         <div class="modal-cocktails">
           <div class="modal-cocktail"><div class="modal-cocktail-name">Island Breeze</div></div>
           <div class="modal-cocktail"><div class="modal-cocktail-name">Blue Lagoon Splash</div></div>
@@ -933,9 +937,9 @@
           <div class="modal-cocktail"><div class="modal-cocktail-name">Coconut Paradise</div></div>
           <div class="modal-cocktail"><div class="modal-cocktail-name">Sunny Shore</div></div>
         </div>
-        <p style="font-size:0.72rem; color:var(--gris); margin-top:0.6rem; font-style:italic;">Cocktails exclusifs réservés à la salle Lagon Bleu · Tarifs sur la carte complète</p>
+        <p style="font-size:0.72rem; color:var(--gris); margin-top:0.6rem; font-style:italic;" data-i18n="modal-lagon-note">Cocktails exclusifs réservés à la salle Lagon Bleu · Tarifs sur la carte complète</p>
       </div>
-      <a href="carte-lagon.html" style="display:block; text-align:center; font-size:0.75rem; color:var(--lagoon,#00E5FF); letter-spacing:0.1em; margin-bottom:0.8rem; text-decoration:none; opacity:0.8;">🍹 Voir la carte cocktails complète →</a>
+      <a href="carte-lagon.html" style="display:block; text-align:center; font-size:0.75rem; color:var(--lagoon,#00E5FF); letter-spacing:0.1em; margin-bottom:0.8rem; text-decoration:none; opacity:0.8;" data-i18n="modal-lagon-carte">🍹 Voir la carte cocktails complète →</a>
     </div>
   </div>
 </div>
@@ -948,16 +952,16 @@
       <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,0,25,0.9) 0%,rgba(60,0,100,0.5) 60%,rgba(30,0,60,0.6) 100%);z-index:1;"></div>
       <button class="room-modal-close" onclick="closeRoomModal()">✕</button>
       <div>
-        <span class="room-modal-tag" style="color:#FF6B9D">Salle Privée · Esthétique Futuriste</span>
+        <span class="room-modal-tag" style="color:#FF6B9D" data-i18n="modal-tokyo-tag">Salle Privée · Esthétique Futuriste</span>
         <div class="room-modal-title">Neo Tokyo</div>
       </div>
     </div>
     <div class="room-modal-body">
       <div class="room-modal-section">
-        <div class="modal-capacity-badge">👥 1 à 10 personnes · Karaoké privatisé</div>
+        <div class="modal-capacity-badge" data-i18n="modal-tokyo-cap">👥 1 à 10 personnes · Karaoké privatisé</div>
       </div>
       <div class="room-modal-section">
-        <h4>📅 Disponibilités — Neo Tokyo</h4>
+        <h4 data-i18n="modal-tokyo-dispo">📅 Disponibilités — Neo Tokyo</h4>
         <div class="modal-planning-week">
           <button class="modal-week-btn" onclick="modalWeekPrev('tokyo')">&#8592;</button>
           <span class="modal-planning-week-label" id="mplabel-tokyo"></span>
@@ -966,8 +970,8 @@
         <div class="modal-planning-grid" id="mpgrid-tokyo"><span style="font-size:0.78rem;color:var(--gris);">Chargement…</span></div>
       </div>
       <div class="room-modal-section">
-        <h4>🍹 Cocktails Exclusifs — Neo Tokyo</h4>
-        <p style="font-size:0.7rem; color:var(--rose); letter-spacing:0.08em; margin-bottom:0.6rem; text-transform:uppercase;">Alcoolisés</p>
+        <h4 data-i18n="modal-tokyo-cocktails">🍹 Cocktails Exclusifs — Neo Tokyo</h4>
+        <p style="font-size:0.7rem; color:var(--rose); letter-spacing:0.08em; margin-bottom:0.6rem; text-transform:uppercase;" data-i18n="modal-alco">Alcoolisés</p>
         <div class="modal-cocktails">
           <div class="modal-cocktail"><div class="modal-cocktail-name">Rasengan Rush</div><div style="font-size:0.7rem;color:var(--gris);">Vodka · Curaçao bleu · Limonade · Citron</div></div>
           <div class="modal-cocktail"><div class="modal-cocktail-name">Kamehameha</div><div style="font-size:0.7rem;color:var(--gris);">Rhum · Mangue · Gingembre · Passion</div></div>
@@ -976,16 +980,16 @@
           <div class="modal-cocktail"><div class="modal-cocktail-name">Titan's Fury</div><div style="font-size:0.7rem;color:var(--gris);">Whisky · Cola · Réglisse · Orange amère</div></div>
           <div class="modal-cocktail"><div class="modal-cocktail-name">Demon Slayer</div><div style="font-size:0.7rem;color:var(--gris);">Vodka · Lychee · Myrtille · Sirop de rose</div></div>
         </div>
-        <p style="font-size:0.7rem; color:var(--rose); letter-spacing:0.08em; margin:0.8rem 0 0.5rem; text-transform:uppercase;">Sans Alcool</p>
+        <p style="font-size:0.7rem; color:var(--rose); letter-spacing:0.08em; margin:0.8rem 0 0.5rem; text-transform:uppercase;" data-i18n="modal-sans-alco">Sans Alcool</p>
         <div class="modal-cocktails">
           <div class="modal-cocktail"><div class="modal-cocktail-name">Pikachu Spark</div></div>
           <div class="modal-cocktail"><div class="modal-cocktail-name">Soul King Fizz</div></div>
           <div class="modal-cocktail"><div class="modal-cocktail-name">Sakura Blossom</div></div>
           <div class="modal-cocktail"><div class="modal-cocktail-name">Ramune Ocean</div></div>
         </div>
-        <p style="font-size:0.72rem; color:var(--gris); margin-top:0.6rem; font-style:italic;">Cocktails exclusifs réservés à la salle Neo Tokyo · Tarifs sur la carte complète</p>
+        <p style="font-size:0.72rem; color:var(--gris); margin-top:0.6rem; font-style:italic;" data-i18n="modal-tokyo-note">Cocktails exclusifs réservés à la salle Neo Tokyo · Tarifs sur la carte complète</p>
       </div>
-      <a href="carte-tokyo.html" style="display:block; text-align:center; font-size:0.75rem; color:var(--rose,#FF2D78); letter-spacing:0.1em; margin-bottom:0.8rem; text-decoration:none; opacity:0.8;">🍹 Voir la carte cocktails complète →</a>
+      <a href="carte-tokyo.html" style="display:block; text-align:center; font-size:0.75rem; color:var(--rose,#FF2D78); letter-spacing:0.1em; margin-bottom:0.8rem; text-decoration:none; opacity:0.8;" data-i18n="modal-tokyo-carte">🍹 Voir la carte cocktails complète →</a>
     </div>
   </div>
 </div>
@@ -1001,39 +1005,39 @@
       <button class="modal-booking-close" onclick="closeBookingPanel()">✕</button>
     </div>
     <div class="modal-booking-field">
-      <label>Prénom</label>
-      <input type="text" id="bp-prenom" placeholder="Votre prénom" />
+      <label data-i18n="bp-prenom">Prénom</label>
+      <input type="text" id="bp-prenom" data-i18n-ph="ph-prenom" placeholder="Votre prénom" />
     </div>
     <div class="modal-booking-field">
-      <label>Nom</label>
-      <input type="text" id="bp-nom" placeholder="Votre nom" />
+      <label data-i18n="bp-nom">Nom</label>
+      <input type="text" id="bp-nom" data-i18n-ph="ph-nom" placeholder="Votre nom" />
     </div>
     <div class="modal-booking-field">
-      <label>Téléphone</label>
+      <label data-i18n="bp-tel">Téléphone</label>
       <input type="tel" id="bp-tel" placeholder="+596 696 00 00 00" />
     </div>
     <div class="modal-booking-field">
-      <label>Email <span style="font-size:0.6rem;color:var(--gris);text-transform:none;letter-spacing:0;">(optionnel — pour votre confirmation)</span></label>
+      <label><span data-i18n="bp-email-label">Email</span> <span style="font-size:0.6rem;color:var(--gris);text-transform:none;letter-spacing:0;" data-i18n="bp-email-note">(optionnel — pour votre confirmation)</span></label>
       <input type="email" id="bp-email" placeholder="votre@email.com" />
     </div>
     <div class="modal-booking-field">
-      <label>Nombre de personnes</label>
+      <label data-i18n="bp-nb-label">Nombre de personnes</label>
       <div class="modal-booking-nb">
         <button class="nb-btn" onclick="changeNb(-1)">−</button>
         <span class="nb-value" id="bp-nb">4</span>
         <button class="nb-btn" onclick="changeNb(1)">+</button>
-        <span class="nb-label">personne(s) · min. 4 facturées</span>
+        <span class="nb-label" data-i18n="nb-label">personne(s) · min. 4 facturées</span>
       </div>
     </div>
     <label class="modal-booking-prolo">
       <input type="checkbox" id="bp-prolo" onchange="updateBPPrice()" />
       <div class="modal-booking-prolo-text">
-        🎉 Prolonger ma session (+2h)
-        <span>+15€/pers · restez encore 2h dans votre salle</span>
+        <span data-i18n="bp-prolo-title">🎉 Prolonger ma session (+2h)</span>
+        <span data-i18n="bp-prolo-sub">+15€/pers · restez encore 2h dans votre salle</span>
       </div>
     </label>
     <div class="modal-booking-price">
-      <span class="modal-booking-price-label">Total estimé</span>
+      <span class="modal-booking-price-label" data-i18n="bp-price-label">Total estimé</span>
       <span class="modal-booking-price-amount" id="bp-price">80€</span>
     </div>
     <p style="font-size:0.68rem;color:rgba(138,138,154,0.7);text-align:center;margin-top:0.8rem;line-height:1.6;">
@@ -1041,7 +1045,7 @@
       Le montant facturé correspond au nombre de personnes réservées,<br>
       <strong style="color:var(--gris);">tout désistement le jour J reste dû.</strong>
     </p>
-    <button class="modal-booking-submit" id="bp-submit" onclick="submitBookingPanel()">🎤 Confirmer ma réservation</button>
+    <button class="modal-booking-submit" id="bp-submit" onclick="submitBookingPanel()" data-i18n="bp-submit">🎤 Confirmer ma réservation</button>
   </div>
 </div>
 
@@ -1049,10 +1053,10 @@
 <div class="booking-success-overlay" id="booking-success">
   <div class="booking-success-card">
     <div class="booking-success-icon">✅</div>
-    <div class="booking-success-title">Réservation confirmée !</div>
-    <div class="booking-success-msg">Votre demande a bien été enregistrée. Nous vous contacterons pour confirmer et vous accueillir le jour J.</div>
+    <div class="booking-success-title" data-i18n="success-title">Réservation confirmée !</div>
+    <div class="booking-success-msg" data-i18n="success-msg">Votre demande a bien été enregistrée. Nous vous contacterons pour confirmer et vous accueillir le jour J.</div>
     <div class="booking-success-detail" id="success-detail"></div>
-    <button class="booking-success-btn" onclick="closeSuccess()">Parfait, à bientôt !</button>
+    <button class="booking-success-btn" onclick="closeSuccess()" data-i18n="success-btn">Parfait, à bientôt !</button>
   </div>
 </div>
 
@@ -1109,7 +1113,7 @@
     selectedHeureNum = null;
 
     if (!salle || !date) {
-      container.innerHTML = '<span style="font-size:0.8rem; color:var(--gris);">Sélectionnez d\'abord une salle et une date.</span>';
+      container.innerHTML = `<span style="font-size:0.8rem; color:var(--gris);">${T[currentLang]['select-salle-date']}</span>`;
       return;
     }
 
@@ -1118,7 +1122,7 @@
     const creneaux = getCreneaux(jour);
 
     if (creneaux.length === 0) {
-      container.innerHTML = '<span style="font-size:0.8rem; color:var(--rose);">Fermé ce jour-là.</span>';
+      container.innerHTML = `<span style="font-size:0.8rem; color:var(--rose);">${T[currentLang]['ferme-jour']}</span>`;
       return;
     }
 
@@ -1259,10 +1263,89 @@
   // Date min = aujourd'hui
   document.getElementById('f-date').setAttribute('min', new Date().toISOString().split('T')[0]);
 
-  // Lang switcher simplifié
-  function setLang(lang) {
+  // ===== TRADUCTIONS =====
+  let currentLang = 'fr';
+  const T = {
+    fr: {
+      'nav-concept':'Le Concept','nav-lounge':'Le Lounge','nav-tarifs':'Tarifs','nav-reserver':'Réserver','nav-carte':'La Carte','nav-evenements':'Événements','nav-catalogue':'Catalogue','nav-contact':'Contact',
+      'hero-subtitle':'Lounge Bar · Karaoké Privé','hero-desc':'Deux univers immersifs, une liberté totale. Chantez, vibrez, célébrez — dans votre salle rien qu\'à vous.','hero-cta1':'Réserver ma salle','hero-cta2':'Découvrir',
+      'concept-label':'Notre univers','concept-title':'Un lounge, deux mondes à explorer','concept-p1':'KaraVibes c\'est l\'endroit où tout le monde peut se lâcher. Deux salles privées aux ambiances radicalement différentes, réservées rien que pour vous et votre groupe.','concept-p2':'Pas de spectateurs, pas de jugement — juste vous, votre playlist et l\'ambiance qui va avec. Que vous soyez en famille, entre amis ou en team building.',
+      'stat-salles':'Salles privées','stat-pers':'Pers. max / salle','stat-lounge':'Places lounge','stat-chansons':'Chansons dispo',
+      'room-tag':'Salle Privée','room-cta':'Voir la salle →','lagon-desc':'Un univers aquatique envoûtant. LEDs bleues, ambiance sous-marine, lumières tamisées.','lagon-capacity':'👥 1 à 10 personnes','tokyo-desc':'Plongez dans l\'énergie de Tokyo by night. Néons, esthétique futuriste, ambiance électrique.','tokyo-capacity':'👥 1 à 10 personnes',
+      'lounge-label':'L\'espace libre','lounge-title':'Espace Lounge & Scène','lounge-p1':'Pas envie d\'une salle privée ? Rejoignez l\'ambiance du lounge. Installez-vous à une table, commandez vos cocktails — et quand vous vous sentez prêts, montez sur scène chanter devant tout le monde.','lounge-p2':'C\'est le cœur de KaraVibes : un bar lounge vivant, des soirées spontanées, et une scène ouverte à tous ceux qui osent.','lounge-feat1':'Scène ouverte — montez chanter quand vous voulez','lounge-feat2':'Cocktails, boissons et menu disponibles','lounge-feat3':'Tables de 4 et de 8 personnes','lounge-feat4':'Accès direct — pas de réservation nécessaire','lounge-feat5':'Une consommation minimum est requise pour accéder à la scène','lounge-tagline':'Venez comme vous êtes — la scène vous attend.',
+      'tarifs-label':'Nos formules','tarifs-title':'Tarifs simples, plaisir maximum','tarif1-name':'Séance Standard','tarif1-unit':'par personne · minimum 4 personnes','tarif1-f1':'Salle privée au choix','tarif1-f2':'Équipement karaoké inclus','tarif1-f3':'Catalogue illimité','tarif1-f4':'Maximum 10 personnes','tarif2-badge':'⭐ Populaire','tarif2-name':'Prolongation','tarif2-unit':'par personne · 30 min offertes incluses','tarif2-f1':'2h supplémentaires en salle','tarif2-f2':'30 minutes OFFERTES','tarif2-f3':'Même salle, même ambiance','tarif2-f4':'À ajouter lors de la réservation',
+      'resa-label':'Réservation','resa-title':'Réservez votre salle','resa-p':'Choisissez votre salle, votre créneau et réglez en ligne. Votre place est confirmée instantanément.',
+      'hor-lundi':'Lundi','hor-mardi':'Mardi','hor-mercredi':'Mercredi','hor-jeudi':'Jeudi','hor-vendredi':'Vendredi','hor-samedi':'Samedi','hor-dimanche':'Dimanche','hor-ferme':'Fermé',
+      'form-h3':'Votre réservation','form-prenom':'Prénom','form-nom':'Nom','form-email':'Email','form-tel':'Téléphone','form-salle':'Salle','form-salle-opt0':'Choisir...','form-salle-opt1':'🌊 Lagon Bleu','form-salle-opt2':'🌸 Neo Tokyo','form-nb':'Nombre de personnes','form-date':'Date','form-creneau':'Choisissez votre créneau','form-creneau-hint':'Sélectionnez d\'abord une salle et une date.','form-prolo-title':'🎉 Prolonger — 30 min OFFERTES !','form-prolo-sub':'Ajoutez 15€/personne et restez 2h de plus dans votre salle.','form-price-label':'Total estimé','form-reglement':'J\'ai lu et j\'accepte le','form-confirm':'Confirmer & Payer','form-tel-resa':'Vous préférez réserver par téléphone ?',
+      'ph-prenom':'Votre prénom','ph-nom':'Votre nom','contact-nom-ph':'Votre nom','contact-email-ph':'Votre email','contact-objet-ph':'Objet','contact-msg-ph':'Votre message...',
+      'avis-label':'Témoignages','avis-title':'Ce qu\'ils en disent','avis-placeholder':'Les premiers avis apparaîtront ici après l\'ouverture. 🎤','avis-h3':'Laissez votre avis','avis-submit':'Envoyer mon avis','avis-note':'Votre avis sera publié après validation. Merci ! 🙏',
+      'cat-label':'Des milliers de titres','cat-title':'Le catalogue','cat-desc':'Chansons françaises, hits internationaux, zouk, reggaeton, R&B, antillais... Préparez votre playlist avant d\'arriver !','cat-btn':'Voir le catalogue complet',
+      'contact-label':'Nous trouver','contact-title':'Contact & Accès','contact-adresse-h':'Adresse','contact-adresse-p':'Martinique — adresse communiquée à la confirmation','contact-insta-h':'Instagram','contact-hor-h':'Horaires','map-placeholder':'🗺️ Plan disponible à l\'ouverture','contact-question':'Une question ?','contact-ecrivez':'Écrivez-nous','contact-envoyer':'Envoyer',
+      'footer-copy':'© 2025 KaraVibes · Studio Lounge Privé · Martinique','footer-mentions':'Mentions légales','footer-reglement':'Règlement & Conditions',
+      'modal-lagon-tag':'Salle Privée · Univers Aquatique','modal-lagon-cap':'👥 1 à 10 personnes · Karaoké privatisé','modal-lagon-dispo':'📅 Disponibilités — Lagon Bleu','modal-lagon-cocktails':'🍹 Cocktails Exclusifs — Lagon Bleu','modal-alco':'Alcoolisés','modal-sans-alco':'Sans Alcool','modal-lagon-note':'Cocktails exclusifs réservés à la salle Lagon Bleu · Tarifs sur la carte complète','modal-lagon-carte':'🍹 Voir la carte cocktails complète →',
+      'modal-tokyo-tag':'Salle Privée · Esthétique Futuriste','modal-tokyo-cap':'👥 1 à 10 personnes · Karaoké privatisé','modal-tokyo-dispo':'📅 Disponibilités — Neo Tokyo','modal-tokyo-cocktails':'🍹 Cocktails Exclusifs — Neo Tokyo','modal-tokyo-note':'Cocktails exclusifs réservés à la salle Neo Tokyo · Tarifs sur la carte complète','modal-tokyo-carte':'🍹 Voir la carte cocktails complète →',
+      'bp-prenom':'Prénom','bp-nom':'Nom','bp-tel':'Téléphone','bp-email-label':'Email','bp-email-note':'(optionnel — pour votre confirmation)','bp-nb-label':'Nombre de personnes','nb-label':'personne(s) · min. 4 facturées','bp-prolo-title':'🎉 Prolonger ma session (+2h)','bp-prolo-sub':'+15€/pers · restez encore 2h dans votre salle','bp-price-label':'Total estimé','bp-submit':'🎤 Confirmer ma réservation',
+      'success-title':'Réservation confirmée !','success-msg':'Votre demande a bien été enregistrée. Nous vous contacterons pour confirmer et vous accueillir le jour J.','success-btn':'Parfait, à bientôt !',
+      'loading':'Chargement…','ferme-jour':'Fermé ce jour-là.','select-salle-date':'Sélectionnez d\'abord une salle et une date.'
+    },
+    en: {
+      'nav-concept':'The Concept','nav-lounge':'The Lounge','nav-tarifs':'Prices','nav-reserver':'Book','nav-carte':'Menu','nav-evenements':'Events','nav-catalogue':'Catalogue','nav-contact':'Contact',
+      'hero-subtitle':'Lounge Bar · Private Karaoke','hero-desc':'Two immersive universes, total freedom. Sing, vibe, celebrate — in your very own private room.','hero-cta1':'Book my room','hero-cta2':'Discover',
+      'concept-label':'Our universe','concept-title':'A lounge, two worlds to explore','concept-p1':'KaraVibes is the place where everyone can let loose. Two private rooms with radically different vibes, reserved just for you and your group.','concept-p2':'No audience, no judgment — just you, your playlist and the right ambiance. Whether it\'s family, friends or a team building.',
+      'stat-salles':'Private rooms','stat-pers':'Max people / room','stat-lounge':'Lounge seats','stat-chansons':'Songs available',
+      'room-tag':'Private Room','room-cta':'See the room →','lagon-desc':'An enchanting aquatic universe. Blue LEDs, underwater vibes, dimmed lights.','lagon-capacity':'👥 1 to 10 people','tokyo-desc':'Dive into the energy of Tokyo by night. Neons, futuristic aesthetic, electric atmosphere.','tokyo-capacity':'👥 1 to 10 people',
+      'lounge-label':'The open space','lounge-title':'Lounge & Stage','lounge-p1':'Not in the mood for a private room? Join the lounge vibe. Settle at a table, order your cocktails — and when you\'re ready, step on stage and sing in front of everyone.','lounge-p2':'This is the heart of KaraVibes: a lively lounge bar, spontaneous evenings, and a stage open to all who dare.','lounge-feat1':'Open stage — come up and sing whenever you want','lounge-feat2':'Cocktails, drinks and menu available','lounge-feat3':'Tables for 4 and 8 people','lounge-feat4':'Walk in — no reservation needed','lounge-feat5':'A minimum purchase is required to access the stage','lounge-tagline':'Come as you are — the stage is waiting.',
+      'tarifs-label':'Our packages','tarifs-title':'Simple prices, maximum fun','tarif1-name':'Standard Session','tarif1-unit':'per person · minimum 4 people','tarif1-f1':'Private room of your choice','tarif1-f2':'Karaoke equipment included','tarif1-f3':'Unlimited catalogue','tarif1-f4':'Maximum 10 people','tarif2-badge':'⭐ Popular','tarif2-name':'Extension','tarif2-unit':'per person · 30 min FREE included','tarif2-f1':'2 extra hours in the room','tarif2-f2':'30 minutes FREE','tarif2-f3':'Same room, same vibe','tarif2-f4':'Add at the time of booking',
+      'resa-label':'Booking','resa-title':'Book your room','resa-p':'Choose your room, your time slot and pay online. Your spot is confirmed instantly.',
+      'hor-lundi':'Monday','hor-mardi':'Tuesday','hor-mercredi':'Wednesday','hor-jeudi':'Thursday','hor-vendredi':'Friday','hor-samedi':'Saturday','hor-dimanche':'Sunday','hor-ferme':'Closed',
+      'form-h3':'Your booking','form-prenom':'First name','form-nom':'Last name','form-email':'Email','form-tel':'Phone','form-salle':'Room','form-salle-opt0':'Choose...','form-salle-opt1':'🌊 Blue Lagoon','form-salle-opt2':'🌸 Neo Tokyo','form-nb':'Number of people','form-date':'Date','form-creneau':'Choose your time slot','form-creneau-hint':'Please select a room and a date first.','form-prolo-title':'🎉 Extend — 30 min FREE!','form-prolo-sub':'Add €15/person and stay 2 more hours in your room.','form-price-label':'Estimated total','form-reglement':'I have read and accept the','form-confirm':'Confirm & Pay','form-tel-resa':'Prefer to book by phone?',
+      'ph-prenom':'Your first name','ph-nom':'Your last name','contact-nom-ph':'Your name','contact-email-ph':'Your email','contact-objet-ph':'Subject','contact-msg-ph':'Your message...',
+      'avis-label':'Reviews','avis-title':'What they say','avis-placeholder':'First reviews will appear here after opening. 🎤','avis-h3':'Leave a review','avis-submit':'Send my review','avis-note':'Your review will be published after validation. Thank you! 🙏',
+      'cat-label':'Thousands of titles','cat-title':'The catalogue','cat-desc':'French songs, international hits, zouk, reggaeton, R&B, Caribbean... Prepare your playlist before you arrive!','cat-btn':'View the full catalogue',
+      'contact-label':'Find us','contact-title':'Contact & Access','contact-adresse-h':'Address','contact-adresse-p':'Martinique — address shared upon confirmation','contact-insta-h':'Instagram','contact-hor-h':'Opening hours','map-placeholder':'🗺️ Map available at opening','contact-question':'A question?','contact-ecrivez':'Write to us','contact-envoyer':'Send',
+      'footer-copy':'© 2025 KaraVibes · Private Lounge Studio · Martinique','footer-mentions':'Legal notice','footer-reglement':'Rules & Conditions',
+      'modal-lagon-tag':'Private Room · Aquatic Universe','modal-lagon-cap':'👥 1 to 10 people · Private karaoke','modal-lagon-dispo':'📅 Availability — Blue Lagoon','modal-lagon-cocktails':'🍹 Exclusive Cocktails — Blue Lagoon','modal-alco':'Alcoholic','modal-sans-alco':'Non-alcoholic','modal-lagon-note':'Exclusive cocktails for the Blue Lagoon room · Prices on the full menu','modal-lagon-carte':'🍹 See the full cocktail menu →',
+      'modal-tokyo-tag':'Private Room · Futuristic Aesthetic','modal-tokyo-cap':'👥 1 to 10 people · Private karaoke','modal-tokyo-dispo':'📅 Availability — Neo Tokyo','modal-tokyo-cocktails':'🍹 Exclusive Cocktails — Neo Tokyo','modal-tokyo-note':'Exclusive cocktails for the Neo Tokyo room · Prices on the full menu','modal-tokyo-carte':'🍹 See the full cocktail menu →',
+      'bp-prenom':'First name','bp-nom':'Last name','bp-tel':'Phone','bp-email-label':'Email','bp-email-note':'(optional — for your confirmation)','bp-nb-label':'Number of people','nb-label':'person(s) · min. 4 billed','bp-prolo-title':'🎉 Extend my session (+2h)','bp-prolo-sub':'+€15/person · stay 2 more hours in your room','bp-price-label':'Estimated total','bp-submit':'🎤 Confirm my booking',
+      'success-title':'Booking confirmed!','success-msg':'Your request has been registered. We will contact you to confirm and welcome you on the day.','success-btn':'Perfect, see you soon!',
+      'loading':'Loading…','ferme-jour':'Closed that day.','select-salle-date':'Please select a room and a date first.'
+    },
+    es: {
+      'nav-concept':'El Concepto','nav-lounge':'El Lounge','nav-tarifs':'Precios','nav-reserver':'Reservar','nav-carte':'La Carta','nav-evenements':'Eventos','nav-catalogue':'Catálogo','nav-contact':'Contacto',
+      'hero-subtitle':'Lounge Bar · Karaoke Privado','hero-desc':'Dos universos inmersivos, total libertad. Canta, vibra, celebra — en tu sala exclusiva.','hero-cta1':'Reservar mi sala','hero-cta2':'Descubrir',
+      'concept-label':'Nuestro universo','concept-title':'Un lounge, dos mundos por explorar','concept-p1':'KaraVibes es el lugar donde todos pueden soltarse. Dos salas privadas con ambientes radicalmente diferentes, reservadas solo para ti y tu grupo.','concept-p2':'Sin espectadores, sin juicios — solo tú, tu playlist y el ambiente perfecto. Ya sea en familia, con amigos o en team building.',
+      'stat-salles':'Salas privadas','stat-pers':'Pers. máx / sala','stat-lounge':'Plazas lounge','stat-chansons':'Canciones disponibles',
+      'room-tag':'Sala Privada','room-cta':'Ver la sala →','lagon-desc':'Un universo acuático fascinante. LEDs azules, ambiente submarino, luces tenues.','lagon-capacity':'👥 1 a 10 personas','tokyo-desc':'Sumérgete en la energía de Tokyo by night. Neones, estética futurista, ambiente eléctrico.','tokyo-capacity':'👥 1 a 10 personas',
+      'lounge-label':'El espacio libre','lounge-title':'Lounge & Escenario','lounge-p1':'¿No te apetece una sala privada? Únete al ambiente del lounge. Siéntate en una mesa, pide tus cócteles — y cuando estés listo, sube al escenario a cantar ante todos.','lounge-p2':'Este es el corazón de KaraVibes: un lounge bar animado, veladas espontáneas y un escenario abierto a todos los que se atrevan.','lounge-feat1':'Escenario abierto — sube a cantar cuando quieras','lounge-feat2':'Cócteles, bebidas y menú disponibles','lounge-feat3':'Mesas de 4 y de 8 personas','lounge-feat4':'Acceso directo — sin reserva necesaria','lounge-feat5':'Se requiere una consumición mínima para acceder al escenario','lounge-tagline':'Ven como eres — el escenario te espera.',
+      'tarifs-label':'Nuestros paquetes','tarifs-title':'Precios simples, máximo placer','tarif1-name':'Sesión Estándar','tarif1-unit':'por persona · mínimo 4 personas','tarif1-f1':'Sala privada a elegir','tarif1-f2':'Equipo de karaoke incluido','tarif1-f3':'Catálogo ilimitado','tarif1-f4':'Máximo 10 personas','tarif2-badge':'⭐ Popular','tarif2-name':'Prolongación','tarif2-unit':'por persona · 30 min GRATIS incluidos','tarif2-f1':'2 horas adicionales en la sala','tarif2-f2':'30 minutos GRATIS','tarif2-f3':'Misma sala, mismo ambiente','tarif2-f4':'Añadir al hacer la reserva',
+      'resa-label':'Reserva','resa-title':'Reserva tu sala','resa-p':'Elige tu sala, tu horario y paga en línea. Tu lugar queda confirmado al instante.',
+      'hor-lundi':'Lunes','hor-mardi':'Martes','hor-mercredi':'Miércoles','hor-jeudi':'Jueves','hor-vendredi':'Viernes','hor-samedi':'Sábado','hor-dimanche':'Domingo','hor-ferme':'Cerrado',
+      'form-h3':'Tu reserva','form-prenom':'Nombre','form-nom':'Apellido','form-email':'Email','form-tel':'Teléfono','form-salle':'Sala','form-salle-opt0':'Elegir...','form-salle-opt1':'🌊 Laguna Azul','form-salle-opt2':'🌸 Neo Tokyo','form-nb':'Número de personas','form-date':'Fecha','form-creneau':'Elige tu horario','form-creneau-hint':'Primero selecciona una sala y una fecha.','form-prolo-title':'🎉 Prolongar — ¡30 min GRATIS!','form-prolo-sub':'Añade €15/persona y quédate 2 horas más en tu sala.','form-price-label':'Total estimado','form-reglement':'He leído y acepto el','form-confirm':'Confirmar y Pagar','form-tel-resa':'¿Prefieres reservar por teléfono?',
+      'ph-prenom':'Tu nombre','ph-nom':'Tu apellido','contact-nom-ph':'Tu nombre','contact-email-ph':'Tu email','contact-objet-ph':'Asunto','contact-msg-ph':'Tu mensaje...',
+      'avis-label':'Testimonios','avis-title':'Lo que dicen','avis-placeholder':'Los primeros comentarios aparecerán aquí tras la apertura. 🎤','avis-h3':'Deja tu opinión','avis-submit':'Enviar mi opinión','avis-note':'Tu opinión se publicará tras validación. ¡Gracias! 🙏',
+      'cat-label':'Miles de títulos','cat-title':'El catálogo','cat-desc':'Canciones francesas, éxitos internacionales, zouk, reggaeton, R&B, antillano... ¡Prepara tu playlist antes de llegar!','cat-btn':'Ver el catálogo completo',
+      'contact-label':'Encuéntranos','contact-title':'Contacto y Acceso','contact-adresse-h':'Dirección','contact-adresse-p':'Martinica — dirección comunicada al confirmar','contact-insta-h':'Instagram','contact-hor-h':'Horarios','map-placeholder':'🗺️ Mapa disponible en la apertura','contact-question':'¿Una pregunta?','contact-ecrivez':'Escríbenos','contact-envoyer':'Enviar',
+      'footer-copy':'© 2025 KaraVibes · Estudio Lounge Privado · Martinica','footer-mentions':'Aviso legal','footer-reglement':'Reglamento y Condiciones',
+      'modal-lagon-tag':'Sala Privada · Universo Acuático','modal-lagon-cap':'👥 1 a 10 personas · Karaoke privado','modal-lagon-dispo':'📅 Disponibilidad — Laguna Azul','modal-lagon-cocktails':'🍹 Cócteles Exclusivos — Laguna Azul','modal-alco':'Con alcohol','modal-sans-alco':'Sin alcohol','modal-lagon-note':'Cócteles exclusivos de la sala Laguna Azul · Precios en la carta completa','modal-lagon-carte':'🍹 Ver la carta de cócteles completa →',
+      'modal-tokyo-tag':'Sala Privada · Estética Futurista','modal-tokyo-cap':'👥 1 a 10 personas · Karaoke privado','modal-tokyo-dispo':'📅 Disponibilidad — Neo Tokyo','modal-tokyo-cocktails':'🍹 Cócteles Exclusivos — Neo Tokyo','modal-tokyo-note':'Cócteles exclusivos de la sala Neo Tokyo · Precios en la carta completa','modal-tokyo-carte':'🍹 Ver la carta de cócteles completa →',
+      'bp-prenom':'Nombre','bp-nom':'Apellido','bp-tel':'Teléfono','bp-email-label':'Email','bp-email-note':'(opcional — para tu confirmación)','bp-nb-label':'Número de personas','nb-label':'persona(s) · mín. 4 facturadas','bp-prolo-title':'🎉 Prolongar mi sesión (+2h)','bp-prolo-sub':'+€15/pers · quédate 2 horas más en tu sala','bp-price-label':'Total estimado','bp-submit':'🎤 Confirmar mi reserva',
+      'success-title':'¡Reserva confirmada!','success-msg':'Tu solicitud ha sido registrada. Nos pondremos en contacto contigo para confirmar y darte la bienvenida el día de la sesión.','success-btn':'¡Perfecto, hasta pronto!',
+      'loading':'Cargando…','ferme-jour':'Cerrado ese día.','select-salle-date':'Primero selecciona una sala y una fecha.'
+    }
+  };
+
+  function setLang(lang, btn) {
+    currentLang = lang;
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
+    btn.classList.add('active');
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (T[lang] && T[lang][key] !== undefined) el.textContent = T[lang][key];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const key = el.dataset.i18nPh;
+      if (T[lang] && T[lang][key] !== undefined) el.placeholder = T[lang][key];
+    });
   }
 
   loadAvis();
