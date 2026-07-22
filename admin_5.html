@@ -1447,18 +1447,19 @@
 
   // ===== PLANNING ADMIN =====
   const CRENEAUX_JOUR_ADMIN = {
-    0: null,               // Lundi fermé
-    1: null,               // Mardi fermé
-    2: [17, 19.5, 22],    // Mercredi
-    3: [17, 19.5, 22],    // Jeudi
-    4: [15, 17.5, 20, 22],// Vendredi
-    5: [15, 17.5, 20, 22],// Samedi
-    6: [11, 13.5, 16, 18] // Dimanche
+    0: null,                        // Lundi fermé
+    1: null,                        // Mardi fermé
+    2: [17, 19.25, 21.5],           // Mercredi : 17h00 · 19h15 · 21h30
+    3: [17, 19.25, 21.5],           // Jeudi
+    4: [15, 17.25, 19.5, 21.75],   // Vendredi : 15h00 · 17h15 · 19h30 · 21h45
+    5: [15, 17.25, 19.5, 21.75],   // Samedi
+    6: [11, 13.25, 15.5, 17.75]    // Dimanche : 11h00 · 13h15 · 15h30 · 17h45
   };
 
   function fmtH(h) {
     const hh = Math.floor(h) % 24;
-    const mm = (h % 1 === 0.5) ? '30' : '00';
+    const frac = h % 1;
+    const mm = frac === 0.25 ? '15' : frac === 0.5 ? '30' : frac === 0.75 ? '45' : '00';
     return hh.toString().padStart(2,'0') + 'h' + mm;
   }
 

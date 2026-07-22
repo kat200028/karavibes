@@ -176,18 +176,30 @@
     .creneau-btn.pris { background: rgba(231,76,60,0.1); color: rgba(231,76,60,0.5); border-color: rgba(231,76,60,0.2); cursor: not-allowed; text-decoration: line-through; }
     .creneau-label { font-size: 0.68rem; color: var(--gris); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
 
-    /* PLANNING MODAL */
-    .modal-planning-tabs { display:flex; gap:0.4rem; overflow-x:auto; padding-bottom:0.6rem; margin-bottom:0.8rem; scrollbar-width:thin; scrollbar-color:rgba(201,168,76,0.2) transparent; }
-    .modal-planning-tabs::-webkit-scrollbar { height:3px; }
-    .modal-planning-tabs::-webkit-scrollbar-thumb { background:rgba(201,168,76,0.3); border-radius:2px; }
-    .modal-ptab { flex-shrink:0; padding:0.35rem 0.9rem; border-radius:20px; border:1px solid rgba(201,168,76,0.18); background:none; color:var(--gris); font-family:'Inter',sans-serif; font-size:0.72rem; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
-    .modal-ptab:hover { border-color:var(--or); color:var(--or); }
-    .modal-ptab.active { background:rgba(201,168,76,0.12); border-color:var(--or); color:var(--or); }
-    .modal-planning-slots { display:flex; flex-wrap:wrap; gap:0.5rem; min-height:36px; }
-    .modal-pslot { padding:0.4rem 0.9rem; border-radius:6px; font-size:0.8rem; font-weight:600; border:1px solid; cursor:pointer; transition:all 0.2s; font-family:'Inter',sans-serif; }
-    .modal-pslot.dispo { border-color:rgba(201,168,76,0.45); color:var(--or); background:rgba(201,168,76,0.08); }
-    .modal-pslot.dispo:hover { background:rgba(201,168,76,0.2); transform:translateY(-1px); }
-    .modal-pslot.pris { border-color:rgba(231,76,60,0.2); color:rgba(231,76,60,0.4); background:rgba(231,76,60,0.03); cursor:not-allowed; text-decoration:line-through; font-weight:400; }
+    /* PLANNING MODAL — VUE SEMAINE */
+    .modal-planning-week { display:flex; align-items:center; justify-content:space-between; margin-bottom:0.8rem; gap:0.5rem; }
+    .modal-planning-week-label { font-family:'Cinzel',serif; font-size:0.68rem; color:var(--or); letter-spacing:0.1em; text-align:center; flex:1; }
+    .modal-week-btn { background:none; border:1px solid rgba(201,168,76,0.2); border-radius:4px; color:var(--gris); font-size:0.7rem; padding:0.3rem 0.6rem; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+    .modal-week-btn:hover { border-color:var(--or); color:var(--or); }
+    .modal-planning-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:0.4rem; }
+    .mpday { background:rgba(250,248,245,0.02); border:1px solid rgba(201,168,76,0.08); border-radius:6px; padding:0.4rem 0.3rem; }
+    .mpday.today { border-color:rgba(201,168,76,0.3); background:rgba(201,168,76,0.04); }
+    .mpday.ferme { opacity:0.35; }
+    .mpday-label { font-size:0.6rem; font-family:'Cinzel',serif; letter-spacing:0.08em; text-transform:uppercase; color:var(--gris); text-align:center; padding-bottom:0.35rem; margin-bottom:0.35rem; border-bottom:1px solid rgba(201,168,76,0.08); white-space:nowrap; }
+    .mpday.today .mpday-label { color:var(--or); }
+    .mpday-slots { display:flex; flex-direction:column; gap:0.3rem; }
+    .modal-pslot { display:block; width:100%; padding:0.3rem 0.2rem; border-radius:4px; font-size:0.68rem; font-weight:600; border:1px solid; cursor:pointer; transition:all 0.2s; font-family:'Inter',sans-serif; text-align:center; }
+    .modal-pslot.dispo { border-color:rgba(201,168,76,0.4); color:var(--or); background:rgba(201,168,76,0.07); }
+    .modal-pslot.dispo:hover { background:rgba(201,168,76,0.18); }
+    .modal-pslot.pris { border-color:rgba(231,76,60,0.18); color:rgba(231,76,60,0.38); background:transparent; cursor:not-allowed; text-decoration:line-through; font-weight:400; font-size:0.63rem; }
+    .mpday-ferme-txt { font-size:0.6rem; color:rgba(138,138,154,0.3); text-align:center; padding:0.3rem 0; font-style:italic; }
+    @media (max-width:600px) {
+      .modal-planning-grid { grid-template-columns:repeat(3,1fr); }
+      .room-modal { max-height:92vh; }
+      .room-modal-body { padding:1rem; }
+      .room-modal-title { font-size:1.4rem; }
+      .modal-cocktails { grid-template-columns:1fr 1fr; }
+    }
 
     /* PLANNING */
     .planning-section { background: #0a0a12; position: relative; overflow: hidden; }
@@ -728,10 +740,12 @@
       </div>
       <div class="room-modal-section">
         <h4>📅 Disponibilités — Lagon Bleu</h4>
-        <div class="modal-planning-tabs" id="mptabs-lagon"></div>
-        <div id="mpcontent-lagon" class="modal-planning-slots">
-          <span style="font-size:0.78rem;color:var(--gris);">Chargement…</span>
+        <div class="modal-planning-week">
+          <button class="modal-week-btn" onclick="modalWeekPrev('lagon')">&#8592;</button>
+          <span class="modal-planning-week-label" id="mplabel-lagon"></span>
+          <button class="modal-week-btn" onclick="modalWeekNext('lagon')">&#8594;</button>
         </div>
+        <div class="modal-planning-grid" id="mpgrid-lagon"><span style="font-size:0.78rem;color:var(--gris);">Chargement…</span></div>
       </div>
       <div class="room-modal-section">
         <h4>🍹 Cocktails Exclusifs — Lagon Bleu</h4>
@@ -778,10 +792,12 @@
       </div>
       <div class="room-modal-section">
         <h4>📅 Disponibilités — Neo Tokyo</h4>
-        <div class="modal-planning-tabs" id="mptabs-tokyo"></div>
-        <div id="mpcontent-tokyo" class="modal-planning-slots">
-          <span style="font-size:0.78rem;color:var(--gris);">Chargement…</span>
+        <div class="modal-planning-week">
+          <button class="modal-week-btn" onclick="modalWeekPrev('tokyo')">&#8592;</button>
+          <span class="modal-planning-week-label" id="mplabel-tokyo"></span>
+          <button class="modal-week-btn" onclick="modalWeekNext('tokyo')">&#8594;</button>
         </div>
+        <div class="modal-planning-grid" id="mpgrid-tokyo"><span style="font-size:0.78rem;color:var(--gris);">Chargement…</span></div>
       </div>
       <div class="room-modal-section">
         <h4>🍹 Cocktails Exclusifs — Neo Tokyo</h4>
@@ -811,15 +827,15 @@
 
 <script>
   // ===== CRÉNEAUX =====
-  // Créneaux fixes par jour (0=Lun … 6=Dim)
+  // Créneaux fixes par jour (0=Lun … 6=Dim) — 15 min nettoyage entre séances
   const CRENEAUX_JOUR = {
-    0: null, // Lundi fermé
-    1: null, // Mardi fermé
-    2: [17, 19.5, 22],         // Mercredi
-    3: [17, 19.5, 22],         // Jeudi
-    4: [15, 17.5, 20, 22],     // Vendredi
-    5: [15, 17.5, 20, 22],     // Samedi
-    6: [11, 13.5, 16, 18]      // Dimanche
+    0: null,                          // Lundi fermé
+    1: null,                          // Mardi fermé
+    2: [17, 19.25, 21.5],             // Mercredi : 17h00 · 19h15 · 21h30
+    3: [17, 19.25, 21.5],             // Jeudi
+    4: [15, 17.25, 19.5, 21.75],      // Vendredi : 15h00 · 17h15 · 19h30 · 21h45
+    5: [15, 17.25, 19.5, 21.75],      // Samedi
+    6: [11, 13.25, 15.5, 17.75]       // Dimanche : 11h00 · 13h15 · 15h30 · 17h45
   };
 
   function getCreneaux(jour) {
@@ -828,7 +844,9 @@
 
   function formatH(h) {
     const heure = Math.floor(h) % 24;
-    return heure.toString().padStart(2,'0') + 'h00';
+    const frac = h % 1;
+    const min = frac === 0.25 ? '15' : frac === 0.5 ? '30' : frac === 0.75 ? '45' : '00';
+    return heure.toString().padStart(2,'0') + 'h' + min;
   }
 
   async function getReservations() {
@@ -1025,50 +1043,95 @@
     return days;
   }
 
+  // Week offset per salle (0 = current week)
+  const modalWeekOffset = { lagon: 0, tokyo: 0 };
+
+  // Get the Monday of the week containing `date`, then return the 5 open days (Wed–Sun) in that week
+  function getWeekOpenDays(baseMonday) {
+    // Open days: Wed(3), Thu(4), Fri(5), Sat(6), Sun(0) — JS getDay()
+    const openJsDay = [3, 4, 5, 6, 0];
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(baseMonday);
+      d.setDate(baseMonday.getDate() + i);
+      if (openJsDay.includes(d.getDay())) days.push(d);
+    }
+    return days; // always 5 days
+  }
+
+  function getThisMonday() {
+    const now = new Date(); now.setHours(0,0,0,0);
+    const day = now.getDay(); // 0=Sun, 1=Mon…
+    const diff = day === 0 ? -6 : 1 - day;
+    const mon = new Date(now); mon.setDate(now.getDate() + diff);
+    return mon;
+  }
+
   async function loadModalPlanning(salle) {
-    const days = getOpenDays(14);
+    modalWeekOffset[salle] = 0;
+    await fetchAndRenderWeek(salle);
+  }
+
+  async function fetchAndRenderWeek(salle) {
+    const baseMonday = getThisMonday();
+    baseMonday.setDate(baseMonday.getDate() + modalWeekOffset[salle] * 7);
+    const days = getWeekOpenDays(baseMonday);
     const from = fmtDate(days[0]);
     const to   = fmtDate(days[days.length - 1]);
+
+    // Update week label
+    const opts = { day:'numeric', month:'short' };
+    const label = days[0].toLocaleDateString('fr-FR', opts) + ' – ' + days[days.length-1].toLocaleDateString('fr-FR', opts);
+    document.getElementById('mplabel-' + salle).textContent = label;
+
+    // Fetch reservations for this week
     const { data, error } = await supabase
       .from('reservations').select('salle,date,heure_num')
       .eq('salle', salle).gte('date', from).lte('date', to);
     modalPlanningResas[salle] = error ? [] : (data || []);
 
-    // Render tabs
-    const tabs = document.getElementById('mptabs-' + salle);
-    tabs.innerHTML = days.map((d, i) => {
-      const ds = fmtDate(d);
-      return `<button class="modal-ptab${i===0?' active':''}" onclick="switchModalDay('${salle}','${ds}',this)">${fmtTabLabel(d)}</button>`;
-    }).join('');
-
-    renderModalDay(salle, days[0]);
+    renderModalWeek(salle, days);
   }
 
-  function switchModalDay(salle, dateStr, btn) {
-    document.querySelectorAll(`#mptabs-${salle} .modal-ptab`).forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    renderModalDay(salle, new Date(dateStr + 'T00:00:00'));
+  function modalWeekPrev(salle) {
+    if (modalWeekOffset[salle] <= 0) return;
+    modalWeekOffset[salle]--;
+    fetchAndRenderWeek(salle);
   }
 
-  function renderModalDay(salle, d) {
-    const dateStr = fmtDate(d);
-    const dow = (d.getDay() + 6) % 7;
-    const creneaux = getCreneaux(dow);
-    const container = document.getElementById('mpcontent-' + salle);
+  function modalWeekNext(salle) {
+    modalWeekOffset[salle]++;
+    fetchAndRenderWeek(salle);
+  }
 
-    if (!creneaux.length) {
-      container.innerHTML = '<span style="font-size:0.78rem;color:rgba(138,138,154,0.5);font-style:italic;">Fermé ce jour.</span>';
-      return;
-    }
+  function renderModalWeek(salle, days) {
+    const grid = document.getElementById('mpgrid-' + salle);
+    const today = fmtDate(new Date());
+    const JOUR_COURT = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
 
-    const prises = (modalPlanningResas[salle] || [])
-      .filter(r => r.date === dateStr).map(r => r.heure_num);
+    grid.innerHTML = days.map(d => {
+      const dateStr = fmtDate(d);
+      const dow = (d.getDay() + 6) % 7; // 0=Lun
+      const creneaux = getCreneaux(dow);
+      const isToday = dateStr === today;
+      const isPast = dateStr < today;
+      const jourLabel = JOUR_COURT[d.getDay()] + ' ' + d.getDate();
 
-    container.innerHTML = creneaux.map(h => {
-      const pris = prises.includes(h);
-      const label = formatH(h);
-      if (pris) return `<span class="modal-pslot pris">🔴 ${label}</span>`;
-      return `<button class="modal-pslot dispo" onclick="choisirDepuisModal('${salle}','${dateStr}',${h},'${label}')">${label}</button>`;
+      if (!creneaux.length) {
+        return `<div class="mpday${isToday?' today':''}"><div class="mpday-label">${jourLabel}</div><div class="mpday-slots"><span class="modal-pslot pris" style="font-size:0.58rem;">Fermé</span></div></div>`;
+      }
+
+      const prises = (modalPlanningResas[salle] || [])
+        .filter(r => r.date === dateStr).map(r => r.heure_num);
+
+      const slots = creneaux.map(h => {
+        const pris = prises.includes(h) || isPast;
+        const label = formatH(h);
+        if (pris) return `<span class="modal-pslot pris">${label}</span>`;
+        return `<button class="modal-pslot dispo" onclick="choisirDepuisModal('${salle}','${dateStr}',${h},'${label}')">${label}</button>`;
+      }).join('');
+
+      return `<div class="mpday${isToday?' today':''}"><div class="mpday-label">${jourLabel}</div><div class="mpday-slots">${slots}</div></div>`;
     }).join('');
   }
 
