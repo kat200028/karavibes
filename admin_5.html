@@ -1331,25 +1331,34 @@
   }
 
   // ===== DEVIS ENTREPRISES =====
-  let devisList = JSON.parse(localStorage.getItem('kv_devis') || '[]');
+  let devisList = []; // rows from Supabase
+  let devisLocal = JSON.parse(localStorage.getItem('kv_devis') || '[]'); // manually added
 
-  function renderDevis() {
+  async function renderDevis() {
     const tbody = document.getElementById('devis-tbody');
-    if (!devisList.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--gris);padding:1rem;">Chargement…</td></tr>';
+    const { data, error } = await supabase.from('devis').select('*').order('created_at', { ascending: false });
+    if (!error && data) devisList = data;
+    const all = [...devisList, ...devisLocal.map(d => ({ ...d, _local: true }))];
+    if (!all.length) {
       tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📝</div>Aucun devis pour l\'instant.</div></td></tr>';
       return;
     }
-    tbody.innerHTML = [...devisList].reverse().map((d, ri) => {
-      const i = devisList.length - 1 - ri;
+    tbody.innerHTML = all.map((d, i) => {
       const statutColor = d.statut === 'confirmé' ? 'badge-vert' : d.statut === 'refusé' ? 'badge-rouge' : 'badge-orange';
+      const nom = d.nom || d.entreprise || '—';
+      const type = d.type_evenement || d.type || '—';
+      const nb = d.nb_personnes || d.nb || '—';
+      const date = d.date_souhaitee || d.date;
+      const source = d._local ? '' : '<span style="font-size:0.6rem;color:var(--cyan);margin-left:4px;">web</span>';
       return `<tr>
-        <td><strong>${d.entreprise}</strong>${d.notes ? `<br><span style="font-size:0.72rem;color:var(--gris)">${d.notes}</span>` : ''}</td>
+        <td><strong>${nom}</strong>${source}${d.notes ? `<br><span style="font-size:0.72rem;color:var(--gris)">${d.notes}</span>` : ''}</td>
         <td>${d.tel || '—'}</td>
-        <td>${d.date ? new Date(d.date).toLocaleDateString('fr-FR') : '—'}</td>
-        <td style="text-align:center">${d.nb || '—'}</td>
-        <td style="font-size:0.78rem;color:var(--gris)">${d.type}</td>
-        <td><span class="badge badge-cyan" style="font-size:0.7rem;">${d.formule}</span></td>
-        <td><span class="badge ${statutColor}">${d.statut}</span></td>
+        <td>${date ? new Date(date).toLocaleDateString('fr-FR') : '—'}</td>
+        <td style="text-align:center">${nb}</td>
+        <td style="font-size:0.78rem;color:var(--gris)">${type}</td>
+        <td><span class="badge badge-cyan" style="font-size:0.7rem;">${d.formule || '—'}</span></td>
+        <td><span class="badge ${statutColor}">${d.statut || 'en attente'}</span></td>
         <td>
           <button class="action-btn success" onclick="changerStatutDevis(${i},'confirmé')">✅</button>
           <button class="action-btn" onclick="changerStatutDevis(${i},'refusé')" style="border-color:rgba(231,76,60,0.3);color:var(--rouge);">✕</button>
@@ -1357,38 +1366,57 @@
         </td>
       </tr>`;
     }).join('');
+    // store merged index map for actions
+    window._devisAll = all;
   }
 
   function ajouterDevis() {
     const entreprise = document.getElementById('dv-entreprise').value.trim();
     if (!entreprise) { alert('Veuillez saisir le nom de l\'entreprise.'); return; }
-    devisList.push({
+    devisLocal.push({
+      nom: entreprise,
       entreprise,
       tel: document.getElementById('dv-tel').value,
+      date_souhaitee: document.getElementById('dv-date').value,
       date: document.getElementById('dv-date').value,
+      nb_personnes: document.getElementById('dv-nb').value,
       nb: document.getElementById('dv-nb').value,
+      type_evenement: document.getElementById('dv-type').value,
       type: document.getElementById('dv-type').value,
       formule: document.getElementById('dv-formule').value,
       notes: document.getElementById('dv-notes').value,
       statut: 'en attente',
+      _local: true,
       created: new Date().toISOString()
     });
-    localStorage.setItem('kv_devis', JSON.stringify(devisList));
+    localStorage.setItem('kv_devis', JSON.stringify(devisLocal));
     ['dv-entreprise','dv-tel','dv-date','dv-nb','dv-notes'].forEach(id => document.getElementById(id).value = '');
     renderDevis();
     alert('✅ Devis enregistré !');
   }
 
-  function changerStatutDevis(i, statut) {
-    devisList[i].statut = statut;
-    localStorage.setItem('kv_devis', JSON.stringify(devisList));
+  async function changerStatutDevis(i, statut) {
+    const d = window._devisAll ? window._devisAll[i] : null;
+    if (!d) return;
+    if (d._local) {
+      const li = devisLocal.findIndex(x => x.created === d.created);
+      if (li >= 0) { devisLocal[li].statut = statut; localStorage.setItem('kv_devis', JSON.stringify(devisLocal)); }
+    } else {
+      await supabase.from('devis').update({ statut }).eq('id', d.id);
+    }
     renderDevis();
   }
 
-  function supprimerDevis(i) {
+  async function supprimerDevis(i) {
     if (!confirm('Supprimer ce devis ?')) return;
-    devisList.splice(i, 1);
-    localStorage.setItem('kv_devis', JSON.stringify(devisList));
+    const d = window._devisAll ? window._devisAll[i] : null;
+    if (!d) return;
+    if (d._local) {
+      const li = devisLocal.findIndex(x => x.created === d.created);
+      if (li >= 0) { devisLocal.splice(li, 1); localStorage.setItem('kv_devis', JSON.stringify(devisLocal)); }
+    } else {
+      await supabase.from('devis').delete().eq('id', d.id);
+    }
     renderDevis();
   }
 
