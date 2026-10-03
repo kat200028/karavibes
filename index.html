@@ -836,7 +836,7 @@
         </div>
 <div class="contact-item">
           <div class="contact-icon">📸</div>
-          <div class="contact-item-text"><h4 data-i18n="contact-insta-h">Instagram</h4><a href="#" target="_blank">@karavibes.martinique</a></div>
+          <div class="contact-item-text"><h4 data-i18n="contact-insta-h">Instagram</h4><a href="https://www.instagram.com/karavibes.martinique" target="_blank">@karavibes.martinique</a></div>
         </div>
         <div class="contact-item">
           <div class="contact-icon">🕐</div>
@@ -850,11 +850,11 @@
         <span class="section-label" data-i18n="contact-question">Une question ?</span>
         <h3 style="font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:1.5rem; color:var(--noir)" data-i18n="contact-ecrivez">Écrivez-nous</h3>
         <div class="contact-form">
-          <input type="text" data-i18n-ph="contact-nom-ph" placeholder="Votre nom" />
-          <input type="email" data-i18n-ph="contact-email-ph" placeholder="Votre email" />
-          <input type="text" data-i18n-ph="contact-objet-ph" placeholder="Objet" />
-          <textarea data-i18n-ph="contact-msg-ph" placeholder="Votre message..."></textarea>
-          <button class="btn-primary-dark" onclick="alert('Message envoyé !')" data-i18n="contact-envoyer">Envoyer</button>
+          <input type="text" id="contact-nom" data-i18n-ph="contact-nom-ph" placeholder="Votre nom" />
+          <input type="email" id="contact-email" data-i18n-ph="contact-email-ph" placeholder="Votre email" />
+          <input type="text" id="contact-objet" data-i18n-ph="contact-objet-ph" placeholder="Objet" />
+          <textarea id="contact-msg" data-i18n-ph="contact-msg-ph" placeholder="Votre message..."></textarea>
+          <button class="btn-primary-dark" id="contact-btn" onclick="submitContact()" data-i18n="contact-envoyer">Envoyer</button>
         </div>
       </div>
     </div>
@@ -879,7 +879,7 @@
       <li><a href="#contact" data-i18n="nav-contact">Contact</a></li>
     </ul>
     <div class="footer-social">
-      <a href="#" class="social-link">IG</a>
+      <a href="https://www.instagram.com/karavibes.martinique" target="_blank" class="social-link">IG</a>
       <a href="#" class="social-link">FB</a>
     </div>
   </div>
@@ -1242,6 +1242,32 @@
     document.getElementById('avis-commentaire').value = '';
     setStar(0);
     alert('Merci pour votre avis ! Il sera publié après validation. 🙏');
+  }
+
+  async function submitContact() {
+    const nom = document.getElementById('contact-nom').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const objet = document.getElementById('contact-objet').value.trim();
+    const msg = document.getElementById('contact-msg').value.trim();
+    if (!nom || !msg) { alert('Merci de renseigner votre nom et votre message.'); return; }
+    const btn = document.getElementById('contact-btn');
+    btn.disabled = true;
+    btn.textContent = 'Envoi…';
+    const { error } = await supabase.from('devis').insert({
+      nom, email: email || null, type_evenement: 'message',
+      notes: (objet ? '[' + objet + '] ' : '') + msg, statut: 'nouveau'
+    });
+    if (error) {
+      console.error(error);
+      btn.disabled = false;
+      btn.textContent = T[currentLang]['contact-envoyer'] || 'Envoyer';
+      alert('Erreur lors de l\'envoi. Merci de nous appeler directement.');
+      return;
+    }
+    ['contact-nom','contact-email','contact-objet','contact-msg'].forEach(id => document.getElementById(id).value = '');
+    btn.disabled = false;
+    btn.textContent = T[currentLang]['contact-envoyer'] || 'Envoyer';
+    alert('✅ Message envoyé ! Nous vous répondrons dans les 24h.');
   }
 
   async function loadAvis() {
